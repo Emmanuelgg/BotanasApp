@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Botanas Anita</string>
+    <string name="abb_discount">Desc</string>
+    <string name="abb_quantity">Cant</string>
+    <string name="action_settings">Configurar</string>
+    <string name="action_sign_in">Acceder</string>
+    <string name="action_sign_in_short">Acceder</string>
+    <string name="amount">Importe</string>
+    <string name="close">Cerrar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="discount">Descuento</string>
+    <string name="hello_blank_fragment">Hola, nuevo fragmento</string>
+    <string name="invalid_login">Usuario o contraseña invalidos</string>
+    <string name="invalid_password">Contraseña invalida</string>
+    <string name="item">Item</string>
+    <string name="log_out">Cerrar sesion</string>
+    <string name="login_failed">Inicio de sesion fallida</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_inventory">Ver inventario</string>
+    <string name="menu_sale">Vender</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title" translatable="false">Botanas Anita</string>
+    <string name="no">No</string>
+    <string name="no_internet">Tuvimos un problema con la conexion</string>
+    <string name="price">Precio</string>
+    <string name="product_added">Producto agregado</string>
+    <string name="product_deleted">Producto eliminado</string>
+    <string name="product_exist">El producto ya se encuenta en la lista</string>
+    <string name="prompt_email">Usuario</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="s_product_name">Producto de ejemplo</string>
+    <string name="s_quantity">0</string>
+    <string name="sale_confirm_body">¿Realmente desea continuar? \nLa venta no podra ser cancelada ni modificada.</string>
+    <string name="sale_confirm_title">¿Desea confirmar la venta?</string>
+    <string name="select_customer">Selecciona un cliente</string>
+    <string name="sf_product_name">Producto</string>
+    <string name="sf_quantity">Cantidad</string>
+    <string name="title_activity_login">Ingresa a tu cuenta</string>
+    <string name="total">Total</string>
+    <string name="welcome">Bienvenido !</string>
+</resources>
