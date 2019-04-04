@@ -3,7 +3,7 @@ package com.example.botanas.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
-private const val DATABASE_VERSION = 7
+private const val DATABASE_VERSION = 8
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", null, DATABASE_VERSION) {
 
     companion object {
@@ -93,6 +93,39 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
             "updated_at" to TEXT
         )
 
+        /* Table requisition */
+        db.createTable("requisition", true,
+            "id_requisition" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            "id_driver" to INTEGER,
+            "id_client" to INTEGER,
+            "number" to TEXT,
+            "total" to TEXT,
+            "discount" to TEXT,
+            "status" to INTEGER,
+            "requisition_date" to TEXT,
+            "type" to INTEGER,
+            "created_at" to TEXT,
+            "updated_at" to TEXT
+        )
+
+        /* Table requisition */
+        db.createTable("requisition_description", true,
+            "id_requisition_description" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            "id_requisition" to INTEGER,
+            "id_store" to INTEGER,
+            "id_product" to TEXT,
+            "price" to TEXT,
+            "quantity" to INTEGER,
+            "weight" to INTEGER,
+            "cost" to TEXT,
+            "total" to TEXT,
+            "description" to TEXT,
+            "quantity_unit_measure" to INTEGER,
+            "unit_measurement" to TEXT,
+            "status" to INTEGER
+
+        )
+
 
     }
 
@@ -103,6 +136,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
         db.dropTable("product_base",true)
         db.dropTable("driver_general_inventory",true)
         db.dropTable("client",true)
+        db.dropTable("requisition",true)
+        db.dropTable("requisition_description",true)
         onCreate(db)
     }
 

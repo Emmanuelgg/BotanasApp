@@ -1,5 +1,6 @@
 package com.example.botanas
 
+import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,7 +24,9 @@ import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.select
 import android.widget.Toast
 import android.content.DialogInterface
+import android.view.View
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.snackbar.Snackbar
 
 
 class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener {
@@ -33,6 +36,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
     private lateinit var customerSelectionAdapter: CustomerSelectAdapter
     private lateinit var mySqlHelper: MySqlHelper
     private lateinit var appContext: Context
+    private lateinit var view: View
 
 
     override fun onItemClick(item: CustomerSelectAdapter.ViewHolder, position: Int, parentPosition: Int) {
@@ -49,7 +53,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
             if (count == 0 || result == "." || result == ",") {
                 for (product in productListSale){
                     val newCost = product.trueCost.toDouble()
-                    product.cost = "${"%.2f".format(newCost)}"
+                    product.cost = "%.2f".format(newCost)
                     totalAmount += product.cost.toDouble() * product.quantity.toDouble()
                     custProductListRecycler.adapter!!.notifyDataSetChanged()
                 }
@@ -70,7 +74,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                 val discount = (saleDiscount.text.toString().toDouble() / 100)
                 for (product in productListSale){
                     val newCost = product.trueCost.toDouble() - (product.trueCost.toDouble() * discount)
-                    product.cost = "${"%.2f".format(newCost)}"
+                    product.cost = "%.2f".format(newCost)
                     totalAmount += product.cost.toDouble() * product.quantity.toDouble()
                 }
                 totalAmountTextView.text = "$${"%.2f".format(totalAmount)}"
@@ -87,6 +91,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         appContext = baseContext
+        view = findViewById(R.id.customer_select_layout)
         mySqlHelper = MySqlHelper(this)
         val clientSpinner = findViewById<SearchableSpinner>(R.id.client_spinner)
         val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
@@ -157,20 +162,12 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         builder.setCancelable(false)
         builder.setPositiveButton(R.string.confirm,
             DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(
-                    applicationContext,
-                    "You've choosen to delete all records",
-                    Toast.LENGTH_SHORT
-                ).show()
+                clientSaleSave()
             })
 
         builder.setNegativeButton(R.string.no,
             DialogInterface.OnClickListener { dialog, which ->
-                Toast.makeText(
-                    applicationContext,
-                    "You've changed your mind to delete all records",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(view, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             })
     }
 
@@ -187,5 +184,9 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
+    }
+
+    private fun clientSaleSave() {
+
     }
 }
