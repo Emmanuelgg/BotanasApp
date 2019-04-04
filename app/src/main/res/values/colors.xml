@@ -9,4 +9,6 @@
     <color name="splash_background_color">#F1F1F1F1</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#FFBDBDBD</color>
+    <color name="colorBlueAlpha">#28337AB7</color>
+    <color name="colorPrimaryDarkAlpha">#C9303F9F</color>
 </resources>

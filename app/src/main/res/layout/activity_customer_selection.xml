@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <TextView
-                    android:text="@string/discount"
+                    android:text="@string/abb_discount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:id="@+id/textView11" android:layout_weight=".20"
                     android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
