@@ -8,7 +8,8 @@ data class Storage(
     val id_product: Number,
     val product_name: String,
     var quantity: Number,
-    val unit_measurement: Number,
+    val quantity_unit_measurement: Number,
     var cost: String = "0",
-    var trueCost: String = "0"
+    var trueCost: String = "0",
+    var weight: String = ""
 ) : Serializable

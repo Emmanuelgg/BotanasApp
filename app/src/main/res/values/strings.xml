@@ -55,10 +55,12 @@
     <string name="discount">Discount</string>
 
     <string name="sale_confirm_title">Do you want to confirm the sale?</string>
-    <string name="sale_confirm_body">Do you really want to continue? \nThe sale can not be canceled or modified.</string>
+    <string name="sale_confirm_body">Do you really want to continue? \nThe sale can not be canceled or modified.
+    </string>
     <string name="confirm">Confirm</string>
     <string name="no">No</string>
     <string name="abb_discount">Disc</string>
     <string name="welcome">Welcome !</string>
     <string name="no_changes">No changes have been made</string>
+    <string name="sale_successful">The sale has been successful</string>
 </resources>

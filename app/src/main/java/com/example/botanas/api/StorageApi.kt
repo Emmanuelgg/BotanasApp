@@ -24,6 +24,7 @@ import com.example.botanas.db.MySqlHelper
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.transaction
 import org.json.JSONArray
 
 
@@ -32,8 +33,8 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
     private var url = ""
     private val serverUrl = Server.url
 
-    lateinit var mySqlHelper: MySqlHelper
     private var appContext: Context = context
+    private val mySqlHelper: MySqlHelper = MySqlHelper(appContext)
     private val progressBar : ProgressBar = mainActivity.findViewById(R.id.progressBar)
     private val view: View = (appContext as Activity).findViewById(R.id.containerFragments)
 
@@ -146,36 +147,36 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
     private fun updateProductTable(result: String?) {
         if  (result != "") {
             try {
-                mySqlHelper = MySqlHelper(appContext)
                 val jsonArray = JSONArray(result)
                 var i = 0
-
                 mySqlHelper.use {
-                    delete(
-                        "product")
-                }
-                while (i < jsonArray.length()) {
-                    val jsonObject = jsonArray.getJSONObject(i)
-                    mySqlHelper.use {
-                        insert(
-                            "product",
-                            "id_product" to jsonObject.getInt("id_product"),
-                            "id_product_type" to jsonObject.getInt("id_product_type"),
-                            "id_product_base" to jsonObject.getInt("id_product_base"),
-                            "id_product_unit_measurement" to jsonObject.getInt("id_product_unit_measurement"),
-                            "barcode" to jsonObject.getString("barcode"),
-                            "barcode_unit" to jsonObject.getString("barcode_unit"),
-                            "name" to jsonObject.getString("name"),
-                            "cost" to jsonObject.getString("cost"),
-                            "cost_foreign" to jsonObject.getString("cost_foreign"),
-                            "cost_export" to jsonObject.getString("cost_export"),
-                            "weight" to jsonObject.getString("weight"),
-                            "quantity_unit_measurement" to jsonObject.getInt("quantity_unit_measurement"),
-                            "shot_name" to jsonObject.getString("shot_name")
-                        )
+                    transaction {
+                        delete(
+                            "product")
+                        while (i < jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            insert(
+                                "product",
+                                "id_product" to jsonObject.getInt("id_product"),
+                                "id_product_type" to jsonObject.getInt("id_product_type"),
+                                "id_product_base" to jsonObject.getInt("id_product_base"),
+                                "id_product_unit_measurement" to jsonObject.getInt("id_product_unit_measurement"),
+                                "barcode" to jsonObject.getString("barcode"),
+                                "barcode_unit" to jsonObject.getString("barcode_unit"),
+                                "name" to jsonObject.getString("name"),
+                                "cost" to jsonObject.getString("cost"),
+                                "cost_foreign" to jsonObject.getString("cost_foreign"),
+                                "cost_export" to jsonObject.getString("cost_export"),
+                                "weight" to jsonObject.getString("weight"),
+                                "quantity_unit_measurement" to jsonObject.getInt("quantity_unit_measurement"),
+                                "shot_name" to jsonObject.getString("shot_name")
+                            )
+                            i++
+                        }
                     }
-                    i++
                 }
+
+
 
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
@@ -187,28 +188,29 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
     private fun updateProductTypeTable(result: String?, list: ArrayList<ProductType>, recyclerView: RecyclerView) {
         if  (result != "") {
             try {
-                mySqlHelper = MySqlHelper(appContext)
                 val jsonArray = JSONArray(result)
                 var i = 0
 
                 mySqlHelper.use {
-                    delete(
-                        "product_type")
-                }
-                while (i < jsonArray.length()) {
-                    val jsonObject = jsonArray.getJSONObject(i)
-                    mySqlHelper.use {
-                        insert(
-                            "product_type",
-                            "id_product_type" to jsonObject.getInt("id_product_type"),
-                            "name" to jsonObject.getString("name"),
-                            "description" to jsonObject.getString("description"),
-                            "color" to jsonObject.getString("color"),
-                            "text_color" to jsonObject.getString("text_color")
-                        )
+                    transaction {
+                        delete(
+                            "product_type")
+                        while (i < jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            insert(
+                                "product_type",
+                                "id_product_type" to jsonObject.getInt("id_product_type"),
+                                "name" to jsonObject.getString("name"),
+                                "description" to jsonObject.getString("description"),
+                                "color" to jsonObject.getString("color"),
+                                "text_color" to jsonObject.getString("text_color")
+                            )
+                            i++
+                        }
                     }
-                    i++
                 }
+
+
 
                 list.clear()
                 val query = "SELECT pt.id_product_type, pt.name, pt.description, pt.color, pt.text_color, SUM(dgi.quantity) quantity " +
@@ -254,26 +256,23 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
     private fun updateProductBaseTable(result: String?) {
         if  (result != "") {
             try {
-                mySqlHelper = MySqlHelper(appContext)
                 val jsonArray = JSONArray(result)
                 var i = 0
-
-                mySqlHelper.use {
-                    delete(
-                        "product_base")
-                }
-                while (i < jsonArray.length()) {
-                    val jsonObject = jsonArray.getJSONObject(i)
                     mySqlHelper.use {
-                        insert(
-                            "product_base",
-                            "id_product_base" to jsonObject.getInt("id_product_base"),
-                            "description" to jsonObject.getString("description")
-                        )
+                        transaction {
+                            delete(
+                                "product_base")
+                            while (i < jsonArray.length()) {
+                                val jsonObject = jsonArray.getJSONObject(i)
+                                insert(
+                                    "product_base",
+                                    "id_product_base" to jsonObject.getInt("id_product_base"),
+                                    "description" to jsonObject.getString("description")
+                                )
+                                        i++
+                            }
+                        }
                     }
-                    i++
-                }
-
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
                 Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
@@ -284,17 +283,12 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
     private fun updateClientTable(result: String?) {
         if (result != "") {
             try {
-                mySqlHelper = MySqlHelper(appContext)
                 val jsonArray = JSONArray(result)
                 var i = 0
-
                 mySqlHelper.use {
-                    delete(
-                        "client")
-                }
-                while (i < jsonArray.length()) {
-                    val jsonObject = jsonArray.getJSONObject(i)
-                    mySqlHelper.use {
+                    delete("client")
+                    while (i < jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
                         insert(
                             "client",
                             "id_client" to jsonObject.getInt("id_client"),
@@ -322,8 +316,8 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
                             "created_at" to jsonObject.getString("created_at"),
                             "updated_at" to jsonObject.getString("updated_at")
                         )
+                        i++
                     }
-                    i++
                 }
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
@@ -336,38 +330,31 @@ class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
     private fun updateStorageTable(result: String?) {
         if  (result != "") {
             try {
-                mySqlHelper = MySqlHelper(appContext)
                 val jsonArray = JSONArray(result)
                 var i = 0
-
                 mySqlHelper.use {
-                    delete(
-                        "driver_general_inventory")
-                }
-                while (i < jsonArray.length()) {
-                    val jsonObject = jsonArray.getJSONObject(i)
-                    mySqlHelper.use {
-                        insert(
-                            "driver_general_inventory",
-                            "id_driver_general_inventory" to jsonObject.getInt("id_driver_general_inventory"),
-                            "id_product" to jsonObject.getInt("id_product"),
-                            "product_name" to jsonObject.getString("product_name"),
-                            "quantity" to jsonObject.getInt("quantity"),
-                            "unit_measurement" to jsonObject.getInt("unit_measurement")
-                        )
+                    transaction {
+                        delete(
+                            "driver_general_inventory")
+                        while (i < jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            insert(
+                                "driver_general_inventory",
+                                "id_driver_general_inventory" to jsonObject.getInt("id_driver_general_inventory"),
+                                "id_product" to jsonObject.getInt("id_product"),
+                                "product_name" to jsonObject.getString("product_name"),
+                                "quantity" to jsonObject.getInt("quantity"),
+                                "unit_measurement" to jsonObject.getInt("unit_measurement")
+                            )
+                            i++
+                        }
                     }
-                    i++
                 }
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
                 Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
-
-
-
         }
     }
-
-
 
 }

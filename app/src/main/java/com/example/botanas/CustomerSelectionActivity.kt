@@ -20,13 +20,20 @@ import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import org.jetbrains.anko.db.SqlOrderDirection
-import org.jetbrains.anko.db.select
 import android.widget.Toast
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import com.example.botanas.dataClasses.Client
+import com.example.botanas.ui.login.Admin
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_customer_selection.*
+import org.jetbrains.anko.db.*
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.time.temporal.TemporalAmount
+import java.util.*
 
 
 class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener {
@@ -37,6 +44,10 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
     private lateinit var mySqlHelper: MySqlHelper
     private lateinit var appContext: Context
     private lateinit var view: View
+    private lateinit var clientSpinner: SearchableSpinner
+    private var totalAmount: Double = 0.00
+    private val clientArray = ArrayList<Client>()
+    private lateinit var saleDiscount: EditText
 
 
     override fun onItemClick(item: CustomerSelectAdapter.ViewHolder, position: Int, parentPosition: Int) {
@@ -47,7 +58,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val result = s.toString()
             val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
-            var totalAmount = 0.00
+            totalAmount = 0.00
             Log.d("count", count.toString())
             Log.d("result", result)
             if (count == 0 || result == "." || result == ",") {
@@ -69,7 +80,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
             val result = s.toString()
             val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
             val saleDiscount = findViewById<TextView>(R.id.sale_discount)
-            var totalAmount = 0.00
+            totalAmount = 0.00
             if (result != "" && result != "." && result != ",") {
                 val discount = (saleDiscount.text.toString().toDouble() / 100)
                 for (product in productListSale){
@@ -93,21 +104,22 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         appContext = baseContext
         view = findViewById(R.id.customer_select_layout)
         mySqlHelper = MySqlHelper(this)
-        val clientSpinner = findViewById<SearchableSpinner>(R.id.client_spinner)
+        clientSpinner = findViewById<SearchableSpinner>(R.id.client_spinner)
         val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
-        val saleDiscount = findViewById<EditText>(R.id.sale_discount)
+        saleDiscount = findViewById<EditText>(R.id.sale_discount)
         val btnFinishSale = findViewById<FloatingActionButton>(R.id.btn_finish_sale)
 
         productListSale = intent.getSerializableExtra("product_list") as ArrayList<Storage>
-        var totalAmount = 0.00
+        totalAmount = 0.00
         for (item in productListSale) {
             mySqlHelper.use {
-                select("product", "cost")
+                select("product", "cost", "weight")
                     .whereArgs("id_product == {id_product}", "id_product"  to item.id_product)
                     .exec {
                         while (this.moveToNext()){
                             item.cost = this.getString(this.getColumnIndex("cost"))
                             item.trueCost = this.getString(this.getColumnIndex("cost"))
+                            item.weight = this.getString(this.getColumnIndex("weight"))
                             totalAmount += item.cost.toDouble() * item.quantity.toDouble()
                         }
                     }
@@ -124,7 +136,6 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         }
 
 
-        val clientArray = ArrayList<String>()
         val textCustomerSelect = resources.getString(R.string.select_customer)
         val textClose = resources.getString(R.string.close)
         clientSpinner.setTitle(textCustomerSelect)
@@ -137,11 +148,15 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                 .orderBy("name", SqlOrderDirection.ASC)
                 .exec {
                 while (this.moveToNext()){
-                    clientArray.add(this.getString(this.getColumnIndex("name")))
+                    clientArray.add(
+                        Client(
+                            this.getInt(this.getColumnIndex("id_client")),
+                            this.getString(this.getColumnIndex("name"))
+                        )
+
+                    )
                 }
-                clientSpinner.adapter = ArrayAdapter<String>(appContext, android.R.layout.simple_spinner_dropdown_item, clientArray)
-
-
+                clientSpinner.adapter = ArrayAdapter<Client>(appContext, android.R.layout.simple_spinner_dropdown_item, clientArray)
             }
         }
 
@@ -187,6 +202,57 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
     }
 
     private fun clientSaleSave() {
+        val clientID = clientArray[clientSpinner.selectedItemId.toInt()].id_client
+        val currentTime: Date = Calendar.getInstance().time
+        val date = SimpleDateFormat("yyyy-MM-dd").format(currentTime)
+        var requisitionID: Long = 0
+        try {
+            mySqlHelper.use{
+                transaction {
+                    requisitionID = insert(
+                        "requisition",
+                        "id_driver" to Admin.idAdmin,
+                        "id_client" to clientID,
+                        "total" to totalAmount.toString(),
+                        "discount" to saleDiscount.text.toString(),
+                        "status" to 2,
+                        "requisition_date" to date,
+                        "type" to 1
+                    )
+                    for (product in productListSale) {
+                        insert(
+                            "requisition_description",
+                            "id_requisition" to requisitionID,
+                            "id_product" to product.id_product,
+                            "price" to product.cost,
+                            "quantity" to product.quantity,
+                            "weight" to product.weight,
+                            "cost" to product.trueCost,
+                            "total" to (product.quantity.toDouble()*product.cost.toDouble()).toString(),
+                            "description" to product.product_name,
+                            "quantity_unit_measure" to product.quantity_unit_measurement,
+                            "status" to 2
+                        )
+                        select("driver_general_inventory", "quantity")
+                            .whereArgs("id_product == {id_product}", "id_product" to product.id_product)
+                            .exec {
+                                this.moveToNext()
+                                val newQuantity = this.getInt(this.getColumnIndex("quantity"))-product.quantity.toInt()
+                                update("driver_general_inventory", "quantity" to newQuantity)
+                                    .whereArgs("id_product == {id_product}", "id_product" to product.id_product)
+                                    .exec()
+                            }
+                    }
+                }
+            }
+            finishAffinity()
+            val intent = Intent(appContext,MainActivity::class.java)
+            intent.putExtra("saleSuccessful", true)
+            startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(view, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
 
     }
 }

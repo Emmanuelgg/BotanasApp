@@ -76,7 +76,7 @@ class SaleFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
                         item.id_product,
                         item.product_name,
                         0,
-                        item.unit_measurement
+                        item.quantity_unit_measurement
                     )
                 )
                 productListSaleRecycler.adapter!!.notifyDataSetChanged()

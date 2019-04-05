@@ -3,6 +3,7 @@ package com.example.botanas
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -14,6 +15,7 @@ import android.view.Menu
 import android.widget.TextView
 import androidx.fragment.app.FragmentTransaction
 import com.example.botanas.db.MySqlHelper
+import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.delete
@@ -58,10 +60,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val headerView = navView.getHeaderView(0)
         val userName: TextView = headerView.findViewById(R.id.user_name)
+        userName.text = Admin.name
+
         val name = intent.getStringExtra("user_name")
-        userName.text = name
-        val welcome = "¡Hola, $name!"
-        Snackbar.make(findViewById(R.id.containerFragments), welcome, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        if (name != null){
+            Snackbar.make(findViewById(R.id.containerFragments), "¡Hola, $name!", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
+
+        if (intent.getBooleanExtra("saleSuccessful", false)) {
+            Snackbar.make(findViewById(R.id.containerFragments), R.string.sale_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
+
+
 
         navView.getMenu().getItem(0).setChecked(true)
         onNavigationItemSelected(navView.getMenu().getItem(0))
