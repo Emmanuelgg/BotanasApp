@@ -3,7 +3,6 @@ package com.example.botanas
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -22,8 +21,9 @@ import org.jetbrains.anko.db.delete
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-        StorageFragment.OnFragmentInteractionListener,
-        SaleFragment.OnFragmentInteractionListener
+    StorageFragment.OnFragmentInteractionListener,
+    SellFragment.OnFragmentInteractionListener,
+    SalesFragment.OnFragmentInteractionListener
 {
 
     override fun onFragmentInteraction(uri: Uri) {
@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     lateinit var storageFragment: StorageFragment
-    lateinit var saleFragment: SaleFragment
+    lateinit var sellFragment: SellFragment
+    lateinit var salesFragment: SalesFragment
 
 
 
@@ -56,7 +57,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         storageFragment =  StorageFragment.newInstance(this)
-        saleFragment = SaleFragment.newInstance()
+        sellFragment = SellFragment.newInstance()
+        salesFragment = SalesFragment.newInstance()
 
         val headerView = navView.getHeaderView(0)
         val userName: TextView = headerView.findViewById(R.id.user_name)
@@ -67,9 +69,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Snackbar.make(findViewById(R.id.containerFragments), "¡Hola, $name!", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 
-        if (intent.getBooleanExtra("saleSuccessful", false)) {
+        /*if (intent.getBooleanExtra("saleSuccessful", false)) {
             Snackbar.make(findViewById(R.id.containerFragments), R.string.sale_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
-        }
+        }*/
 
 
 
@@ -119,11 +121,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
 
             }
-            R.id.nav_sale -> {
+            R.id.nav_sell -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.mainFrame, saleFragment)
-                    .addToBackStack(saleFragment.toString())
+                    .replace(R.id.mainFrame, sellFragment)
+                    .addToBackStack(sellFragment.toString())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+            }
+            R.id.nav_sales -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.mainFrame, salesFragment)
+                    .addToBackStack(salesFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
             }
@@ -133,8 +143,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.mainFrame, saleFragment)
-                    .addToBackStack(saleFragment.toString())
+                    .replace(R.id.mainFrame, salesFragment)
+                    .addToBackStack(salesFragment.toString())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
             }
@@ -146,8 +156,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun logOut() {
         val mySqlHelper = MySqlHelper(this)
-        mySqlHelper.use {delete("admin")}
-        mySqlHelper.use {delete("driver_general_inventory")}
+        mySqlHelper.use {
+            delete("admin")
+            delete("product")
+            delete("product_type")
+            delete("product_base")
+            delete("driver_general_inventory")
+            delete("client")
+            delete("requisition")
+            delete("requisition_description")
+
+        }
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()

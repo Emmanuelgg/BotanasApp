@@ -54,7 +54,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    val discountListener = object : TextWatcher {
+    private val discountListener = object : TextWatcher {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val result = s.toString()
             val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
@@ -80,8 +80,8 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
             val result = s.toString()
             val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
             val saleDiscount = findViewById<TextView>(R.id.sale_discount)
-            totalAmount = 0.00
             if (result != "" && result != "." && result != ",") {
+                totalAmount = 0.00
                 val discount = (saleDiscount.text.toString().toDouble() / 100)
                 for (product in productListSale){
                     val newCost = product.trueCost.toDouble() - (product.trueCost.toDouble() * discount)
@@ -90,6 +90,8 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                 }
                 totalAmountTextView.text = "$${"%.2f".format(totalAmount)}"
                 custProductListRecycler.adapter!!.notifyDataSetChanged()
+            } else {
+
             }
         }
 
@@ -205,7 +207,12 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         val clientID = clientArray[clientSpinner.selectedItemId.toInt()].id_client
         val currentTime: Date = Calendar.getInstance().time
         val date = SimpleDateFormat("yyyy-MM-dd").format(currentTime)
+        val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentTime)
         var requisitionID: Long = 0
+        var discount = saleDiscount.text.toString()
+        if (discount == "" || discount == "." || discount == ",")
+            discount = "0"
+
         try {
             mySqlHelper.use{
                 transaction {
@@ -214,10 +221,12 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                         "id_driver" to Admin.idAdmin,
                         "id_client" to clientID,
                         "total" to totalAmount.toString(),
-                        "discount" to saleDiscount.text.toString(),
+                        "discount" to discount,
                         "status" to 2,
                         "requisition_date" to date,
-                        "type" to 1
+                        "type" to 1,
+                        "created_at" to dateTime,
+                        "updated_at" to dateTime
                     )
                     for (product in productListSale) {
                         insert(
@@ -246,8 +255,11 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                 }
             }
             finishAffinity()
-            val intent = Intent(appContext,MainActivity::class.java)
-            intent.putExtra("saleSuccessful", true)
+            val intent = Intent(appContext,SuccessfulSale::class.java)
+            //intent.putExtra("saleSuccessful", true)
+            intent.putExtra("total", totalAmount)
+            intent.putExtra("client", clientSpinner.selectedItem.toString())
+            intent.putExtra("date", dateTime)
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()

@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.adapter.ProductListSale
@@ -19,11 +18,9 @@ import com.example.botanas.adapter.StorageAdapter
 import com.example.botanas.dataClasses.ProductType
 import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
-import org.jetbrains.anko.db.select
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
-import java.text.ParsePosition
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -33,13 +30,13 @@ import java.text.ParsePosition
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [SaleFragment.OnFragmentInteractionListener] interface
+ * [SellFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [SaleFragment.newInstance] factory method to
+ * Use the [SellFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 
-class SaleFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductListSale.ItemOnPressListener {
+class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductListSale.ItemOnPressListener {
 
 
     // TODO: Rename and change types of parameters
@@ -143,7 +140,7 @@ class SaleFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_sale, container, false)
+        val view = inflater.inflate(R.layout.fragment_sell, container, false)
 
         productListRecycler = view.findViewById(R.id.productListRecycle) as RecyclerView
         productListRecycler.apply {
@@ -215,7 +212,7 @@ class SaleFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
-            SaleFragment().apply {
+            SellFragment().apply {
                 arguments = Bundle().apply {
                 }
             }

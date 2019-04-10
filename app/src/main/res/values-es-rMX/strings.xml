@@ -18,7 +18,8 @@
     <string name="login_failed">Inicio de sesion fallida</string>
     <string name="menu_home">Inicio</string>
     <string name="menu_inventory">Ver inventario</string>
-    <string name="menu_sale">Vender</string>
+    <string name="menu_sell">Vender</string>
+    <string name="menu_sales">Ventas</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_title" translatable="false">Botanas Anita</string>
     <string name="no">No</string>
@@ -41,4 +42,6 @@
     <string name="welcome">Bienvenido !</string>
     <string name="no_changes">No se ha realizado ningún cambio</string>
     <string name="sale_successful">La venta ha sido realizada correctamente</string>
+    <string name="sales_made">Ventas realizadas</string>
+    <string name="no_sales">Sin ventas</string>
 </resources>

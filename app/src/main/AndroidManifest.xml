@@ -12,8 +12,13 @@
             android:roundIcon="@mipmap/ic_launcher_botanas_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".CustomerSelectionActivity"
-        >
+        <activity android:name=".SaleDetail" android:noHistory="true">
+        </activity>
+        <activity
+                android:name=".SuccessfulSale"
+                android:noHistory="true">
+        </activity>
+        <activity android:name=".CustomerSelectionActivity">
         </activity>
         <activity
                 android:name=".ui.login.LoginActivity"

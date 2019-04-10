@@ -15,9 +15,15 @@
                 android:fontFamily="@font/viga"
         />
         <item
-                android:id="@+id/nav_sale"
+                android:id="@+id/nav_sell"
                 android:icon="@drawable/ic_menu_sale"
-                android:title="@string/menu_sale"
+                android:title="@string/menu_sell"
+                android:fontFamily="@font/viga"
+        />
+        <item
+                android:id="@+id/nav_sales"
+                android:icon="@drawable/ic_sales"
+                android:title="@string/menu_sales"
                 android:fontFamily="@font/viga"
         />
     </group>
