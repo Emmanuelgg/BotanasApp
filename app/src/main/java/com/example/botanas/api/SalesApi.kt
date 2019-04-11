@@ -106,7 +106,22 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
                 try {
                     val serverResponse = Gson().fromJson(response, ServerResponse::class.java)
                     if (serverResponse.status != 0) {
-
+                        mySqlHelper.use {
+                            delete("requisition")
+                            delete("requisition_description")
+                        }
+                        list.clear()
+                        list.add(
+                            Requisition(
+                                0,
+                                0,
+                                "No se han realizado ventas",
+                                "",
+                                "0",
+                                ""
+                            )
+                        )
+                        recyclerView.adapter!!.notifyDataSetChanged()
                     }
                     Snackbar.make(view, serverResponse.messages, Snackbar.LENGTH_LONG).setAction("Action", null).show()
                     progressBar.visibility = View.GONE
