@@ -24,6 +24,9 @@ import kotlinx.android.synthetic.main.storage_header.*
 import org.jetbrains.anko.db.SqlOrderDirection
 import org.jetbrains.anko.db.select
 import kotlin.collections.ArrayList
+import androidx.appcompat.app.AppCompatActivity
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,7 +77,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
         // Inflate the layout for this fragment
         // Set the adapter
         val view = inflater.inflate(R.layout.fragment_storage, container, false)
-
+        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_inventory)
         storageRecycler = view.findViewById(R.id.storage_recycler) as RecyclerView
         storageRecycler.apply {
             this.layoutManager = LinearLayoutManager(appContext)
@@ -84,7 +87,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
         btn_sync.setOnClickListener{
             apiClient.requestGetInventory(Admin.idAdmin, categoryList, storageRecycler)
         }
-        apiClient = StorageApi(appContext, mainActivity, view)
+        apiClient = StorageApi(appContext, mainActivity)
 
         return view
     }

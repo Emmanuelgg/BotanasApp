@@ -108,7 +108,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
             "updated_at" to TEXT
         )
 
-        /* Table requisition */
+        /* Table requisition description */
         db.createTable("requisition_description", true,
             "id_requisition_description" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
             "id_requisition" to INTEGER,

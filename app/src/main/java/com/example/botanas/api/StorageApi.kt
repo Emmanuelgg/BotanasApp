@@ -28,7 +28,7 @@ import org.jetbrains.anko.db.transaction
 import org.json.JSONArray
 
 
-class StorageApi(context: Context, mainActivity: MainActivity, view: View) {
+class StorageApi(context: Context, mainActivity: MainActivity) {
 
     private var url = ""
     private val serverUrl = Server.url

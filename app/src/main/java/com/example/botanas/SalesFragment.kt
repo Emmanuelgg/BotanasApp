@@ -8,11 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.adapter.SalesAdapter
+import com.example.botanas.api.SalesApi
 import com.example.botanas.dataClasses.Requisition
 import com.example.botanas.db.MySqlHelper
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.jetbrains.anko.db.select
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +41,8 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
     private lateinit var appContext: Context
     private lateinit var salesRecyclerView: RecyclerView
     private lateinit var salesAdapter: SalesAdapter
+    private lateinit var salesApi: SalesApi
+    private lateinit var mainActivity: MainActivity
 
     override fun onItemClick(item: SalesAdapter.ViewHolder, position: Int) {
         val intent = Intent(appContext, SaleDetail::class.java)
@@ -61,10 +66,19 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_sales, container, false)
+        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_sales)
+        salesApi = SalesApi(appContext, mainActivity)
+
+        val btnSalesSync = view.findViewById<FloatingActionButton>(R.id.btn_sales_sync)
+
         salesRecyclerView = view.findViewById(R.id.sales_recycler_view)
         salesRecyclerView.apply {
             this.layoutManager = LinearLayoutManager(appContext)
             this.adapter = salesAdapter
+        }
+
+        btnSalesSync.setOnClickListener {
+            salesApi.requestPostSyncSales(requisitionList, salesRecyclerView)
         }
 
         return view
@@ -116,9 +130,10 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(activity: MainActivity) =
             SalesFragment().apply {
                 arguments = Bundle().apply {
+                    mainActivity = activity
                 }
             }
     }
@@ -128,21 +143,25 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
             select("requisition")
                 .exec {
                     if  (this.count > 0)
-                        while(this.moveToNext()){
+                        while(this.moveToNext()) {
                             var clientName = ""
+                            val idClient = this.getInt(this.getColumnIndex("id_client"))
                             select("client", "name")
                                 .whereArgs("id_client == {id_client}",
-                                    "id_client" to this.getInt(this.getColumnIndex("id_client"))
+                                    "id_client" to idClient
                                 ).exec {
                                     this.moveToNext()
                                     clientName = this.getString(this.getColumnIndex("name"))
+
                                 }
                             requisitionList.add(
                                 Requisition(
                                     this.getInt(this.getColumnIndex("id_requisition")),
+                                    idClient,
                                     clientName,
                                     this.getString(this.getColumnIndex("created_at")),
-                                    this.getString(this.getColumnIndex("total"))
+                                    this.getString(this.getColumnIndex("total")),
+                                    this.getString(this.getColumnIndex("discount"))
                                 )
                             )
                         }
@@ -150,9 +169,11 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
                         requisitionList.add(
                             Requisition(
                                 0,
+                                0,
                                 "No se han realizado ventas",
                                 "",
-                                "0"
+                                "0",
+                                ""
                             )
                         )
                 }

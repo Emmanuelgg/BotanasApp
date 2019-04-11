@@ -11,12 +11,16 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.view.isEmpty
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.botanas.db.MySqlHelper
 import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_sell.*
 import org.jetbrains.anko.db.delete
 
 
@@ -56,9 +60,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+
         storageFragment =  StorageFragment.newInstance(this)
         sellFragment = SellFragment.newInstance()
-        salesFragment = SalesFragment.newInstance()
+        salesFragment = SalesFragment.newInstance(this)
 
         val headerView = navView.getHeaderView(0)
         val userName: TextView = headerView.findViewById(R.id.user_name)
@@ -86,6 +91,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             super.onBackPressed()
         }
+
+        val mainFrame = findViewById<FrameLayout>(R.id.mainFrame)
+        if  (mainFrame.isEmpty())
+            changeFragment(storageFragment, "storage")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -112,46 +121,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }*/
             R.id.nav_storage -> {
-                // Begin the transaction
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.mainFrame, storageFragment)
-                    .addToBackStack(storageFragment.toString())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
-
+                changeFragment(storageFragment, "storage")
             }
             R.id.nav_sell -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.mainFrame, sellFragment)
-                    .addToBackStack(sellFragment.toString())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
+                changeFragment(sellFragment, "sell")
             }
             R.id.nav_sales -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.mainFrame, salesFragment)
-                    .addToBackStack(salesFragment.toString())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
+                changeFragment(salesFragment, "sales")
             }
             R.id.log_out -> {
                 logOut()
             }
             else -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.mainFrame, salesFragment)
-                    .addToBackStack(salesFragment.toString())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
+                changeFragment(salesFragment, "sales")
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun changeFragment(fragment: Fragment, tag: String) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.mainFrame, fragment, tag)
+            .addToBackStack(fragment.toString())
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
     }
 
     private fun logOut() {

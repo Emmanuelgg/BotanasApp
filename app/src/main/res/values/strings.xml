@@ -67,4 +67,5 @@
     <string name="sales_made">Sales made</string>
 
     <string name="no_sales">No sales</string>
+    <string name="sale_detail">Sale detail</string>
 </resources>

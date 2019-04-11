@@ -94,7 +94,7 @@
                     android:paddingRight="4dp"
                     android:paddingBottom="8dp" android:background="@color/colorTableHeader"
                     android:textColor="@color/colorWhite" android:fontFamily="@font/viga" android:gravity="center"
-                    android:textSize="16dp"/>
+                    android:textSize="14sp"/>
             <TextView
                     android:text="@string/s_quantity"
                     android:layout_width="0dp"
@@ -103,7 +103,7 @@
                     android:paddingRight="4dp"
                     android:paddingBottom="8dp" android:background="@color/colorTableHeader"
                     android:textColor="@color/colorWhite" android:fontFamily="@font/viga" android:gravity="center"
-                    android:textSize="16dp"/>
+                    android:textSize="14sp"/>
             <TextView
                     android:text="@string/total"
                     android:layout_width="0dp"
@@ -112,7 +112,7 @@
                     android:paddingRight="4dp"
                     android:paddingBottom="8dp" android:background="@color/colorTableHeader"
                     android:textColor="@color/colorWhite" android:fontFamily="@font/viga"
-                    android:gravity="right|center_horizontal" android:textSize="16dp"/>
+                    android:gravity="end" android:textSize="14sp"/>
             <TextView
                     android:text="@string/s_quantity"
                     android:layout_width="0dp"
@@ -121,7 +121,7 @@
                     android:paddingRight="4dp"
                     android:paddingBottom="8dp" android:background="@color/colorTableHeader"
                     android:textColor="@color/colorWhite" android:fontFamily="@font/viga" android:gravity="center"
-                    android:textSize="16dp"/>
+                    android:textSize="14sp"/>
         </TableRow>
     </TableLayout>
     <ImageView
@@ -130,5 +130,6 @@
             android:id="@+id/imageView3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
+            android:contentDescription="@string/amount"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

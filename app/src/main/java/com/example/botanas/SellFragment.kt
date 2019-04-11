@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.adapter.ProductListSale
@@ -141,7 +142,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_sell, container, false)
-
+        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_sell)
         productListRecycler = view.findViewById(R.id.productListRecycle) as RecyclerView
         productListRecycler.apply {
             this.layoutManager = LinearLayoutManager(appContext)
