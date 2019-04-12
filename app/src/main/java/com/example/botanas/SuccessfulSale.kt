@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import java.text.NumberFormat
 
 class SuccessfulSale : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_successful_sale)
+
+        val currency = NumberFormat.getCurrencyInstance()
 
         val total = intent.getDoubleExtra("total", 0.00)
         val clientName= intent.getStringExtra("client")
@@ -22,7 +25,7 @@ class SuccessfulSale : AppCompatActivity() {
         val btnSoldConfirm = findViewById<Button>(R.id.btn_sold_confirm)
 
         clientNameView.text = clientName
-        totalView.text = "$${"%.2f".format(total)}"
+        totalView.text = currency.format(total)
         dateView.text = date
 
         btnSoldConfirm.setOnClickListener {

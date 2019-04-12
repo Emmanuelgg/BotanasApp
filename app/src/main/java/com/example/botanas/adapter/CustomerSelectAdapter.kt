@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.R
 import com.example.botanas.dataClasses.Storage
+import java.text.NumberFormat
 
 
 class CustomerSelectAdapter(private val samples: ArrayList<Storage>, listener: ItemClickListener, color: Int = 0, text_color: Int = 0, parentPosition: Int = -1) :
@@ -21,11 +22,12 @@ class CustomerSelectAdapter(private val samples: ArrayList<Storage>, listener: I
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = samples[position]
         var total = item.cost.toDouble() * item.quantity.toDouble()
+        val currency = NumberFormat.getCurrencyInstance()
 
         holder.quantity.text = "${item.quantity}x"
         holder.productName.text = item.product_name
-        holder.cost.text = "$${item.cost}"
-        holder.totalCost.text = "$${"%.2f".format(total)}"
+        holder.cost.text = currency.format(item.cost.toDouble())
+        holder.totalCost.text = currency.format(total)
 
         holder.itemView.setOnClickListener {
                 View -> onItemClickListener.onItemClick(holder, position, parentPosition)

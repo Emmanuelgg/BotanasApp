@@ -80,8 +80,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-        navView.getMenu().getItem(0).setChecked(true)
-        onNavigationItemSelected(navView.getMenu().getItem(0))
+        navView.menu.getItem(0).isChecked = true
+        onNavigationItemSelected(navView.menu.getItem(0))
     }
 
     override fun onBackPressed() {
@@ -161,7 +161,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             delete("client")
             delete("requisition")
             delete("requisition_description")
-
         }
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)

@@ -14,6 +14,7 @@ import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import org.jetbrains.anko.db.select
 import org.w3c.dom.Text
+import java.text.NumberFormat
 import java.util.ArrayList
 
 class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener {
@@ -73,6 +74,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
     }
 
     private fun getSale(idRequisition: Int){
+        val currency = NumberFormat.getCurrencyInstance()
         if (idRequisition == 0)
             return
 
@@ -82,7 +84,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
                 .exec {
                     this.moveToNext()
                     val discount = this.getString(this.getColumnIndex("discount")) + "%"
-                    val total = "$%.2f".format(this.getDouble(this.getColumnIndex("total")))
+                    val total = currency.format(this.getDouble(this.getColumnIndex("total")))
                     soldDiscountView.text = discount
                     soldTotalView.text = total
                     soldDateView.text = this.getString(this.getColumnIndex("created_at"))

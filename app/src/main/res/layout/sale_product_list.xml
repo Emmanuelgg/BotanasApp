@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
 
-    <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <EditText
-                android:layout_width="0dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/sale_product_quantity" android:hint="@string/sf_quantity"
-                android:importantForAutofill="no" tools:targetApi="o" android:gravity="center"
-                android:fontFamily="@font/viga"
-                android:selectAllOnFocus="false"
-                android:singleLine="false"
-                android:textSize="14sp" android:background="@drawable/circle_edittext"
-                android:textColor="@color/colorWhite" android:textColorHint="@color/colorGray"
-                android:textCursorDrawable="@drawable/custom_text_cursor" android:layout_weight=".2"
-                android:layout_height="70dp"/>
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" android:id="@+id/sale_product_name" android:layout_weight=".8"
-                android:text="@string/s_product_name" android:fontFamily="@font/viga" android:gravity="center"/>
-    </TableRow>
+    <EditText
+            android:layout_width="0dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/sale_product_quantity" android:hint="@string/sf_quantity"
+            android:importantForAutofill="no" tools:targetApi="o" android:gravity="center"
+            android:fontFamily="@font/viga"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textSize="14sp" android:background="@drawable/circle_edittext"
+            android:textColor="@color/colorWhite" android:textColorHint="@color/colorGray"
+            android:textCursorDrawable="@drawable/custom_text_cursor" android:layout_weight=".18"
+            android:layout_height="70dp" android:paddingLeft="4dp" android:paddingRight="4dp"/>
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="2dp" android:background="#A6D5D5D5"/>
-</TableLayout>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/sale_product_name" android:layout_weight=".82"
+            android:text="@string/s_product_name" android:fontFamily="@font/viga" android:gravity="center"/>
+</TableRow>

@@ -31,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_customer_selection.*
 import org.jetbrains.anko.db.*
 import java.lang.Exception
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.time.temporal.TemporalAmount
 import java.util.*
@@ -48,6 +49,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
     private var totalAmount: Double = 0.00
     private val clientArray = ArrayList<Client>()
     private lateinit var saleDiscount: EditText
+    private val currency = NumberFormat.getCurrencyInstance()
 
 
     override fun onItemClick(item: CustomerSelectAdapter.ViewHolder, position: Int, parentPosition: Int) {
@@ -68,7 +70,8 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                     totalAmount += product.cost.toDouble() * product.quantity.toDouble()
                     custProductListRecycler.adapter!!.notifyDataSetChanged()
                 }
-                totalAmountTextView.text = "$${"%.2f".format(totalAmount)}"
+
+                totalAmountTextView.text = currency.format(totalAmount)
             }
         }
 
@@ -88,7 +91,8 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                     product.cost = "%.2f".format(newCost)
                     totalAmount += product.cost.toDouble() * product.quantity.toDouble()
                 }
-                totalAmountTextView.text = "$${"%.2f".format(totalAmount)}"
+                val currency = NumberFormat.getCurrencyInstance()
+                totalAmountTextView.text = currency.format(totalAmount)
                 custProductListRecycler.adapter!!.notifyDataSetChanged()
             } else {
 
@@ -127,7 +131,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                     }
             }
         }
-        totalAmountTextView.text = "$${"%.2f".format(totalAmount)}"
+        totalAmountTextView.text = currency.format(totalAmount)
 
         customerSelectionAdapter = CustomerSelectAdapter(productListSale, this)
 
