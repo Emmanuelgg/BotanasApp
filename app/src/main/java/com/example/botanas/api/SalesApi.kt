@@ -56,6 +56,7 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
             Snackbar.make(view, "Error al sincronizar las ventas", Snackbar.LENGTH_LONG).setAction("Action", null).show()
             return
         }
+        val route = "sales_add.php"
 
         var jsonArrayRequisition = JSONArray()
         mySqlHelper.use {
@@ -95,7 +96,7 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
             }
         }
 
-        val route = "sales_save.php"
+
 
         progressBar.visibility = View.VISIBLE
         url = "$serverUrl$route?api_key=$api_key&requisitions=$jsonArrayRequisition"

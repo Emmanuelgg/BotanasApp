@@ -39,7 +39,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
     private val view: View = (appContext as Activity).findViewById(R.id.containerFragments)
 
     fun requestGetInventory(idAmin: Int, list :ArrayList<ProductType>, recyclerView: RecyclerView) {
-        val route = "get_driver_inventory.php"
+        val route = "driver_inventory_get.php"
         progressBar.visibility = View.VISIBLE
         url = "$serverUrl$route?api_key=$api_key&id=$idAmin"
 
@@ -60,7 +60,6 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
             Response.Listener {
                     response ->
                 try {
-
                     responseData = response.toString()
                     updateStorageTable(responseData)
                     requestGetProducts(list, recyclerView)
@@ -85,7 +84,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
     }
 
     fun requestGetProducts(list: ArrayList<ProductType>, recyclerView: RecyclerView) {
-        val route = "get_products.php"
+        val route = "products_get.php"
         progressBar.visibility = View.VISIBLE
         url = "$serverUrl$route?api_key=$api_key"
 

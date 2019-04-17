@@ -33,7 +33,8 @@ class LoginApi (context: Context) {
 
 
     fun login(user:String, pass: String) {
-        url = "https://testbotanas.emkode.net/test/android_login.php?api_key=$api_key&user_name=$user&password=$pass"
+        val route = "login.php"
+        url = "${Server.url}$route?api_key=$api_key&user_name=$user&password=$pass"
         requestPost(user, pass)
     }
 
