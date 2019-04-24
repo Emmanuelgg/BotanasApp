@@ -53,11 +53,18 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
 
 
         mySqlHelper = MySqlHelper(holder.products_recycler.context)
-        val query = "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement " +
-                "FROM driver_general_inventory AS dgi " +
-                "INNER JOIN product AS p ON dgi.id_product = p.id_product " +
-                "WHERE p.id_product_type = ${item.id_product_type} " +
-                "AND dgi.quantity != 0"
+        val query =  if (!item.all) {
+            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement " +
+                    "FROM driver_general_inventory AS dgi " +
+                    "INNER JOIN product AS p ON dgi.id_product = p.id_product " +
+                    "WHERE p.id_product_type = ${item.id_product_type} " +
+                    "AND dgi.quantity != 0"
+        } else {
+            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.quantity_unit_measurement as unit_measurement " +
+                    "FROM product AS p " +
+                    "WHERE p.id_product_type = ${item.id_product_type} "
+        }
+
         try {
             item.products?.clear()
             mySqlHelper.use {

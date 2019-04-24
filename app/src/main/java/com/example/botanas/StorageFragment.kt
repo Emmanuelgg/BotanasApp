@@ -58,7 +58,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
 
 
     override fun onItemClick(item: ProductTypeAdapter.ViewHolder, position: Int) {
-        Toast.makeText(this.context, "Item numero: $position, Tipo de producto: ${item.s_header.text}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this.context, "Item numero: $position, Tipo de producto: ${item.s_header.text}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

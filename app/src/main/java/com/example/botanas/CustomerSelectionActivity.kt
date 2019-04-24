@@ -249,11 +249,14 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                         select("driver_general_inventory", "quantity")
                             .whereArgs("id_product == {id_product}", "id_product" to product.id_product)
                             .exec {
-                                this.moveToNext()
-                                val newQuantity = this.getInt(this.getColumnIndex("quantity"))-product.quantity.toInt()
-                                update("driver_general_inventory", "quantity" to newQuantity)
-                                    .whereArgs("id_product == {id_product}", "id_product" to product.id_product)
-                                    .exec()
+                                if  (this.count > 0) {
+                                    this.moveToNext()
+                                    val newQuantity = this.getInt(this.getColumnIndex("quantity"))-product.quantity.toInt()
+                                    update("driver_general_inventory", "quantity" to newQuantity)
+                                        .whereArgs("id_product == {id_product}", "id_product" to product.id_product)
+                                        .exec()
+                                }
+
                             }
                     }
                 }

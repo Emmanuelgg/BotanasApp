@@ -45,4 +45,6 @@
     <string name="sales_made">Ventas realizadas</string>
     <string name="no_sales">Sin ventas</string>
     <string name="sale_detail">Detalles de la venta</string>
+    <string name="show_all">Mostrar todo</string>
+    <string name="show_existing">Mostrar existentes</string>
 </resources>

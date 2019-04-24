@@ -9,5 +9,7 @@ data class ProductType(
     val description: String,
     val color: String,
     val text_color: String,
+    var all: Boolean = false,
     val products: ArrayList<Storage> = ArrayList()
+
 ) : Serializable

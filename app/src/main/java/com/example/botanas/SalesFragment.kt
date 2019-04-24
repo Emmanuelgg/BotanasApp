@@ -17,6 +17,7 @@ import com.example.botanas.dataClasses.Requisition
 import com.example.botanas.db.MySqlHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.jetbrains.anko.db.select
+import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -139,6 +140,7 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
     }
 
     private fun initRecycleView(){
+        requisitionList.clear()
         mySqlHelper.use {
             select("requisition")
                 .exec {
@@ -177,6 +179,11 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
                             )
                         )
                 }
+        }
+        try {
+            salesRecyclerView.adapter!!.notifyDataSetChanged()
+        } catch (e: Exception) {
+
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import com.example.botanas.db.MySqlHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
+import java.lang.Exception
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,7 +44,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
 
     // TODO: Rename and change types of parameters
     private var listener: OnFragmentInteractionListener? = null
-    private val allProductList: ArrayList<Storage> = ArrayList()
+    // private val allProductList: ArrayList<Storage> = ArrayList()
     private val categoryList: ArrayList<ProductType> = ArrayList()
     private val productListSale: ArrayList<Storage> = ArrayList()
     private lateinit var productListAdapter: ProductTypeAdapter
@@ -53,7 +55,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
     private lateinit var productListSaleRecycler: RecyclerView
 
     override fun onItemClick(item: ProductTypeAdapter.ViewHolder, position: Int) {
-        Toast.makeText(this.context, "Item numero: $position, Tipo de producto: ${item.s_header.text}", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(this.context, "Item numero: $position, Tipo de producto: ${item.s_header.text}", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -64,7 +66,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
         if (parentPosition != -1) {
             val item = categoryList[parentPosition].products[position]
             val exist = productListSale.find {
-                storage ->  storage.id_driver_general_inventory == categoryList[parentPosition].products[position].id_driver_general_inventory
+                storage ->  storage.id_product == categoryList[parentPosition].products[position].id_product
             }
             Log.d("producto:", exist.toString())
             if (exist == null){
@@ -183,6 +185,13 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
 
         }
 
+        val btnShowAll = view.findViewById<Button>(R.id.showAll)
+        var showAll = false
+        btnShowAll.setOnClickListener {
+            showAll = !showAll
+            btnShowAll.text = if (showAll) getString(R.string.show_existing) else getString(R.string.show_all)
+            initRecycleView(showAll)
+        }
             return view
     }
 
@@ -219,13 +228,19 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
             }
     }
 
-    fun initRecycleView() {
-        val query = "SELECT pt.id_product_type, pt.name, pt.description, pt.color, pt.text_color, SUM(dgi.quantity) quantity " +
-                "FROM product AS p " +
-                "INNER JOIN driver_general_inventory AS dgi ON dgi.id_product = p.id_product " +
-                "INNER JOIN product_type AS pt ON p.id_product_type = pt.id_product_type " +
-                "WHERE dgi.quantity > 0 " +
-                "GROUP BY pt.id_product_type"
+    fun initRecycleView(all: Boolean = false) {
+        categoryList.clear()
+        val query = if (!all) {
+            "SELECT pt.id_product_type, pt.name, pt.description, pt.color, pt.text_color, SUM(dgi.quantity) quantity " +
+                    "FROM product AS p " +
+                    "INNER JOIN driver_general_inventory AS dgi ON dgi.id_product = p.id_product " +
+                    "INNER JOIN product_type AS pt ON p.id_product_type = pt.id_product_type " +
+                    "WHERE dgi.quantity > 0 " +
+                    "GROUP BY pt.id_product_type"
+        } else {
+            "SELECT id_product_type, name, description, color, text_color " +
+                    "FROM product_type"
+        }
         mySqlHelper.use {
             val cursor = mySqlHelper.writableDatabase.rawQuery(query, null)
             while (cursor.moveToNext()) {
@@ -235,7 +250,8 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
                         cursor.getString(cursor.getColumnIndex("name")),
                         cursor.getString(cursor.getColumnIndex("description")),
                         cursor.getString(cursor.getColumnIndex("color")),
-                        cursor.getString(cursor.getColumnIndex("text_color"))
+                        cursor.getString(cursor.getColumnIndex("text_color")),
+                        all
                     )
                 )
             }
@@ -251,6 +267,12 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
                 )
             }
         }
+        try {
+            productListRecycler.adapter!!.notifyDataSetChanged()
+        } catch (e: Exception) {
+
+        }
+
         /*mySqlHelper.use {
             select("driver_general_inventory")
                 .whereArgs("(quantity != {quantity})",
