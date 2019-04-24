@@ -1,6 +1,5 @@
 package com.example.botanas
 
-import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +11,6 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.adapter.CustomerSelectAdapter
@@ -20,7 +18,6 @@ import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import android.widget.Toast
 import android.content.DialogInterface
 import android.content.Intent
 import android.view.View
@@ -28,12 +25,10 @@ import androidx.appcompat.app.AlertDialog
 import com.example.botanas.dataClasses.Client
 import com.example.botanas.ui.login.Admin
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_customer_selection.*
 import org.jetbrains.anko.db.*
 import java.lang.Exception
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.time.temporal.TemporalAmount
 import java.util.*
 
 

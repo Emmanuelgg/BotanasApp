@@ -35,119 +35,108 @@
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/viga"
             android:gravity="center|center_horizontal" android:background="@drawable/default_spinner"/>
-    <TableLayout
+    <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/tableLayout" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/client_spinner">
-
-        <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <TextView
-                    android:text="@string/abb_quantity"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView5" android:fontFamily="@font/viga"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center"
-                    android:layout_weight=".15"/>
-            <TextView
-                    android:text="@string/sf_product_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView17" android:fontFamily="@font/viga"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center"
-                    android:layout_weight=".45"/>
-            <TextView
-                    android:text="@string/price"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/viga"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center" android:id="@+id/textView18"
-                    android:layout_weight=".2"/>
-            <TextView
-                    android:text="@string/amount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView19" android:fontFamily="@font/viga"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center"
-                    android:layout_weight=".2"/>
-        </TableRow>
-    </TableLayout>
+            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/tableRow" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/client_spinner">
+        <TextView
+                android:text="@string/abb_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5" android:fontFamily="@font/viga"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:layout_weight=".15"/>
+        <TextView
+                android:text="@string/sf_product_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView17" android:fontFamily="@font/viga"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:layout_weight=".45"/>
+        <TextView
+                android:text="@string/price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/viga"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="center" android:id="@+id/textView18"
+                android:layout_weight=".2"/>
+        <TextView
+                android:text="@string/amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView19" android:fontFamily="@font/viga"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:layout_weight=".2"/>
+    </TableRow>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/custProductListRecycler"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-            app:layout_constraintBottom_toTopOf="@+id/tableLayout2">
+            app:layout_constraintBottom_toTopOf="@id/tableRow2"
+            app:layout_constraintTop_toBottomOf="@id/tableRow" app:layout_constraintVertical_bias="0.0">
     </androidx.recyclerview.widget.RecyclerView>
-    <TableLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/tableLayout2"
-            app:layout_constraintHorizontal_bias="0.0">
-
-        <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <TextView
-                    android:text="@string/abb_discount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/textView11" android:layout_weight=".20"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:fontFamily="@font/viga" android:paddingLeft="4dp" android:paddingTop="8dp"
-                    android:paddingRight="4dp"
-                    android:paddingBottom="8dp" android:gravity="center"/>
-            <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:inputType="numberDecimal"
-                    android:ems="10"
-                    android:id="@+id/sale_discount" android:layout_weight=".2"
-                    android:background="@drawable/white_blue_edittext" android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark" android:fontFamily="@font/viga"
-                    android:text="@string/s_quantity" android:textSize="14sp" android:autofillHints=""
-                    tools:targetApi="o" android:hint="@string/sf_quantity"/>
-            <TextView
-                    android:text="@string/total"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView20" android:fontFamily="@font/viga"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="end"
-                    android:layout_weight=".30"/>
-            <TextView
-                    android:text="@string/amount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/total_amunt" android:fontFamily="@font/viga"
-                    android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center"
-                    android:layout_weight=".30"/>
-        </TableRow>
-    </TableLayout>
+    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/tableRow2"
+            app:layout_constraintTop_toBottomOf="@id/custProductListRecycler"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+        <TextView
+                android:text="@string/abb_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:id="@+id/textView11" android:layout_weight=".20"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:fontFamily="@font/viga" android:paddingLeft="4dp" android:paddingTop="8dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp" android:gravity="center"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/sale_discount" android:layout_weight=".2"
+                android:background="@drawable/white_blue_edittext" android:gravity="center"
+                android:textColor="@color/colorPrimaryDark" android:fontFamily="@font/viga"
+                android:text="@string/s_quantity" android:textSize="14sp" android:autofillHints=""
+                tools:targetApi="o" android:hint="@string/sf_quantity"/>
+        <TextView
+                android:text="@string/total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView20" android:fontFamily="@font/viga"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="end"
+                android:layout_weight=".30"/>
+        <TextView
+                android:text="@string/amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/total_amunt" android:fontFamily="@font/viga"
+                android:background="@color/colorTableHeader" android:textColor="@color/colorWhite"
+                android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:layout_weight=".30"/>
+    </TableRow>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 package com.example.botanas.ui.login
 
-class Admin() {
+class Admin {
     companion object {
         var idAdmin: Int = 0
         var userName: String = ""

@@ -3,26 +3,18 @@ package com.example.botanas
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.adapter.ProductTypeAdapter
-import com.example.botanas.adapter.StorageAdapter
 import com.example.botanas.api.StorageApi
 import com.example.botanas.dataClasses.ProductType
-import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import com.example.botanas.ui.login.Admin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.storage_header.*
-import org.jetbrains.anko.db.SqlOrderDirection
-import org.jetbrains.anko.db.select
 import kotlin.collections.ArrayList
 import androidx.appcompat.app.AppCompatActivity
 

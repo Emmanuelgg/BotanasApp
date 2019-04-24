@@ -1,17 +1,12 @@
 package com.example.botanas.adapter
 
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.R
 import com.example.botanas.dataClasses.Requisition
-import com.example.botanas.dataClasses.Storage
 import java.text.NumberFormat
 import java.util.*
 

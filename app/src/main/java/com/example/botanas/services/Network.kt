@@ -10,7 +10,6 @@ class Network (context: Context) {
     fun isConnected(): Boolean {
         val connectivityManager = appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        var isConnected: Boolean = activeNetwork?.isConnected == true
-        return  isConnected
+        return activeNetwork?.isConnected == true
     }
 }

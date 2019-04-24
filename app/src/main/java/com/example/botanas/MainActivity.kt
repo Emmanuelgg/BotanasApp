@@ -20,7 +20,6 @@ import com.example.botanas.db.MySqlHelper
 import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_sell.*
 import org.jetbrains.anko.db.delete
 
 

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,6 @@ import com.example.botanas.adapter.CustomerSelectAdapter
 import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import org.jetbrains.anko.db.select
-import org.w3c.dom.Text
 import java.text.NumberFormat
 import java.util.ArrayList
 

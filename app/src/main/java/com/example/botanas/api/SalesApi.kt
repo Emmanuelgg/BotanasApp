@@ -12,26 +12,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.botanas.MainActivity
 import com.example.botanas.services.Network
 import com.example.botanas.R
 import com.example.botanas.api.Server.Companion.api_key
-import com.example.botanas.dataClasses.ProductType
 import com.example.botanas.dataClasses.Requisition
-import com.example.botanas.dataClasses.RequisitionDescription
 import com.example.botanas.dataClasses.ServerResponse
 import com.example.botanas.db.MySqlHelper
 import com.example.botanas.ui.login.Admin
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.jetbrains.anko.db.delete
-import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
-import org.jetbrains.anko.db.transaction
 import org.json.JSONArray
 
 
