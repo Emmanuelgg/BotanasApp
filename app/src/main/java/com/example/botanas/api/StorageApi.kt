@@ -49,7 +49,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
             return
         }
 
-        var responseData = ""
+        var responseData: String
         val jsonDATA = JSONObject()
         jsonDATA.put("id",idAmin)
         jsonDATA.put("api_key", api_key)
@@ -72,8 +72,8 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
             },
             Response.ErrorListener { error: VolleyError ->
                 println("Error ${error.message}")
-                println("Result ${error}")
-                Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                println("Result $error")
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 progressBar.visibility = View.GONE
             }
         )
@@ -83,7 +83,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
 
     }
 
-    fun requestGetProducts(list: ArrayList<ProductType>, recyclerView: RecyclerView) {
+    private fun requestGetProducts(list: ArrayList<ProductType>, recyclerView: RecyclerView) {
         val route = "products_get.php"
         progressBar.visibility = View.VISIBLE
         url = "$serverUrl$route?api_key=$api_key"
@@ -94,10 +94,10 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
             return
         }
 
-        var jsonProduct = ""
-        var jsonProductType = ""
-        var jsonProductBase = ""
-        var jsonClient = ""
+        var jsonProduct: String
+        var jsonProductType: String
+        var jsonProductBase: String
+        var jsonClient: String
         val jsonDATA = JSONObject()
         jsonDATA.put("api_key", api_key)
 
@@ -120,7 +120,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                     updateClientTable(jsonClient)
 
                     progressBar.visibility = View.GONE
-                    Snackbar.make(view, "Inventario sincronizado con exito.", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                    Snackbar.make(view, R.string.inventory_sync_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 } catch (e: Exception) {
                     e.printStackTrace()
                     jsonProduct = ""
@@ -132,8 +132,8 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
             },
             Response.ErrorListener { error: VolleyError ->
                 println("Error ${error.message}")
-                println("Result ${error}")
-                //Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                println("Result $error")
+                //Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
         )
 
@@ -150,8 +150,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                 var i = 0
                 mySqlHelper.use {
                     transaction {
-                        delete(
-                            "product")
+                        delete("product")
                         while (i < jsonArray.length()) {
                             val jsonObject = jsonArray.getJSONObject(i)
                             insert(
@@ -179,7 +178,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
 
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
-                Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
         }
     }
@@ -192,8 +191,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
 
                 mySqlHelper.use {
                     transaction {
-                        delete(
-                            "product_type")
+                        delete("product_type")
                         while (i < jsonArray.length()) {
                             val jsonObject = jsonArray.getJSONObject(i)
                             insert(
@@ -208,8 +206,6 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                         }
                     }
                 }
-
-
 
                 list.clear()
                 val query = "SELECT pt.id_product_type, pt.name, pt.description, pt.color, pt.text_color, SUM(dgi.quantity) quantity " +
@@ -242,12 +238,13 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                             )
                         )
                     }
+                    cursor.close()
                 }
                 recyclerView.adapter!!.notifyDataSetChanged()
 
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
-                Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
         }
     }
@@ -274,7 +271,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                     }
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
-                Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
         }
     }
@@ -320,7 +317,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                 }
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
-                Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
         }
     }
@@ -351,7 +348,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                 }
             } catch (e: Exception){
                 Log.d("Exception: ", e.toString())
-                Snackbar.make(view, "Error al sincronizar el inventario", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             }
         }
     }

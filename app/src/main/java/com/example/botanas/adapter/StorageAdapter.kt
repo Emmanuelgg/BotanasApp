@@ -32,7 +32,7 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
 
 
 
-    override fun onBindViewHolder(holder: ProductTypeAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = samples[position]
         holder.s_header.text = item.description
         holder.itemView.setOnClickListener {
@@ -112,11 +112,10 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
     }
 }
 
-
 class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClickListener, color: Int = 0, text_color: Int = 0, parentPosition: Int = -1) :
     RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
     private val color = color
-    private val text_color = text_color
+    private val textColor = text_color
     private val onItemClickListener: ItemClickListener = listener
     private val parentPosition = parentPosition
 
@@ -127,10 +126,10 @@ class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClic
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = samples[position]
         holder.s_quantity.text = item.quantity.toString()
-        if (color != 0 && text_color != 0){
+        if (color != 0 && textColor != 0){
             val drawable= holder.s_quantity.background.mutate() as GradientDrawable
             drawable.setColor(color)
-            holder.s_quantity.setTextColor(text_color)
+            holder.s_quantity.setTextColor(textColor)
         }
         holder.s_product_name.text = item.product_name
         holder.itemView.setOnClickListener {

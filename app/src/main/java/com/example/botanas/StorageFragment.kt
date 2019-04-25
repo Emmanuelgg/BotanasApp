@@ -19,24 +19,6 @@ import kotlin.collections.ArrayList
 import androidx.appcompat.app.AppCompatActivity
 
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [StorageFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [StorageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-
-/**
- *StorageFragment class with click listener and implements StorageAdapter to fill StorageRecycleView
- */
 class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
     // TODO: Rename and change types of parameters
     private var listener: OnFragmentInteractionListener? = null
@@ -75,8 +57,8 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
             this.layoutManager = LinearLayoutManager(appContext)
             this.adapter = adapterData
         }
-        val btn_sync: FloatingActionButton = view.findViewById(R.id.btn_sync) as FloatingActionButton
-        btn_sync.setOnClickListener{
+        val btnSync: FloatingActionButton = view.findViewById(R.id.btn_sync)
+        btnSync.setOnClickListener{
             apiClient.requestGetInventory(Admin.idAdmin, categoryList, storageRecycler)
         }
         apiClient = StorageApi(appContext, mainActivity)
@@ -85,16 +67,16 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
+    /*fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
-    }
+    }*/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -118,7 +100,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
             }
     }
 
-    fun initRecycleView() {
+    private fun initRecycleView() {
 
         val query = "SELECT pt.id_product_type, pt.name, pt.description, pt.color, pt.text_color, SUM(dgi.quantity) quantity " +
                 "FROM product AS p " +
@@ -126,6 +108,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
                 "INNER JOIN product_type AS pt ON p.id_product_type = pt.id_product_type " +
                 "WHERE dgi.quantity > 0 " +
                 "GROUP BY pt.id_product_type"
+
         mySqlHelper.use {
             val cursor = mySqlHelper.writableDatabase.rawQuery(query, null)
             while (cursor.moveToNext()) {
@@ -150,6 +133,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
                     )
                 )
             }
+            cursor.close()
         }
 
     }

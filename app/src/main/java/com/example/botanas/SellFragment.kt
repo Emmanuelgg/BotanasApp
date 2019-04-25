@@ -195,16 +195,16 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
+    /*fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
-    }
+    }*/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -227,7 +227,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
             }
     }
 
-    fun initRecycleView(all: Boolean = false) {
+    private fun initRecycleView(all: Boolean = false) {
         categoryList.clear()
         val query = if (!all) {
             "SELECT pt.id_product_type, pt.name, pt.description, pt.color, pt.text_color, SUM(dgi.quantity) quantity " +
@@ -265,6 +265,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
                     )
                 )
             }
+            cursor.close()
         }
         try {
             productListRecycler.adapter!!.notifyDataSetChanged()

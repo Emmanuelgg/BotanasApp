@@ -28,7 +28,7 @@
         />
     </group>
 
-    <item android:title="Salir">
+    <item android:title="@string/exit">
         <menu>
             <item
                     android:id="@+id/log_out"

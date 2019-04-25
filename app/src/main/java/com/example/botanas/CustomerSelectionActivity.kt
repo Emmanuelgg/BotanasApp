@@ -1,5 +1,6 @@
 package com.example.botanas
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,7 +19,6 @@ import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import android.content.DialogInterface
 import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+@Suppress("UNCHECKED_CAST")
 class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener {
 
     private lateinit var productListSale: ArrayList<Storage>
@@ -105,9 +106,9 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         appContext = baseContext
         view = findViewById(R.id.customer_select_layout)
         mySqlHelper = MySqlHelper(this)
-        clientSpinner = findViewById<SearchableSpinner>(R.id.client_spinner)
+        clientSpinner = findViewById(R.id.client_spinner)
         val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
-        saleDiscount = findViewById<EditText>(R.id.sale_discount)
+        saleDiscount = findViewById(R.id.sale_discount)
         val btnFinishSale = findViewById<FloatingActionButton>(R.id.btn_finish_sale)
 
         productListSale = intent.getSerializableExtra("product_list") as ArrayList<Storage>
@@ -176,20 +177,20 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         builder.setTitle(R.string.sale_confirm_title)
         builder.setMessage(R.string.sale_confirm_body)
         builder.setCancelable(false)
-        builder.setPositiveButton(R.string.confirm,
-            DialogInterface.OnClickListener { dialog, which ->
-                clientSaleSave()
-            })
+        builder.setPositiveButton(R.string.confirm
+        ) { _, _ ->
+            clientSaleSave()
+        }
 
-        builder.setNegativeButton(R.string.no,
-            DialogInterface.OnClickListener { dialog, which ->
-                Snackbar.make(view, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
-            })
+        builder.setNegativeButton(R.string.no
+        ) { _, _ ->
+            Snackbar.make(view, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -202,12 +203,13 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         return true
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun clientSaleSave() {
         val clientID = clientArray[clientSpinner.selectedItemId.toInt()].id_client
         val currentTime: Date = Calendar.getInstance().time
         val date = SimpleDateFormat("yyyy-MM-dd").format(currentTime)
         val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentTime)
-        var requisitionID: Long = 0
+        var requisitionID: Long
         var discount = saleDiscount.text.toString()
         if (discount == "" || discount == "." || discount == ",")
             discount = "0"

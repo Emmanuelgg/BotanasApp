@@ -69,8 +69,8 @@ class ProductListSale(private val samples: ArrayList<Storage>, listener: ItemOnP
         else
             item.quantity.toString()
 
-        holder.product_quantity.setText(quantity)
-        holder.sale_product_name.text = item.product_name
+        holder.productQuantity.setText(quantity)
+        holder.saleProductName.text = item.product_name
         holder.itemView.setOnLongClickListener {
                 View -> onItemOnPressListener.onItemPress(holder, position)
             true
@@ -80,11 +80,11 @@ class ProductListSale(private val samples: ArrayList<Storage>, listener: ItemOnP
     override fun getItemCount() = samples.size
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val sale_product_name: TextView = mView.findViewById(R.id.sale_product_name)
-        val product_quantity: EditText = mView.findViewById(R.id.sale_product_quantity)
+        val saleProductName: TextView = mView.findViewById(R.id.sale_product_name)
+        val productQuantity: EditText = mView.findViewById(R.id.sale_product_quantity)
 
         init  {
-            product_quantity.addTextChangedListener(
+            productQuantity.addTextChangedListener(
                 object : TextWatcher {
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                         if (s.toString() != "")

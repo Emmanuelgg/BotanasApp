@@ -6,6 +6,9 @@
     <string name="action_settings">Configurar</string>
     <string name="action_sign_in">Acceder</string>
     <string name="action_sign_in_short">Acceder</string>
+    <string name="exit">Salir</string>
+    <string name="inventory_sync_error">Error al sincronizar el inventario</string>
+    <string name="inventory_sync_successful">Sincronización exitosa de inventario</string>
     <string name="amount">Importe</string>
     <string name="close">Cerrar</string>
     <string name="confirm">Confirmar</string>

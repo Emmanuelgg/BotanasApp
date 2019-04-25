@@ -6,12 +6,15 @@
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="inventory_sync_error">Error when synchronizing inventory</string>
+    <string name="inventory_sync_successful">Successful inventory synchronization</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_inventory">Inventory</string>
     <string name="menu_sell">Sell</string>
     <string name="menu_sales">Sales</string>
-    <string name="log_out">Cerrar sesion</string>
+    <string name="log_out">Log out</string>
     <string name="item">Item</string>
     <string name="close">Close</string>
 
