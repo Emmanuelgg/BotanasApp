@@ -184,11 +184,11 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
 
         }
 
-        val btnShowAll = view.findViewById<Button>(R.id.showAll)
+        val btnShowAll = view.findViewById<FloatingActionButton>(R.id.showAll)
         var showAll = false
         btnShowAll.setOnClickListener {
             showAll = !showAll
-            btnShowAll.text = if (showAll) getString(R.string.show_existing) else getString(R.string.show_all)
+            btnShowAll.setImageResource(if (showAll) R.drawable.ic_eye else R.drawable.ic_visibility)
             initRecycleView(showAll)
         }
             return view

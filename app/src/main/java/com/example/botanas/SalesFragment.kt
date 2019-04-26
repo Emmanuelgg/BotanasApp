@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.example.botanas.api.SalesApi
 import com.example.botanas.dataClasses.Requisition
 import com.example.botanas.db.MySqlHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.select
 import java.lang.Exception
 
@@ -44,6 +46,7 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
     private lateinit var salesAdapter: SalesAdapter
     private lateinit var salesApi: SalesApi
     private lateinit var mainActivity: MainActivity
+    private lateinit var actualView: View
 
     override fun onItemClick(item: SalesAdapter.ViewHolder, position: Int) {
         val intent = Intent(appContext, SaleDetail::class.java)
@@ -66,23 +69,26 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_sales, container, false)
+        actualView = inflater.inflate(R.layout.fragment_sales, container, false)
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_sales)
         salesApi = SalesApi(appContext, mainActivity)
 
-        val btnSalesSync = view.findViewById<FloatingActionButton>(R.id.btn_sales_sync)
+        val btnSalesSync = actualView.findViewById<FloatingActionButton>(R.id.btn_sales_sync)
 
-        salesRecyclerView = view.findViewById(R.id.sales_recycler_view)
+        salesRecyclerView = actualView.findViewById(R.id.sales_recycler_view)
         salesRecyclerView.apply {
             this.layoutManager = LinearLayoutManager(appContext)
             this.adapter = salesAdapter
         }
 
+        val builder = AlertDialog.Builder(appContext)
+        initAlertDialog(builder)
+
         btnSalesSync.setOnClickListener {
-            salesApi.requestPostSyncSales(requisitionList, salesRecyclerView)
+            builder.show()
         }
 
-        return view
+        return actualView
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -95,13 +101,28 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    private fun initAlertDialog(builder: AlertDialog.Builder) {
+        builder.setTitle(R.string.sales_sync_confirm_title)
+        builder.setMessage(R.string.sales_sync_confirm_body)
+        builder.setCancelable(false)
+        builder.setPositiveButton(R.string.confirm
+        ) { _, _ ->
+            salesApi.requestPostSyncSales(requisitionList, salesRecyclerView)
+        }
+
+        builder.setNegativeButton(R.string.no
+        ) { _, _ ->
+            Snackbar.make(actualView, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
     }
 
     /**

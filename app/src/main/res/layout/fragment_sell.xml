@@ -6,18 +6,16 @@
                                                    android:layout_height="match_parent"
                                                    tools:context=".SellFragment" android:id="@+id/frameLayout"
                                                    tools:layout_editor_absoluteY="81dp">
-    <Button
-            android:text="@string/show_all"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@drawable/ic_visibility"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/showAll"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.35000002"
-            app:layout_constraintHorizontal_bias="0.99" android:background="@drawable/btn_accent_small"
-            android:textColor="@color/colorWhite" android:paddingLeft="2dp"
-            android:paddingTop="4dp" android:paddingRight="2dp" android:paddingBottom="4dp"
-            android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"/>
+            android:layout_height="wrap_content"
+            android:clickable="true" android:id="@+id/showAll"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.050000012" app:layout_constraintHorizontal_bias="0.95"
+            android:layout_marginTop="24dp" android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp" android:focusable="true"/>
     <TableLayout
             android:layout_width="match_parent"
             android:layout_height="275dp"

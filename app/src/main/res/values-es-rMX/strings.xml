@@ -9,6 +9,8 @@
     <string name="exit">Salir</string>
     <string name="inventory_sync_error">Error al sincronizar el inventario</string>
     <string name="inventory_sync_successful">Sincronización exitosa de inventario</string>
+    <string name="sales_sync_confirm_title">¿Desea sincronizar las ventas?</string>
+    <string name="sales_sync_confirm_body">¿Realmente desea continuar? \nLas ventas se eliminaran y no podra ser revertida la accion.</string>
     <string name="amount">Importe</string>
     <string name="close">Cerrar</string>
     <string name="confirm">Confirmar</string>
