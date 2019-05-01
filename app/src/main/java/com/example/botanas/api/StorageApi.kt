@@ -21,6 +21,7 @@ import com.example.botanas.R
 import com.example.botanas.api.Server.Companion.api_key
 import com.example.botanas.dataClasses.ProductType
 import com.example.botanas.db.MySqlHelper
+import com.example.botanas.ui.login.Admin.Companion.idAdmin
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
@@ -38,10 +39,10 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
     private val progressBar : ProgressBar = mainActivity.findViewById(R.id.progressBar)
     private val view: View = (appContext as Activity).findViewById(R.id.containerFragments)
 
-    fun requestGetInventory(idAmin: Int, list :ArrayList<ProductType>, recyclerView: RecyclerView) {
+    fun requestGetInventory(list :ArrayList<ProductType>, recyclerView: RecyclerView) {
         val route = "driver_inventory_get.php"
         progressBar.visibility = View.VISIBLE
-        url = "$serverUrl$route?api_key=$api_key&id=$idAmin"
+        url = "$serverUrl$route?api_key=$api_key&id=$idAdmin"
 
         val network = Network(appContext)
         if (!network.isConnected()) {
@@ -51,7 +52,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
 
         var responseData: String
         val jsonDATA = JSONObject()
-        jsonDATA.put("id",idAmin)
+        jsonDATA.put("id",idAdmin)
         jsonDATA.put("api_key", api_key)
         val jsonArray = JSONArray()
 

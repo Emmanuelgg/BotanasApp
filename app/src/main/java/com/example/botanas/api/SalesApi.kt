@@ -52,7 +52,7 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
         }
         val route = "sales_add.php"
 
-        var jsonArrayRequisition = JSONArray()
+        val jsonArrayRequisition = JSONArray()
         mySqlHelper.use {
             for (item in list){
                 val jsonRequisition = JSONObject()
@@ -128,7 +128,7 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
             },
             Response.ErrorListener { error: VolleyError ->
                 println("Error ${error.message}")
-                println("Result ${error}")
+                println("Result $error")
                 Snackbar.make(view, R.string.sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 progressBar.visibility = View.GONE
             }

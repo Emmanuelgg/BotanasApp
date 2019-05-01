@@ -33,9 +33,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    lateinit var storageFragment: StorageFragment
-    lateinit var sellFragment: SellFragment
-    lateinit var salesFragment: SalesFragment
+    private lateinit var storageFragment: StorageFragment
+    private lateinit var sellFragment: SellFragment
+    private lateinit var salesFragment: SalesFragment
 
 
 

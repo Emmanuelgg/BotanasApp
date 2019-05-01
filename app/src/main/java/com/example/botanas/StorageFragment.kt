@@ -13,7 +13,6 @@ import com.example.botanas.adapter.ProductTypeAdapter
 import com.example.botanas.api.StorageApi
 import com.example.botanas.dataClasses.ProductType
 import com.example.botanas.db.MySqlHelper
-import com.example.botanas.ui.login.Admin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.collections.ArrayList
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +40,6 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
         mySqlHelper = MySqlHelper(appContext)
         initRecycleView()
         adapterData = ProductTypeAdapter(categoryList,this)
-
     }
 
     override fun onCreateView(
@@ -60,7 +58,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
         }
         val btnSync: FloatingActionButton = view.findViewById(R.id.btn_sync)
         btnSync.setOnClickListener{
-            apiClient.requestGetInventory(Admin.idAdmin, categoryList, storageRecycler)
+            apiClient.requestGetInventory(categoryList, storageRecycler)
         }
         apiClient = StorageApi(appContext, mainActivity)
 
@@ -85,6 +83,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
         super.onDetach()
         listener = null
     }
+
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)

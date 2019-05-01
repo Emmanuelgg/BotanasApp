@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley
 import com.example.botanas.MainActivity
 import com.example.botanas.services.Network
 import com.example.botanas.R
+import com.example.botanas.api.Server.Companion.api_key
 import com.example.botanas.db.MySqlHelper
 import com.example.botanas.ui.login.Admin
 import com.google.android.material.snackbar.Snackbar
@@ -26,7 +27,6 @@ class LoginApi (context: Context) {
     private var appContext: Context = context
     private lateinit var mySqlHelper: MySqlHelper
     private var url = ""
-    private val api_key = "8b1134b2-230d-42ba-9d0c-b8eb2e5520ca"
     private val progressBar : ProgressBar = (context as Activity).findViewById(R.id.progressBarLogin)
     private val view: View = (appContext as Activity).findViewById(R.id.container)
 
@@ -38,7 +38,7 @@ class LoginApi (context: Context) {
         requestPost(user, pass)
     }
 
-    fun requestPost(user:String, pass: String) {
+    private fun requestPost(user:String, pass: String) {
 
         val network = Network(appContext)
         if (!network.isConnected()) {
@@ -47,12 +47,12 @@ class LoginApi (context: Context) {
         }
 
 
-            var responseData = ""
-            val JsonDATA = JSONObject()
-            JsonDATA.put("user_name",user)
-            JsonDATA.put("password",pass)
-            JsonDATA.put("api_key", api_key)
-            val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, JsonDATA,
+            var responseData: String
+            val jsonDATA = JSONObject()
+            jsonDATA.put("user_name",user)
+            jsonDATA.put("password",pass)
+            jsonDATA.put("api_key", api_key)
+            val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonDATA,
                 Response.Listener {
                     response ->
                         try {
