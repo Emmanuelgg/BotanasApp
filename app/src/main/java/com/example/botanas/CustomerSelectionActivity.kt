@@ -153,7 +153,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                     clientArray.add(
                         Client(
                             this.getInt(this.getColumnIndex("id_client")),
-                            this.getString(this.getColumnIndex("name"))
+                            this.getString(this.getColumnIndex("name")) + " - " + this.getString(this.getColumnIndex("municipality"))
                         )
 
                     )

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.adapter.CustomerSelectAdapter
@@ -58,7 +59,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -92,7 +93,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
                         .whereArgs("id_client == {id_client}", "id_client" to idClient)
                         .exec {
                             this.moveToNext()
-                            val clientName = this.getString(this.getColumnIndex("name"))
+                            val clientName = this.getString(this.getColumnIndex("name")) + " - " + this.getString(this.getColumnIndex("municipality"))
                             soldClientNameView.text = clientName
                         }
 

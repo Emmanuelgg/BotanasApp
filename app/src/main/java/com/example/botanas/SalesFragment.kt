@@ -169,12 +169,12 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
                         while(this.moveToNext()) {
                             var clientName = ""
                             val idClient = this.getInt(this.getColumnIndex("id_client"))
-                            select("client", "name")
+                            select("client", "name, municipality")
                                 .whereArgs("id_client == {id_client}",
                                     "id_client" to idClient
                                 ).exec {
                                     this.moveToNext()
-                                    clientName = this.getString(this.getColumnIndex("name"))
+                                    clientName = this.getString(this.getColumnIndex("name")) + " - " + this.getString(this.getColumnIndex("municipality"))
 
                                 }
                             requisitionList.add(

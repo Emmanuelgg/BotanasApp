@@ -54,6 +54,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_inventory)
         storageRecycler = view.findViewById(R.id.storage_recycler) as RecyclerView
         storageRecycler.apply {
+            // this.layoutManager = LinearLayoutManager(appContext, LinearLayoutManager.HORIZONTAL, false)
             this.layoutManager = LinearLayoutManager(appContext)
             this.adapter = adapterData
         }

@@ -8,6 +8,7 @@
     <string name="action_settings">Settings</string>
     <string name="exit">Exit</string>
     <string name="inventory_sync_error">Error when synchronizing inventory</string>
+    <string name="sync_error">Error when synchronizing</string>
     <string name="inventory_sync_successful">Successful inventory synchronization</string>
     <string name="sales_sync_confirm_title">Do you want to synchronize the sales?</string>
     <string name="sales_sync_confirm_body">Do you really want to continue? \nThe sales will be delete and the action cannot be reverted.</string>

@@ -47,7 +47,7 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
             return
         }
         if (list.isEmpty() || (list.size == 1 && list[0].id_requisition == 0)) {
-            Snackbar.make(view, "Error al sincronizar las ventas", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            Snackbar.make(view, R.string.sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
             return
         }
         val route = "sales_add.php"
@@ -129,7 +129,7 @@ class SalesApi(context: Context, mainActivity: MainActivity) {
             Response.ErrorListener { error: VolleyError ->
                 println("Error ${error.message}")
                 println("Result ${error}")
-                Snackbar.make(view, "Error al sincronizar las ventas", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                Snackbar.make(view, R.string.sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 progressBar.visibility = View.GONE
             }
         )
