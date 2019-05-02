@@ -69,16 +69,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         userName.text = Admin.name
 
         val name = intent.getStringExtra("user_name")
-        if (name != null){
+        if (name != null)
             Snackbar.make(findViewById(R.id.containerFragments), "¡Hola, $name!", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-        }
+
 
         /*if (intent.getBooleanExtra("saleSuccessful", false)) {
             Snackbar.make(findViewById(R.id.containerFragments), R.string.sale_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }*/
-
-
-
         navView.menu.getItem(0).isChecked = true
         onNavigationItemSelected(navView.menu.getItem(0))
     }

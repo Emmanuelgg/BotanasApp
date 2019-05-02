@@ -11,4 +11,5 @@
     <color name="colorGray">#BDBDBD</color>
     <color name="colorBlueAlpha">#28337AB7</color>
     <color name="colorPrimaryDarkAlpha">#C9303F9F</color>
+    <color name="colorBackgroundGray">#F1F1F1</color>
 </resources>

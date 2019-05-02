@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.text.HtmlCompat
 import org.json.JSONObject
 import java.lang.Exception
 import kotlin.collections.ArrayList
@@ -154,6 +155,8 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                         delete("product")
                         while (i < jsonArray.length()) {
                             val jsonObject = jsonArray.getJSONObject(i)
+                            val name = HtmlCompat.fromHtml(jsonObject.getString("name"), HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+
                             insert(
                                 "product",
                                 "id_product" to jsonObject.getInt("id_product"),
@@ -162,7 +165,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                                 "id_product_unit_measurement" to jsonObject.getInt("id_product_unit_measurement"),
                                 "barcode" to jsonObject.getString("barcode"),
                                 "barcode_unit" to jsonObject.getString("barcode_unit"),
-                                "name" to jsonObject.getString("name"),
+                                "name" to name,
                                 "cost" to jsonObject.getString("cost"),
                                 "cost_foreign" to jsonObject.getString("cost_foreign"),
                                 "cost_export" to jsonObject.getString("cost_export"),
