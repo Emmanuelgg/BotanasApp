@@ -1,8 +1,11 @@
 package com.example.botanas
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -13,14 +16,21 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.botanas.api.MyFirebaseMessagingService
 import com.example.botanas.db.MySqlHelper
+import com.example.botanas.services.Network
 import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.db.delete
+import org.jetbrains.anko.db.select
+import java.io.IOException
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -36,9 +46,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var storageFragment: StorageFragment
     private lateinit var sellFragment: SellFragment
     private lateinit var salesFragment: SalesFragment
+    private val TAG = "MyFirebaseToken"
+    private val messagingService = MyFirebaseMessagingService()
+    private lateinit var mySqlHelper: MySqlHelper
+    private lateinit var appContext: Context
 
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,6 +70,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
+        appContext = this
+        mySqlHelper = MySqlHelper(appContext)
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -76,9 +93,61 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         /*if (intent.getBooleanExtra("saleSuccessful", false)) {
             Snackbar.make(findViewById(R.id.containerFragments), R.string.sale_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }*/
-        navView.menu.getItem(0).isChecked = true
-        onNavigationItemSelected(navView.menu.getItem(0))
+        val openSales = intent.getBooleanExtra("openSales", false)
+        if (!openSales) {
+            navView.menu.getItem(0).isChecked = true
+            onNavigationItemSelected(navView.menu.getItem(0))
+        } else  {
+            salesFragment = SalesFragment.newInstance(this)
+            navView.menu.getItem(2).isChecked = true
+            onNavigationItemSelected(navView.menu.getItem(2))
+        }
+        initView()
+        checkSalesToSync()
     }
+
+
+    private fun initView() {
+        //This method will use for fetching Token
+        Thread(Runnable {
+            try {
+                Log.i(TAG, FirebaseInstanceId.getInstance().getToken(getString(R.string.sender_id), "FCM"))
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }).start()
+    }
+
+    private fun checkSalesToSync() {
+        val timer = Timer()
+        var notificationSent = 0
+        val hourlyTask = object : TimerTask() {
+            override fun run() {
+                try {
+                    if (notificationSent > 0) {
+                        val network = Network(appContext)
+                        if (network.isConnected()) {
+                            mySqlHelper.use {
+                                select("requisition")
+                                    .exec {
+                                        if (this.count > 0)
+                                            messagingService.sendCustomMessage(appContext.getString(R.string.notification_title_sync_available),appContext.getString(R.string.notification_description_sync_available), applicationContext)
+                                    }
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                notificationSent++
+            }
+        }
+
+        // schedule the task to run starting now and then every hour...
+        timer.schedule(hourlyTask, 0L, 1000*30*60)
+    }
+
+
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

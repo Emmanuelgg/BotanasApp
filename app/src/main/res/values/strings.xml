@@ -1,11 +1,16 @@
 <resources>
     <string name="app_name">Botanas Anita</string>
+    <string name="sender_id" translatable="false">451538043682</string>
+    <string name="sync">Sync</string>
+    <string name="notifications_admin_channel_name" translatable="false">botanasapp</string>
+    <string name="notifications_admin_channel_description" translatable="false">Botanas Anita</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="nav_header_title">Botanas Anita</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="percentage" translatable="false">%</string>
     <string name="exit">Exit</string>
     <string name="inventory_sync_error">Error when synchronizing inventory</string>
     <string name="sync_error">Error when synchronizing</string>
@@ -75,4 +80,7 @@
     <string name="sale_detail">Sale detail</string>
     <string name="show_all">Show all</string>
     <string name="show_existing">Show existing</string>
+
+    <string name="notification_title_sync_available">Sync your sales</string>
+    <string name="notification_description_sync_available">You have sales available to synchronizing</string>
 </resources>

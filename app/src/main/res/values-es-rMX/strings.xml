@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Botanas Anita</string>
+    <string name="sync">Sincronizar</string>
     <string name="abb_discount">Desc</string>
     <string name="abb_quantity">Cant</string>
     <string name="action_settings">Configurar</string>
@@ -53,4 +54,6 @@
     <string name="sale_detail">Detalles de la venta</string>
     <string name="show_all">Mostrar todo</string>
     <string name="show_existing">Mostrar existentes</string>
+    <string name="notification_title_sync_available">Sincroniza tus ventas</string>
+    <string name="notification_description_sync_available">Tienes ventas disponibles para sincronizar.</string>
 </resources>
