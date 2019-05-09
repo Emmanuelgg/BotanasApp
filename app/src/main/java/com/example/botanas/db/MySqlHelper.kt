@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
-private const val DATABASE_VERSION = 8
+private const val DATABASE_VERSION = 9
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", null, DATABASE_VERSION) {
 
     companion object {
@@ -20,6 +20,14 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
     }
 
     override fun onCreate(db: SQLiteDatabase) {
+        /* Table settings */
+        db.createTable("settings", true,
+            "id_settings" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            "id_admin" to INTEGER,
+            "auto_sales_sync" to INTEGER,
+            "visits" to INTEGER
+        )
+
         /* Table admin */
         db.createTable("admin", true,
             "id_admin" to INTEGER + PRIMARY_KEY,
@@ -131,6 +139,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.dropTable("settings",true)
         db.dropTable("admin",true)
         db.dropTable("product",true)
         db.dropTable("product_type",true)

@@ -2,6 +2,7 @@
     <string name="app_name">Botanas Anita</string>
     <string name="sender_id" translatable="false">451538043682</string>
     <string name="sync">Sync</string>
+    <string name="sync_success">Sync success</string>
     <string name="notifications_admin_channel_name" translatable="false">botanasapp</string>
     <string name="notifications_admin_channel_description" translatable="false">Botanas Anita</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
@@ -16,7 +17,14 @@
     <string name="sync_error">Error when synchronizing</string>
     <string name="inventory_sync_successful">Successful inventory synchronization</string>
     <string name="sales_sync_confirm_title">Do you want to synchronize the sales?</string>
-    <string name="sales_sync_confirm_body">Do you really want to continue? \nThe sales will be delete and the action cannot be reverted.</string>
+    <string name="sales_sync_confirm_body">Do you really want to continue? \nThe sales will be delete and the action
+        cannot be reverted.
+    </string>
+
+    <!-- settings -->
+    <string name="auto_sales_sync">Auto sync sales</string>
+    <string name="on" translatable="false">On</string>
+    <string name="off" translatable="false">Off</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_inventory">Inventory</string>

@@ -92,6 +92,12 @@ class LoginApi (context: Context) {
                                 "status" to jsonObject.getInt("status"),
                                 "id_role" to jsonObject.getInt("id_role")
                             )
+                            insert("settings",
+                                "id_admin" to jsonObject.getInt("id_admin"),
+                                "auto_sales_sync" to 0,
+                                "visits" to 1
+                            )
+
                         }
                         Admin.idAdmin = jsonObject.getInt("id_admin")
                         Admin.userName = jsonObject.getString("user_name")

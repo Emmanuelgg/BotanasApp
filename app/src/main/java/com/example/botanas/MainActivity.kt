@@ -1,5 +1,6 @@
 package com.example.botanas
 
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -23,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.botanas.api.MyFirebaseMessagingService
 import com.example.botanas.db.MySqlHelper
 import com.example.botanas.services.Network
+import com.example.botanas.services.SendDataService
 import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }*/
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         navView.setNavigationItemSelectedListener(this)
@@ -75,6 +78,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+
 
 
         storageFragment =  StorageFragment.newInstance(this)
@@ -103,9 +108,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             onNavigationItemSelected(navView.menu.getItem(2))
         }
         initView()
-        checkSalesToSync()
     }
-
 
     private fun initView() {
         //This method will use for fetching Token
@@ -116,37 +119,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 e.printStackTrace()
             }
         }).start()
+        val service = Intent(appContext, SendDataService::class.java)
+        startService(service)
     }
-
-    private fun checkSalesToSync() {
-        val timer = Timer()
-        var notificationSent = 0
-        val hourlyTask = object : TimerTask() {
-            override fun run() {
-                try {
-                    if (notificationSent > 0) {
-                        val network = Network(appContext)
-                        if (network.isConnected()) {
-                            mySqlHelper.use {
-                                select("requisition")
-                                    .exec {
-                                        if (this.count > 0)
-                                            messagingService.sendCustomMessage(appContext.getString(R.string.notification_title_sync_available),appContext.getString(R.string.notification_description_sync_available), applicationContext)
-                                    }
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                notificationSent++
-            }
-        }
-
-        // schedule the task to run starting now and then every hour...
-        timer.schedule(hourlyTask, 0L, 1000*30*60)
-    }
-
 
 
     override fun onBackPressed() {
@@ -173,7 +148,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                val selectionActivity = Intent(appContext, SettingsActivity::class.java)
+                startActivity(selectionActivity)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -218,6 +197,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun logOut() {
         val mySqlHelper = MySqlHelper(this)
         mySqlHelper.use {
+            delete("settings")
             delete("admin")
             delete("product")
             delete("product_type")

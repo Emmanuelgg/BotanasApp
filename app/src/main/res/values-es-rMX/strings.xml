@@ -2,9 +2,11 @@
 <resources>
     <string name="app_name">Botanas Anita</string>
     <string name="sync">Sincronizar</string>
+    <string name="sync_success">Sincronizacion correcta</string>
+    <string name="auto_sales_sync">Sincronización automática de ventas</string>
     <string name="abb_discount">Desc</string>
     <string name="abb_quantity">Cant</string>
-    <string name="action_settings">Configurar</string>
+    <string name="action_settings">Configuraciones</string>
     <string name="action_sign_in">Acceder</string>
     <string name="action_sign_in_short">Acceder</string>
     <string name="exit">Salir</string>

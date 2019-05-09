@@ -96,6 +96,45 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build())
     }
 
+    fun doInBackgroundNotificationStart(title: String, message: String, context: Context, id: Int = 1) {
+        notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNotificationChannels(context)
+
+
+        val notifyIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
+            this.putExtra("openSales", true)
+        }
+        val notifyPendingIntent = PendingIntent.getActivity(
+            context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher_botanas_round)  //a resource for your custom small icon
+            .setContentTitle(title) //the "title" value you sent in your notification
+            .setContentText(message) //ditto
+            .setAutoCancel(true)  //dismisses the notification on click
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(notifyPendingIntent)
+            .setSound(defaultSoundUri)
+            .setVibrate(vibratePattern)
+            .setProgress(0, 100, true)
+        //.addAction(R.drawable.ic_cloud, context.getString(R.string.sync), notifyPendingIntent)
+        //.setProgress(100,0,true)
+
+        notificationManager.notify(id /* ID of notification */, notificationBuilder.build())
+    }
+
+    fun doInBackgroundNotificationStop(context: Context, id: Int = 1) {
+        val notificationId = Random().nextInt(60000)
+        notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(id)
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun setupNotificationChannels(context: Context? = null) {
         var adminChannelName: String

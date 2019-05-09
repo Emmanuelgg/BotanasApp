@@ -113,7 +113,23 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
         builder.setCancelable(false)
         builder.setPositiveButton(R.string.confirm
         ) { _, _ ->
-            salesApi.requestPostSyncSales(requisitionList, salesRecyclerView)
+            salesApi.run {
+                if (requestPostSyncSales()){
+                    requisitionList.clear()
+                    requisitionList.add(
+                        Requisition(
+                            0,
+                            0,
+                            "No se han realizado ventas",
+                            "",
+                            "0",
+                            ""
+                        )
+                    )
+                    salesRecyclerView.adapter!!.notifyDataSetChanged()
+                }
+            }
+
         }
 
         builder.setNegativeButton(R.string.no
