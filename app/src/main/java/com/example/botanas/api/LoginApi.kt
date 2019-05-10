@@ -94,7 +94,8 @@ class LoginApi (context: Context) {
                             )
                             insert("settings",
                                 "id_admin" to jsonObject.getInt("id_admin"),
-                                "auto_sales_sync" to 0,
+                                "auto_sales_sync" to 1,
+                                "server_notifications" to 1,
                                 "visits" to 1
                             )
 

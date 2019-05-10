@@ -107,7 +107,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navView.menu.getItem(2).isChecked = true
             onNavigationItemSelected(navView.menu.getItem(2))
         }
-        initView()
+        checkPermission()
+
+    }
+
+    private fun checkPermission() {
+
+        mySqlHelper.use {
+            select("settings").whereArgs(
+                "id_admin == {id_admin}", "id_admin" to Admin.idAdmin
+            ).exec {
+                this.moveToNext()
+                if (this.getInt(this.getColumnIndex("auto_sales_sync")) == 1)
+                    startService(Intent(appContext, SendDataService::class.java))
+                if (this.getInt(this.getColumnIndex("server_notifications")) == 1)
+                    initView()
+
+            }
+        }
+
+
     }
 
     private fun initView() {
@@ -119,8 +138,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 e.printStackTrace()
             }
         }).start()
-        val service = Intent(appContext, SendDataService::class.java)
-        startService(service)
+
     }
 
 

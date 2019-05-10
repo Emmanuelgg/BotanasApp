@@ -23,6 +23,9 @@
 
     <!-- settings -->
     <string name="auto_sales_sync">Auto sync sales</string>
+    <string name="auto_sales_sync_description">The sales will be synchronizing automatic, you can disable this option </string>
+    <string name="server_notifications">Server notifications</string>
+    <string name="server_notifications_description">You will receive all server notification if this option is enabled</string>
     <string name="on" translatable="false">On</string>
     <string name="off" translatable="false">Off</string>
 

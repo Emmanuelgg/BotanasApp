@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
-private const val DATABASE_VERSION = 9
+private const val DATABASE_VERSION = 10
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", null, DATABASE_VERSION) {
 
     companion object {
@@ -25,6 +25,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
             "id_settings" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
             "id_admin" to INTEGER,
             "auto_sales_sync" to INTEGER,
+            "server_notifications" to INTEGER,
             "visits" to INTEGER
         )
 

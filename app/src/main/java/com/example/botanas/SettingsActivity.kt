@@ -23,31 +23,38 @@ class SettingsActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         mySqlHelper = MySqlHelper(applicationContext)
         var autoSaleSync = false
+        var serverNotifications = false
         mySqlHelper.use {
-            select("settings", "auto_sales_sync")
+            select("settings")
                 .whereArgs("id_admin == {id_admin}", "id_admin" to Admin.idAdmin)
                 .exec {
                     this.moveToNext()
                     if (this.getInt(this.getColumnIndex("auto_sales_sync")) == 1)
                         autoSaleSync = true
-                    Log.d("check" , this.getInt(this.getColumnIndex("auto_sales_sync")).toString())
+                    if (this.getInt(this.getColumnIndex("server_notifications")) == 1)
+                        serverNotifications = true
                 }
         }
 
-        val switchAutoSalesSync = findViewById<Switch>(R.id.switchAutoSalesSync)
-        //switchAutoSalesSync.textOff = getString(R.string.off)
-        //switchAutoSalesSync.textOn = getString(R.string.on)
-        switchAutoSalesSync.isChecked = autoSaleSync
+        changerSwitch(findViewById(R.id.switchAutoSalesSync), autoSaleSync, "auto_sales_sync")
+        changerSwitch(findViewById(R.id.switchServerNotifications), serverNotifications, "server_notifications")
 
-        switchAutoSalesSync.setOnCheckedChangeListener { button: CompoundButton, check: Boolean ->
+
+
+    }
+
+    private fun changerSwitch(switch: Switch, value: Boolean, column: String) {
+        //switch.setText(if (value) R.string.on else R.string.off)
+        switch.isChecked = value
+
+        switch.setOnCheckedChangeListener { button: CompoundButton, check: Boolean ->
             val isChecked = if (check) 1 else 0
-            button.setText(if (check) R.string.on else R.string.off)
+            //button.setText(if (check) R.string.on else R.string.off)
             mySqlHelper.use {
-                update("settings", "auto_sales_sync" to isChecked)
-                    .whereArgs("id_admin == {id_admin}", "id_admin" to Admin.idAdmin)
+                update("settings", column to isChecked)
+                    .whereArgs("id_admin == {id_admin}", "id_admin" to Admin.idAdmin).exec()
             }
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

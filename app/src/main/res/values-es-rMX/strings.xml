@@ -4,6 +4,9 @@
     <string name="sync">Sincronizar</string>
     <string name="sync_success">Sincronizacion correcta</string>
     <string name="auto_sales_sync">Sincronización automática de ventas</string>
+    <string name="auto_sales_sync_description">Las ventas seran sincronizadas automaticamente, puedes desabilitar esta opcion </string>
+    <string name="server_notifications">Notificaciones del servidor</string>
+    <string name="server_notifications_description">Recibiras notificaciones automaticas del servidor, solo si esta opcion esta activada</string>
     <string name="abb_discount">Desc</string>
     <string name="abb_quantity">Cant</string>
     <string name="action_settings">Configuraciones</string>
