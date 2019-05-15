@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#337ab7</color>
+    <color name="colorPrimary">#303F9F</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryLight">#337ab7</color>
     <color name="colorAccent">#FF5252</color>
     <color name="colorMenu">#303F9F</color>
-    <color name="colorTableHeader">#337AB7</color>
+    <color name="colorTableHeader">#303F9F</color>
     <color name="colorLink">#4B77BE</color>
     <color name="splash_background_color">#F1F1F1F1</color>
     <color name="colorWhite">#FFFFFF</color>

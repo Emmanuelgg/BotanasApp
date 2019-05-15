@@ -9,6 +9,13 @@ import com.example.botanas.R
 import com.example.botanas.api.LoginApi
 import com.example.botanas.db.MySqlHelper
 import org.jetbrains.anko.db.select
+import android.R.attr.start
+import androidx.core.view.ViewCompat.setScaleY
+import android.R.attr.colorPrimaryDark
+import android.R.attr.colorPrimary
+import com.scwang.wave.MultiWaveHeader
+
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
 
         loginApi = LoginApi(this)
 

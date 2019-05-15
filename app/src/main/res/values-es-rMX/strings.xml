@@ -2,11 +2,11 @@
 <resources>
     <string name="app_name">Botanas Anita</string>
     <string name="sync">Sincronizar</string>
-    <string name="sync_success">Sincronizacion correcta</string>
+    <string name="sync_success">Sincronización correcta</string>
     <string name="auto_sales_sync">Sincronización automática de ventas</string>
-    <string name="auto_sales_sync_description">Las ventas seran sincronizadas automaticamente, puedes desabilitar esta opcion </string>
+    <string name="auto_sales_sync_description">Las ventas seran sincronizadas automaticamente, puedes desabilitar esta opción </string>
     <string name="server_notifications">Notificaciones del servidor</string>
-    <string name="server_notifications_description">Recibiras notificaciones automaticas del servidor, solo si esta opcion esta activada</string>
+    <string name="server_notifications_description">Recibirás notificaciones automaticas del servidor, solo si esta opción esta activada</string>
     <string name="abb_discount">Desc</string>
     <string name="abb_quantity">Cant</string>
     <string name="action_settings">Configuraciones</string>
@@ -14,10 +14,11 @@
     <string name="action_sign_in_short">Acceder</string>
     <string name="exit">Salir</string>
     <string name="inventory_sync_error">Error al sincronizar el inventario</string>
-    <string name="sync_error">Error de sincronizacion</string>
+    <string name="sync_error">Error de sincronización</string>
     <string name="inventory_sync_successful">Sincronización exitosa de inventario</string>
+    <string name="sale_not_found">Venta no encontrada, por favor reinicia la aplicación</string>
     <string name="sales_sync_confirm_title">¿Desea sincronizar las ventas?</string>
-    <string name="sales_sync_confirm_body">¿Realmente desea continuar? \nLas ventas se eliminaran y no podra ser revertida la accion.</string>
+    <string name="sales_sync_confirm_body">¿Realmente desea continuar? \nLas ventas se eliminarán y no podra ser revertida la acción.</string>
     <string name="amount">Importe</string>
     <string name="close">Cerrar</string>
     <string name="confirm">Confirmar</string>
@@ -26,16 +27,15 @@
     <string name="invalid_login">Usuario o contraseña invalidos</string>
     <string name="invalid_password">Contraseña invalida</string>
     <string name="item">Item</string>
-    <string name="log_out">Cerrar sesion</string>
-    <string name="login_failed">Inicio de sesion fallida</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="login_failed">Inicio de sesión fallida</string>
     <string name="menu_home">Inicio</string>
     <string name="menu_inventory">Inventario</string>
     <string name="menu_sell">Vender</string>
     <string name="menu_sales">Ventas</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="nav_header_title" translatable="false">Botanas Anita</string>
     <string name="no">No</string>
-    <string name="no_internet">Tuvimos un problema con la conexion</string>
+    <string name="no_internet">Tuvimos un problema con la conexión</string>
     <string name="price">Precio</string>
     <string name="product_added">Producto agregado</string>
     <string name="product_deleted">Producto eliminado</string>
@@ -43,7 +43,6 @@
     <string name="prompt_email">Usuario</string>
     <string name="prompt_password">Contraseña</string>
     <string name="s_product_name">Producto de ejemplo</string>
-    <string name="s_quantity">0</string>
     <string name="sale_confirm_body">¿Realmente desea continuar? \nLa venta no podra ser cancelada ni modificada.</string>
     <string name="sale_confirm_title">¿Desea confirmar la venta?</string>
     <string name="select_customer">Selecciona un cliente</string>

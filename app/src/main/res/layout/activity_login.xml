@@ -84,4 +84,24 @@
             app:layout_constraintTop_toBottomOf="@+id/password"
             app:layout_constraintVertical_bias="0.0" android:fontFamily="@font/viga"
             android:background="@drawable/btn_accent_small" android:textColor="#FFFFFF"/>
+
+    <com.scwang.wave.MultiWaveHeader
+            android:id="@+id/waveHeader"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:mwhStartColor="@color/colorPrimaryDark"
+            app:mwhCloseColor="@color/colorPrimaryDark"
+            app:mwhColorAlpha="0.7"
+            app:mwhVelocity="3"
+            app:mwhProgress="1"
+            android:scaleY="-1"
+            app:mwhWaveHeight="70dp"
+            app:mwhWaves="
+                1,1,1,.4,-35
+                100,4,1,.4,35
+                1,10,1,.4,-50
+            "
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

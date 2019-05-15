@@ -7,7 +7,7 @@
     <string name="notifications_admin_channel_description" translatable="false">Botanas Anita</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="nav_header_title">Botanas Anita</string>
+    <string name="nav_header_title" translatable="false">Botanas Anita</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -20,6 +20,7 @@
     <string name="sales_sync_confirm_body">Do you really want to continue? \nThe sales will be delete and the action
         cannot be reverted.
     </string>
+    <string name="sale_not_found">Sale not found, plz refresh the app</string>
 
     <!-- settings -->
     <string name="auto_sales_sync">Auto sync sales</string>
@@ -49,7 +50,7 @@
     <string name="sf_product_name">Product</string>
 
     <!-- Strings to storage_list.xml -->
-    <string name="s_quantity">0</string>
+    <string name="s_quantity" translatable="false">0</string>
     <string name="s_product_name">Example product</string>
 
     <!-- Strings to activity_login.xml -->

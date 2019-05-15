@@ -2,12 +2,15 @@ package com.example.botanas
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.select
 import java.lang.Exception
+import java.text.NumberFormat
 
 // TODO: Rename parameter arguments, choose names that match
 /**
@@ -45,9 +49,14 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
     private lateinit var actualView: View
 
     override fun onItemClick(item: SalesAdapter.ViewHolder, position: Int) {
-        val intent = Intent(appContext, SaleDetail::class.java)
-        intent.putExtra("id_requisition", requisitionList[position].id_requisition)
-        startActivity(intent)
+        try {
+            val intent = Intent(appContext, SaleDetail::class.java)
+            intent.putExtra("id_requisition", requisitionList[position].id_requisition)
+            startActivity(intent)
+        } catch (e: Exception) {
+            Snackbar.make(actualView, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +68,7 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
         initRecycleView()
         salesAdapter = SalesAdapter(requisitionList,this)
 
+
     }
 
     override fun onCreateView(
@@ -67,7 +77,9 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
     ): View? {
         // Inflate the layout for this fragment
         actualView = inflater.inflate(R.layout.fragment_sales, container, false)
-        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_sales)
+        val toolbar = (activity as AppCompatActivity).supportActionBar!!
+        toolbar.title = getString(R.string.menu_sales)
+        toolbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FF303F9F")))
         salesApi = SalesApi(appContext, mainActivity)
 
         val btnSalesSync = actualView.findViewById<FloatingActionButton>(R.id.btn_sales_sync)
@@ -85,7 +97,13 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
             builder.show()
         }
 
-        return actualView
+        val currency = NumberFormat.getCurrencyInstance()
+        var totalSales = 0.0
+        requisitionList.forEach { item -> totalSales += item.total.toDouble() }
+        (actualView.findViewById<TextView>(R.id.textTotalSales)).text = currency.format(totalSales)
+
+
+            return actualView
     }
 
     // TODO: Rename method, update argument and hook method into UI event
