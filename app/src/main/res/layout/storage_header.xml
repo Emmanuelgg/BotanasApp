@@ -9,9 +9,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/s_header" android:fontFamily="@font/viga"
             android:gravity="center" android:textSize="18sp" android:paddingTop="8dp" android:paddingBottom="8dp"
-            android:paddingLeft="4dp" android:paddingRight="4dp" android:background="#B5FF8B00"
-            android:textColor="#FF6F00"/>
+            android:paddingLeft="4dp" android:paddingRight="4dp" android:background="#FBE9E7"
+            android:textColor="#BF360C"/>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/products_recycler"/>
+            android:layout_height="match_parent" android:id="@+id/products_recycler" android:background="#FBE9E7"/>
 </LinearLayout>

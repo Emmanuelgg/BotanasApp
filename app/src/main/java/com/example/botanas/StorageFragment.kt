@@ -108,7 +108,7 @@ class StorageFragment : Fragment(), ProductTypeAdapter.ItemClickListener {
                 "INNER JOIN product_type AS pt ON p.id_product_type = pt.id_product_type " +
                 "WHERE dgi.quantity > 0 " +
                 "GROUP BY pt.id_product_type"
-
+        categoryList.clear()
         mySqlHelper.use {
             val cursor = mySqlHelper.writableDatabase.rawQuery(query, null)
             while (cursor.moveToNext()) {

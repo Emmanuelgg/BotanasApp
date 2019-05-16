@@ -80,8 +80,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
 
-
-
         storageFragment =  StorageFragment.newInstance(this)
         sellFragment = SellFragment.newInstance()
         salesFragment = SalesFragment.newInstance(this)
@@ -108,11 +106,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             onNavigationItemSelected(navView.menu.getItem(2))
         }
         checkPermission()
-
     }
 
     private fun checkPermission() {
-
         mySqlHelper.use {
             select("settings").whereArgs(
                 "id_admin == {id_admin}", "id_admin" to Admin.idAdmin
@@ -125,8 +121,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
         }
-
-
     }
 
     private fun initView() {
@@ -225,8 +219,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             delete("requisition")
             delete("requisition_description")
         }
+        finish()
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish()
+
     }
 }

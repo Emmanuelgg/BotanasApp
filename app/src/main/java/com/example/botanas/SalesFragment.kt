@@ -67,8 +67,6 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
         mySqlHelper = MySqlHelper(appContext)
         initRecycleView()
         salesAdapter = SalesAdapter(requisitionList,this)
-
-
     }
 
     override fun onCreateView(

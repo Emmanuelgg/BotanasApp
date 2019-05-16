@@ -1,12 +1,13 @@
 package com.example.botanas.adapter
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.R
@@ -15,6 +16,7 @@ import com.example.botanas.dataClasses.ProductType
 import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import java.lang.Exception
+import java.text.NumberFormat
 
 class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: ItemClickListener, sellFragment: SellFragment? = null) : RecyclerView.Adapter<ProductTypeAdapter.ViewHolder>(), StorageAdapter.ItemClickListener {
     private val onItemClickListener: ItemClickListener = listener
@@ -40,27 +42,28 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
         }
         var new_color = item.color
         if (new_color == "null" || new_color == "")
-            new_color = "#2ECC71"
+            new_color = "#FFEBEE"
         val color = Color.parseColor(new_color)
 
         var new_text_color = item.text_color
         if (new_text_color == "null" || new_text_color == "")
-            new_text_color = "#186A3B"
+            new_text_color = "#B71C1C"
         val textColor = Color.parseColor(new_text_color)
 
         holder.s_header.setBackgroundColor(color)
         holder.s_header.setTextColor(textColor)
+        holder.products_recycler.setBackgroundColor(color)
 
 
         mySqlHelper = MySqlHelper(holder.products_recycler.context)
         val query =  if (!item.all) {
-            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement " +
+            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement, p.cost " +
                     "FROM driver_general_inventory AS dgi " +
                     "INNER JOIN product AS p ON dgi.id_product = p.id_product " +
                     "WHERE p.id_product_type = ${item.id_product_type} " +
                     "AND dgi.quantity != 0"
         } else {
-            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.quantity_unit_measurement as unit_measurement " +
+            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.quantity_unit_measurement as unit_measurement, p.cost " +
                     "FROM product AS p " +
                     "WHERE p.id_product_type = ${item.id_product_type} "
         }
@@ -78,11 +81,11 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
                                 cursor.getInt(cursor.getColumnIndex("id_product")),
                                 cursor.getString(cursor.getColumnIndex("product_name")),
                                 cursor.getInt(cursor.getColumnIndex("quantity")),
-                                cursor.getInt(cursor.getColumnIndex("unit_measurement"))
+                                cursor.getInt(cursor.getColumnIndex("unit_measurement")),
+                                cursor.getString(cursor.getColumnIndex("cost"))
                             )
                         )
                     }
-
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -90,7 +93,7 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
 
         holder.products_recycler.apply {
             this.layoutManager = LinearLayoutManager(holder.products_recycler.context)
-            this.adapter = StorageAdapter(item.products, this@ProductTypeAdapter, color, textColor, position)
+            this.adapter = StorageAdapter(item.products, this@ProductTypeAdapter, color, textColor, position, item.description)
             setRecycledViewPool(viewPool)
         }
 
@@ -112,12 +115,13 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
     }
 }
 
-class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClickListener, color: Int = 0, text_color: Int = 0, parentPosition: Int = -1) :
+class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClickListener, color: Int = 0, text_color: Int = 0, parentPosition: Int = -1, productType:String = "") :
     RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
     private val color = color
     private val textColor = text_color
     private val onItemClickListener: ItemClickListener = listener
     private val parentPosition = parentPosition
+    private val productType = productType
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.storage_list, parent, false))
@@ -125,13 +129,37 @@ class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClic
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = samples[position]
+        val currency = NumberFormat.getCurrencyInstance()
         holder.s_quantity.text = item.quantity.toString()
-        if (color != 0 && textColor != 0){
-            val drawable= holder.s_quantity.background.mutate() as GradientDrawable
-            drawable.setColor(color)
-            holder.s_quantity.setTextColor(textColor)
-        }
+        holder.sProductCost.text = currency.format(item.cost.toDouble())
         holder.s_product_name.text = item.product_name
+
+        val imageResoruce = when(productType) {
+            "Bulto Anita" -> R.drawable.fritura
+            "Churro" -> R.drawable.churro
+            "Cheto" -> R.drawable.cheto
+            "Chicharron" -> R.drawable.chicharron
+            "Churrico" -> R.drawable.churrico
+            "Churrihuekito" -> R.drawable.churri_huekitos
+            "Granel" -> R.drawable.fritura
+            "Otro ingreso" -> R.drawable.ic_chips
+            "Paloma Maiz" -> R.drawable.paloma
+            "Papa" -> R.drawable.papa
+            "Tostianita" -> R.drawable.nachos
+            "Tostada" -> R.drawable.tostada
+            "Cheto Torcido" -> R.drawable.cheto
+            else -> R.drawable.ic_chips
+        }
+
+        holder.sProductImage.setImageResource(imageResoruce)
+        if (color != 0 && textColor != 0){
+            //val drawable= holder.s_quantity.background.mutate() as GradientDrawable
+            //drawable.setColor(color)
+            //holder.s_quantity.setTextColor(textColor)
+            //holder.cardView.setCardBackgroundColor(color)
+            //holder.s_product_name.setTextColor(textColor)
+        }
+
         holder.itemView.setOnClickListener {
                 View -> onItemClickListener.onItemClick(holder, position, parentPosition)
         }
@@ -142,6 +170,9 @@ class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClic
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val s_quantity: TextView = mView.findViewById(R.id.s_quantity)
         val s_product_name: TextView = mView.findViewById(R.id.s_name_product)
+        val sProductCost: TextView = mView.findViewById(R.id.s_product_cost)
+        val sProductImage: ImageView = mView.findViewById(R.id.s_product_image)
+        val cardView: CardView = mView.findViewById(R.id.s_product_container)
     }
 
     interface ItemClickListener {

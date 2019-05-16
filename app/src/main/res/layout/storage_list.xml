@@ -1,34 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingLeft="2dp"
-    android:paddingTop="2dp"
-    android:paddingRight="2dp"
-    android:paddingBottom="2dp">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="80dp"
+              android:orientation="horizontal"
+              android:paddingBottom="2dp" android:paddingLeft="4dp" android:paddingRight="4dp">
 
-    <TextView
-        android:id="@+id/s_quantity"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/circle_textview"
-        android:fontFamily="@font/viga"
-        android:gravity="center"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="@string/s_quantity"
-        android:textColor="#FFFFFF" />
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/s_product_container" app:cardElevation="1dp"
+            app:contentPadding="3dp" app:cardCornerRadius="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/s_name_product"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fontFamily="@font/viga"
-        android:gravity="center"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="@string/s_product_name" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/fritura"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#FFFFFF"
+                    android:id="@+id/s_product_image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:paddingLeft="4dp" android:paddingTop="4dp" android:paddingRight="4dp"
+                    android:paddingBottom="4dp" android:contentDescription="@string/sf_product_name"
+            />
+
+            <TextView
+                    android:id="@+id/s_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/viga"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:text="@string/s_quantity"
+                    android:textColor="@color/colorGray"
+                    app:layout_constraintStart_toEndOf="@+id/s_product_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/s_name_product"
+                    app:layout_constraintVertical_bias="1.0" android:layout_marginBottom="8dp"/>
+            <TextView
+                    android:text="@string/in_stock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView28"
+                    android:textColor="@color/colorGray" app:layout_constraintStart_toEndOf="@+id/s_quantity"
+                    app:layout_constraintEnd_toStartOf="@+id/s_product_cost"
+                    android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/s_name_product" app:layout_constraintVertical_bias="1.0"
+                    android:layout_marginStart="2dp" app:layout_constraintHorizontal_bias="0.0"/>
+            <TextView
+                    android:id="@+id/s_name_product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/viga"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:text="@string/s_product_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/s_product_image"
+                    app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="8dp"/>
+            <TextView
+                    android:text="@string/s_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/s_product_cost"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/s_name_product"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="1.0"
+                    android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorAccent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

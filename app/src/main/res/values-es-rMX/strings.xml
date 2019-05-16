@@ -48,6 +48,7 @@
     <string name="select_customer">Selecciona un cliente</string>
     <string name="sf_product_name">Producto</string>
     <string name="sf_quantity">Cantidad</string>
+    <string name="in_stock">en inventario</string>
     <string name="title_activity_login">Ingresa a tu cuenta</string>
     <string name="total">Total</string>
     <string name="welcome">Bienvenido !</string>

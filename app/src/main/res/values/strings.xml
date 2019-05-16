@@ -48,6 +48,7 @@
     <string name="sf_quantity">Quantity</string>
     <string name="abb_quantity">Quant</string>
     <string name="sf_product_name">Product</string>
+    <string name="in_stock">in stock</string>
 
     <!-- Strings to storage_list.xml -->
     <string name="s_quantity" translatable="false">0</string>
