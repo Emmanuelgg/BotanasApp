@@ -54,7 +54,7 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
             intent.putExtra("id_requisition", requisitionList[position].id_requisition)
             startActivity(intent)
         } catch (e: Exception) {
-            Snackbar.make(actualView, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            Snackbar.make(actualView, R.string.sale_not_found, Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
 
     }

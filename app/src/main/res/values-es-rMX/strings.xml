@@ -6,7 +6,7 @@
     <string name="auto_sales_sync">Sincronización automática de ventas</string>
     <string name="auto_sales_sync_description">Las ventas seran sincronizadas automaticamente, puedes desabilitar esta opción </string>
     <string name="server_notifications">Notificaciones del servidor</string>
-    <string name="server_notifications_description">Recibirás notificaciones automaticas del servidor, solo si esta opción esta activada</string>
+    <string name="server_notifications_description">Recibirás notificaciones automáticas del servidor, solo si esta opción esta activada</string>
     <string name="abb_discount">Desc</string>
     <string name="abb_quantity">Cant</string>
     <string name="action_settings">Configuraciones</string>
