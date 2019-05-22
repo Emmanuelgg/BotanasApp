@@ -24,9 +24,11 @@
 
     <!-- settings -->
     <string name="auto_sales_sync">Auto sync sales</string>
-    <string name="auto_sales_sync_description">The sales will be synchronizing automatic, you can disable this option </string>
+    <string name="auto_sales_sync_description">The sales will be synchronizing automatic, you can disable this option
+    </string>
     <string name="server_notifications">Server notifications</string>
-    <string name="server_notifications_description">You will receive all server notification if this option is enabled</string>
+    <string name="server_notifications_description">You will receive all server notification if this option is enabled
+    </string>
     <string name="on" translatable="false">On</string>
     <string name="off" translatable="false">Off</string>
 
@@ -96,4 +98,9 @@
 
     <string name="notification_title_sync_available">Sync your sales</string>
     <string name="notification_description_sync_available">You have sales available to synchronizing</string>
+
+    <!--Strings to bluetooth printer-->
+    <string name="printing_title">Ticket print</string>
+    <string name="printing_message">Do you want print the actual sale?</string>
+    <string name="printing_cancel">Ticket print canceled</string>
 </resources>

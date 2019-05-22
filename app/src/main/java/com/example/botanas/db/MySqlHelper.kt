@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
-private const val DATABASE_VERSION = 10
+private const val DATABASE_VERSION = 11
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", null, DATABASE_VERSION) {
 
     companion object {
@@ -53,6 +53,22 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
             "weight" to TEXT,
             "quantity_unit_measurement" to INTEGER,
             "shot_name" to TEXT
+        )
+        /* Table price */
+        db.createTable("price", true,
+            "id_price" to INTEGER + PRIMARY_KEY,
+            "name" to TEXT,
+            "description" to TEXT,
+            "status" to INTEGER
+        )
+        /* Table product_price */
+        db.createTable("product_price", true,
+            "id_product_price" to INTEGER + PRIMARY_KEY,
+            "id_product" to INTEGER,
+            "id_price" to INTEGER,
+            "price" to TEXT,
+            "profit" to TEXT,
+            "quantity" to TEXT
         )
         /* Table product_type */
         db.createTable("product_type", true,
@@ -143,6 +159,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
         db.dropTable("settings",true)
         db.dropTable("admin",true)
         db.dropTable("product",true)
+        db.dropTable("price",true)
+        db.dropTable("product_price",true)
         db.dropTable("product_type",true)
         db.dropTable("product_base",true)
         db.dropTable("driver_general_inventory",true)

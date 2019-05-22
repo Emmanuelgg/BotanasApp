@@ -1,6 +1,5 @@
 package com.example.botanas
 
-import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -23,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.botanas.api.MyFirebaseMessagingService
 import com.example.botanas.db.MySqlHelper
-import com.example.botanas.services.Network
 import com.example.botanas.services.SendDataService
 import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
@@ -32,7 +30,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
 import java.io.IOException
-import java.util.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -60,6 +57,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        /*
+        Impresora bluetooth para escanear dispositivos
+        Printooth.init(applicationContext)
+        startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
+        */
 
         /*val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->

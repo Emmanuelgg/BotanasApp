@@ -61,9 +61,9 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
             Log.d("result", result)
             if (count == 0 || result == "." || result == ",") {
                 for (product in productListSale){
-                    val newCost = product.trueCost.toDouble()
-                    product.cost = "%.2f".format(newCost)
-                    totalAmount += product.cost.toDouble() * product.quantity.toDouble()
+                    //val newCost = product.trueCost.toDouble()
+                    //product.cost = "%.2f".format(newCost)
+                    totalAmount += product.price.toDouble() * product.quantity.toDouble()
                     custProductListRecycler.adapter!!.notifyDataSetChanged()
                 }
 
@@ -83,9 +83,10 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                 totalAmount = 0.00
                 val discount = (saleDiscount.text.toString().toDouble() / 100)
                 for (product in productListSale){
-                    val newCost = product.trueCost.toDouble() - (product.trueCost.toDouble() * discount)
-                    product.cost = "%.2f".format(newCost)
-                    totalAmount += product.cost.toDouble() * product.quantity.toDouble()
+                //    val newCost = product.trueCost.toDouble() - (product.trueCost.toDouble() * discount)
+                  //  product.cost = "%.2f".format(newCost)
+                    totalAmount += product.price.toDouble() * product.quantity.toDouble()
+                    totalAmount -= (totalAmount * discount)
                 }
                 val currency = NumberFormat.getCurrencyInstance()
                 totalAmountTextView.text = currency.format(totalAmount)
@@ -122,9 +123,16 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                             item.cost = this.getString(this.getColumnIndex("cost"))
                             item.trueCost = this.getString(this.getColumnIndex("cost"))
                             item.weight = this.getString(this.getColumnIndex("weight"))
-                            totalAmount += item.cost.toDouble() * item.quantity.toDouble()
                         }
                     }
+                select("product_price", "price")
+                    .whereArgs("(id_product == {id_product}) and (id_price == {id_price})", "id_product"  to item.id_product, "id_price" to 5)
+                    .exec {
+                        while (this.moveToNext()){
+                            item.price = this.getString(this.getColumnIndex("price"))
+                        }
+                    }
+                totalAmount += item.price.toDouble() * item.quantity.toDouble()
             }
         }
         totalAmountTextView.text = currency.format(totalAmount)
@@ -234,11 +242,11 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                             "requisition_description",
                             "id_requisition" to requisitionID,
                             "id_product" to product.id_product,
-                            "price" to product.cost,
+                            "price" to product.price,
                             "quantity" to product.quantity,
                             "weight" to product.weight,
                             "cost" to product.trueCost,
-                            "total" to (product.quantity.toDouble()*product.cost.toDouble()).toString(),
+                            "total" to (product.quantity.toDouble()*product.price.toDouble()).toString(),
                             "description" to product.product_name,
                             "quantity_unit_measure" to product.quantity_unit_measurement,
                             "status" to 2

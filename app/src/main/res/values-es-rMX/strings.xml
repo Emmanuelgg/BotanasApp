@@ -61,4 +61,7 @@
     <string name="show_existing">Mostrar existentes</string>
     <string name="notification_title_sync_available">Sincroniza tus ventas</string>
     <string name="notification_description_sync_available">Tienes ventas disponibles para sincronizar.</string>
+    <string name="printing_title">Imprimir ticket</string>
+    <string name="printing_message">¿Quieres imprimir la venta actual?</string>
+    <string name="printing_cancel">Impresión de ticket cancelada</string>
 </resources>

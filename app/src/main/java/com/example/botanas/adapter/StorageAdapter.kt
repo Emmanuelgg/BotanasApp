@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.R
@@ -25,7 +24,7 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
     private val saleFragment = sellFragment
     override fun onItemClick(item: StorageAdapter.ViewHolder, position: Int, parentPosition: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        Log.d("click", item.s_product_name.text.toString())
+        Log.d("click", item.sProductName.text.toString())
         Log.d("parentPosition", parentPosition.toString())
         Log.d("position", position.toString())
         if (saleFragment != null)
@@ -57,15 +56,19 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
 
         mySqlHelper = MySqlHelper(holder.products_recycler.context)
         val query =  if (!item.all) {
-            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement, p.cost " +
+            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement, p.cost, pp.price " +
                     "FROM driver_general_inventory AS dgi " +
                     "INNER JOIN product AS p ON dgi.id_product = p.id_product " +
+                    "INNER JOIN product_price AS pp ON pp.id_product = p.id_product " +
                     "WHERE p.id_product_type = ${item.id_product_type} " +
-                    "AND dgi.quantity != 0"
+                    "AND dgi.quantity != 0 " +
+                    "AND pp.id_price = 5"
         } else {
-            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.quantity_unit_measurement as unit_measurement, p.cost " +
+            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.quantity_unit_measurement as unit_measurement, p.cost, pp.price " +
                     "FROM product AS p " +
-                    "WHERE p.id_product_type = ${item.id_product_type} "
+                    "INNER JOIN product_price AS pp ON pp.id_product = p.id_product " +
+                    "WHERE p.id_product_type = ${item.id_product_type} " +
+                    "AND pp.id_price = 5"
         }
 
         try {
@@ -82,7 +85,10 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
                                 cursor.getString(cursor.getColumnIndex("product_name")),
                                 cursor.getInt(cursor.getColumnIndex("quantity")),
                                 cursor.getInt(cursor.getColumnIndex("unit_measurement")),
-                                cursor.getString(cursor.getColumnIndex("cost"))
+                                cursor.getString(cursor.getColumnIndex("cost")),
+                                "",
+                                "",
+                                cursor.getString(cursor.getColumnIndex("price"))
                             )
                         )
                     }
@@ -130,9 +136,9 @@ class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClic
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = samples[position]
         val currency = NumberFormat.getCurrencyInstance()
-        holder.s_quantity.text = item.quantity.toString()
-        holder.sProductCost.text = currency.format(item.cost.toDouble())
-        holder.s_product_name.text = item.product_name
+        holder.sQuantity.text = item.quantity.toString()
+        holder.sProductPrice.text = currency.format(item.price.toDouble())
+        holder.sProductName.text = item.product_name
 
         val imageResoruce = when(productType) {
             "Bulto Anita" -> R.drawable.fritura
@@ -142,13 +148,13 @@ class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClic
             "Churrico" -> R.drawable.churrico
             "Churrihuekito" -> R.drawable.churri_huekitos
             "Granel" -> R.drawable.fritura
-            "Otro ingreso" -> R.drawable.ic_chips
+            "Otro ingreso" -> R.drawable.ic_snack
             "Paloma Maiz" -> R.drawable.paloma
             "Papa" -> R.drawable.papa
             "Tostianita" -> R.drawable.nachos
             "Tostada" -> R.drawable.tostada
             "Cheto Torcido" -> R.drawable.cheto
-            else -> R.drawable.ic_chips
+            else -> R.drawable.ic_snack
         }
 
         holder.sProductImage.setImageResource(imageResoruce)
@@ -168,11 +174,11 @@ class StorageAdapter(private val samples: ArrayList<Storage>, listener: ItemClic
     override fun getItemCount() = samples.size
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val s_quantity: TextView = mView.findViewById(R.id.s_quantity)
-        val s_product_name: TextView = mView.findViewById(R.id.s_name_product)
-        val sProductCost: TextView = mView.findViewById(R.id.s_product_cost)
+        val sQuantity: TextView = mView.findViewById(R.id.s_quantity)
+        val sProductName: TextView = mView.findViewById(R.id.s_name_product)
+        val sProductPrice: TextView = mView.findViewById(R.id.s_product_price)
         val sProductImage: ImageView = mView.findViewById(R.id.s_product_image)
-        val cardView: CardView = mView.findViewById(R.id.s_product_container)
+        //val cardView: CardView = mView.findViewById(R.id.s_product_container)
     }
 
     interface ItemClickListener {

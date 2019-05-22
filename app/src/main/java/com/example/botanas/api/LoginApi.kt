@@ -22,13 +22,21 @@ import org.jetbrains.anko.db.insert
 import org.json.JSONObject
 import java.lang.Exception
 
-class LoginApi (context: Context) {
+class LoginApi (context: Context, loading: Boolean = false) {
 
-    private var appContext: Context = context
+    private val appContext: Context = context
     private lateinit var mySqlHelper: MySqlHelper
     private var url = ""
-    private val progressBar : ProgressBar = (context as Activity).findViewById(R.id.progressBarLogin)
-    private val view: View = (appContext as Activity).findViewById(R.id.container)
+    private lateinit var progressBar : ProgressBar
+    private lateinit var view: View
+
+    init {
+        if  (!loading){
+            progressBar = (context as Activity).findViewById(R.id.progressBarLogin)
+            view = (appContext as Activity).findViewById(R.id.container)
+        }
+
+    }
 
 
 

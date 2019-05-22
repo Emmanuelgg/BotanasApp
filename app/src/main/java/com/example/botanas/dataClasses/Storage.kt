@@ -11,5 +11,6 @@ data class Storage(
     val quantity_unit_measurement: Number,
     var cost: String = "0",
     var trueCost: String = "0",
-    var weight: String = ""
+    var weight: String = "",
+    var price: String = ""
 ) : Serializable

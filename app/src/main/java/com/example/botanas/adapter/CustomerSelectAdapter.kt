@@ -21,12 +21,12 @@ class CustomerSelectAdapter(private val samples: ArrayList<Storage>, listener: I
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = samples[position]
-        var total = item.cost.toDouble() * item.quantity.toDouble()
+        val total = item.price.toDouble() * item.quantity.toDouble()
         val currency = NumberFormat.getCurrencyInstance()
 
         holder.quantity.text = "${item.quantity}x"
         holder.productName.text = item.product_name
-        holder.cost.text = currency.format(item.cost.toDouble())
+        holder.price.text = currency.format(item.price.toDouble())
         holder.totalCost.text = currency.format(total)
 
         holder.itemView.setOnClickListener {
@@ -41,7 +41,7 @@ class CustomerSelectAdapter(private val samples: ArrayList<Storage>, listener: I
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val quantity: TextView = mView.findViewById(R.id.sale_product_quantity)
         val productName: TextView = mView.findViewById(R.id.sale_product_name)
-        val cost: TextView = mView.findViewById(R.id.sale_product_cost)
+        val price: TextView = mView.findViewById(R.id.sale_product_price)
         val totalCost: TextView = mView.findViewById(R.id.sale_product_total_cost)
     }
 

@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView28"
                     android:textColor="@color/colorGray" app:layout_constraintStart_toEndOf="@+id/s_quantity"
-                    app:layout_constraintEnd_toStartOf="@+id/s_product_cost"
+                    app:layout_constraintEnd_toStartOf="@+id/s_product_price"
                     android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/s_name_product" app:layout_constraintVertical_bias="1.0"
                     android:layout_marginStart="2dp" app:layout_constraintHorizontal_bias="0.0"/>
@@ -67,7 +67,7 @@
                     android:text="@string/s_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/s_product_cost"
+                    android:id="@+id/s_product_price"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/s_name_product"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="1.0"

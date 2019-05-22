@@ -100,6 +100,8 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
         var jsonProductType: String
         var jsonProductBase: String
         var jsonClient: String
+        var jsonPrice: String
+        var jsonProductPrice: String
         val jsonDATA = JSONObject()
         jsonDATA.put("api_key", api_key)
 
@@ -120,6 +122,12 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
 
                     jsonClient = response.getJSONArray("client").toString()
                     updateClientTable(jsonClient)
+
+                    jsonPrice = response.getJSONArray("price").toString()
+                    updatePriceTable(jsonPrice)
+
+                    jsonProductPrice = response.getJSONArray("product_price").toString()
+                    updateProductPriceTable(jsonProductPrice)
 
                     progressBar.visibility = View.GONE
                     Snackbar.make(view, R.string.inventory_sync_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
@@ -315,6 +323,60 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                             "status" to jsonObject.getInt("status"),
                             "created_at" to jsonObject.getString("created_at"),
                             "updated_at" to jsonObject.getString("updated_at")
+                        )
+                        i++
+                    }
+                }
+            } catch (e: Exception){
+                Log.d("Exception: ", e.toString())
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            }
+        }
+    }
+
+    private fun updatePriceTable(result: String?) {
+        if (result != "") {
+            try {
+                val jsonArray = JSONArray(result)
+                var i = 0
+                mySqlHelper.use {
+                    delete("price")
+                    while (i < jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        insert(
+                            "price",
+                            "id_price" to jsonObject.getInt("id_price"),
+                            "name" to jsonObject.getString("name"),
+                            "description" to jsonObject.getString("description"),
+                            "status" to jsonObject.getInt("status")
+                        )
+                        i++
+                    }
+                }
+            } catch (e: Exception){
+                Log.d("Exception: ", e.toString())
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            }
+        }
+    }
+
+    private fun updateProductPriceTable(result: String?) {
+        if (result != "") {
+            try {
+                val jsonArray = JSONArray(result)
+                var i = 0
+                mySqlHelper.use {
+                    delete("product_price")
+                    while (i < jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        insert(
+                            "product_price",
+                            "id_product_price" to jsonObject.getInt("id_product_price"),
+                            "id_product" to jsonObject.getInt("id_product"),
+                            "id_price" to jsonObject.getInt("id_price"),
+                            "price" to jsonObject.getString("price"),
+                            "profit" to jsonObject.getString("profit"),
+                            "quantity" to jsonObject.getString("quantity")
                         )
                         i++
                     }

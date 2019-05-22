@@ -31,31 +31,6 @@ class LoginActivity : AppCompatActivity() {
 
 
         mySqlHelper = MySqlHelper(this)
-        mySqlHelper.use {
-            select("admin")
-                .limit(1)
-                .exec {
-                    if (this.count > 0) {
-                        this.moveToNext()
-                        val name = this.getString(this.getColumnIndex("name"))
-                        loginApi.loginSuccess(name)
-                        /*Admin(
-                            this.getInt(this.getColumnIndex("id_admin")),
-                            this.getString(this.getColumnIndex("user_name")),
-                            this.getString(this.getColumnIndex("name")),
-                            this.getString(this.getColumnIndex("email")),
-                            this.getInt(this.getColumnIndex("id_role")),
-                            this.getInt(this.getColumnIndex("status"))
-                        )*/
-                        Admin.idAdmin = this.getInt(this.getColumnIndex("id_admin"))
-                        Admin.userName = this.getString(this.getColumnIndex("user_name"))
-                        Admin.name = this.getString(this.getColumnIndex("name"))
-                        Admin.email = this.getString(this.getColumnIndex("email"))
-                        Admin.idRole = this.getInt(this.getColumnIndex("id_role"))
-                        Admin.status = this.getInt(this.getColumnIndex("status"))
-                    }
-                }
-        }
 
         val userName = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
