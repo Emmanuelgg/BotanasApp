@@ -103,4 +103,5 @@
     <string name="printing_title">Ticket print</string>
     <string name="printing_message">Do you want print the actual sale?</string>
     <string name="printing_cancel">Ticket print canceled</string>
+    <string name="printing_success">Success print</string>
 </resources>

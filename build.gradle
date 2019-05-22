@@ -21,7 +21,7 @@ allprojects {
         google()
         jcenter()
         //bluetooth printing
-        // maven { url 'https://jitpack.io' }
+        maven { url 'https://jitpack.io' }
         
     }
 }
