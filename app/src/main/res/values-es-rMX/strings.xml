@@ -65,4 +65,5 @@
     <string name="printing_message">¿Quieres imprimir la venta actual?</string>
     <string name="printing_cancel">Impresión de ticket cancelada</string>
     <string name="printing_success">Impresion exitosa</string>
+    <string name="bluetooth_scanner">Escanear</string>
 </resources>

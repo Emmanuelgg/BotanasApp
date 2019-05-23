@@ -21,6 +21,7 @@
         cannot be reverted.
     </string>
     <string name="sale_not_found">Sale not found, plz refresh the app</string>
+    <string name="bluetooth_scanner">Scanning</string>
 
     <!-- settings -->
     <string name="auto_sales_sync">Auto sync sales</string>
@@ -104,4 +105,5 @@
     <string name="printing_message">Do you want print the actual sale?</string>
     <string name="printing_cancel">Ticket print canceled</string>
     <string name="printing_success">Success print</string>
+    <string name="bluetooth_address_example" translatable="false">B2:31:A2:32:3W</string>
 </resources>

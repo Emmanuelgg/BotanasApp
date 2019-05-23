@@ -1,6 +1,7 @@
 package com.example.botanas
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,9 +11,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.botanas.adapter.BDevice
 import com.example.botanas.adapter.CustomerSelectAdapter
 import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
+import com.example.botanas.services.BluePrinter
+import com.example.botanas.services.BluetoothService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.select
@@ -31,6 +35,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
     private lateinit var soldClientNameView: TextView
     private lateinit var soldDateView: TextView
     private lateinit var view: View
+    private lateinit var bluePrinter: BluePrinter
 
     override fun onItemClick(item: CustomerSelectAdapter.ViewHolder, position: Int, parentPosition: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -62,6 +67,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
             this.adapter = customerSelectionAdapter
         }
 
+        bluePrinter = BluePrinter(applicationContext)
         val builder = AlertDialog.Builder(this)
         initAlertDialog(builder)
 
@@ -77,7 +83,20 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
         builder.setCancelable(false)
         builder.setPositiveButton(R.string.confirm
         ) { _, _ ->
-            //clientSaleSave()
+            //startActivityForResult(Intent(applicationContext, BluetoothScannerActivity::class.java), BluetoothScannerActivity.SCANNING_FOR_PRINTER)
+            if (!BluetoothService().isEnabled() || BDevice.device == null)
+                startActivityForResult(Intent(applicationContext, BluetoothScannerActivity::class.java), BluetoothScannerActivity.SCANNING_FOR_PRINTER)
+            else {
+                val device = BDevice.device
+                val data = "Hello world!\n This is a test\n"
+                val mBTSocket = device!!.createRfcommSocketToServiceRecord(device.uuids[0].uuid)
+                mBTSocket.connect()
+                val os = mBTSocket.outputStream
+                os.flush()
+                os.write(data.toByteArray())
+                mBTSocket.close()
+            }
+                //bluePrinter.printSale()
         }
 
         builder.setNegativeButton(R.string.no
