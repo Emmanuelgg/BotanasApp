@@ -66,4 +66,5 @@
     <string name="printing_cancel">Impresión de ticket cancelada</string>
     <string name="printing_success">Impresion exitosa</string>
     <string name="bluetooth_scanner">Escanear</string>
+    <string name="bluetooth_pairing_error">Error al realizar la conexión al dispositivo bluetooth</string>
 </resources>

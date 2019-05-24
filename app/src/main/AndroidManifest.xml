@@ -55,7 +55,6 @@
                 android:name=".SaleDetail"
                 android:configChanges="orientation|keyboardHidden"
                 android:label="@string/sale_detail"
-                android:noHistory="true"
                 android:screenOrientation="portrait">
         </activity>
         <activity

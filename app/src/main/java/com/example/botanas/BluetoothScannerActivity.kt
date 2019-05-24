@@ -12,11 +12,13 @@ import android.content.Intent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
-import com.example.botanas.adapter.BDevice
+import android.view.View
+import com.example.botanas.services.BluePrinter
 import com.example.botanas.services.BluetoothService
-
+import com.google.android.material.snackbar.Snackbar
 
 
 
@@ -27,7 +29,7 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
     private val REQUEST_ENABLE_BT = 1
     private val devices: MutableSet<BluetoothDevice> = mutableSetOf()
     private val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-    private lateinit var devicePair: BluetoothDevice
+    private lateinit var view: View
 
     override fun onItemClick(item: BluetoothScannerAdapter.ViewHolder, position: Int, parentPosition: Int) {
         val device = devices.elementAt(position)
@@ -39,6 +41,8 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth_scanner)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        view = findViewById(R.id.bluetooth_scanner_layout)
 
         bluetoothScannerAdapter = BluetoothScannerAdapter(devices, this)
         bluetoothDevicesRecycler = findViewById(R.id.bluetoothDevicesRecycler)
@@ -87,6 +91,27 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
                 // Getting device information from the intent
                 devices.add(intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE))
                 bluetoothDevicesRecycler.adapter!!.notifyDataSetChanged()
+            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED == action) {
+                val state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR)
+                val prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR)
+
+                if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
+                    context.unregisterReceiver(this)
+                    if (mBluetoothAdapter.isDiscovering) {
+                        mBluetoothAdapter.cancelDiscovery()
+                        context.unregisterReceiver(this)
+                    }
+                    val handler = Handler()
+                    handler.postDelayed({
+                        if (BluePrinter(context).setPrinter(BluePrinter.device!!))
+                            finish()
+                        else
+                            Snackbar.make(view, R.string.bluetooth_pairing_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                    }, 1000)
+
+                } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
+
+                }
             }
         }
     }
@@ -94,13 +119,17 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
     private fun pair(device: BluetoothDevice) {
         applicationContext.registerReceiver(mReceiver, IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED))
         try {
-            BDevice.device = device
+            BluePrinter.device = device
             if (device.bondState == BluetoothDevice.BOND_NONE) {
                 device.createBond()
+            } else if (device.bondState == BluetoothDevice.BOND_BONDED) {
+                unregisterReceiver(mReceiver)
+                BluePrinter.device = device
+                BluePrinter(this).setPrinter(device)
+                finish()
             }
             if (mBluetoothAdapter.isDiscovering)
                 mBluetoothAdapter.cancelDiscovery()
-            finish()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -112,11 +141,17 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
             android.R.id.home -> {
                 if (mBluetoothAdapter.isDiscovering)
                     mBluetoothAdapter.cancelDiscovery()
+                unregisterReceiver(mReceiver)
                 finish()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+       super.onBackPressed()
+       unregisterReceiver(mReceiver)
     }
 
     companion object {

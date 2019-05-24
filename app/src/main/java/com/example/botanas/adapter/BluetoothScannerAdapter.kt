@@ -9,12 +9,6 @@ import com.example.botanas.R
 import android.bluetooth.BluetoothDevice
 import androidx.cardview.widget.CardView
 
-class BDevice {
-    companion object {
-        var device: BluetoothDevice? = null
-    }
-}
-
 class BluetoothScannerAdapter(private val samples: MutableSet<BluetoothDevice>, listener: ItemClickListener, parentPosition: Int = -1) :
     RecyclerView.Adapter<BluetoothScannerAdapter.ViewHolder>() {
     private val onItemClickListener: ItemClickListener = listener
