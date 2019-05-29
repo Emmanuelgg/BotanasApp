@@ -66,12 +66,15 @@ class SalesApi(context: Context, mainActivity: MainActivity? = null) {
                     while (this.moveToNext()) {
                         val jsonRequisition = JSONObject()
                         val idRequisition = this.getInt(this.getColumnIndex("id_requisition"))
+                        val total = this.getDouble(this.getColumnIndex("total"))
+                        var discount = this.getDouble(this.getColumnIndex("discount"))/100
+                        discount *= total
                         jsonRequisition.put("id_requisition", idRequisition)
                         jsonRequisition.put("id_admin", Admin.idAdmin)
                         jsonRequisition.put("id_client", this.getInt(this.getColumnIndex("id_client")))
                         jsonRequisition.put("date", this.getString(this.getColumnIndex("created_at")))
-                        jsonRequisition.put("total", this.getString(this.getColumnIndex("total")))
-                        jsonRequisition.put("discount", this.getString(this.getColumnIndex("discount")))
+                        jsonRequisition.put("total", total.toString())
+                        jsonRequisition.put("discount", discount.toString())
                         val jsonArrayDescription = JSONArray()
                         select("requisition_description")
                             .whereArgs("id_requisition == {id_requisition}", "id_requisition" to idRequisition)

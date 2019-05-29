@@ -198,13 +198,15 @@ class SalesFragment : Fragment(), SalesAdapter.ItemOnPressListener {
                                     clientName = this.getString(this.getColumnIndex("name")) + " - " + this.getString(this.getColumnIndex("municipality"))
 
                                 }
+                            var total = this.getDouble(this.getColumnIndex("total"))
+                            total -= (total*this.getDouble(this.getColumnIndex("discount"))/100)
                             requisitionList.add(
                                 Requisition(
                                     this.getInt(this.getColumnIndex("id_requisition")),
                                     idClient,
                                     clientName,
                                     this.getString(this.getColumnIndex("created_at")),
-                                    this.getString(this.getColumnIndex("total")),
+                                    total.toString(),
                                     this.getString(this.getColumnIndex("discount"))
                                 )
                             )

@@ -1,9 +1,11 @@
 package com.example.botanas
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -88,6 +90,8 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
             else {
                 bluePrinter.printSale(idRequisition)
             }
+
+
         }
 
         builder.setNegativeButton(R.string.no
@@ -121,9 +125,11 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
                 .exec {
                     this.moveToNext()
                     val discount = this.getString(this.getColumnIndex("discount")) + "%"
-                    val total = currency.format(this.getDouble(this.getColumnIndex("total")))
+                    var total = this.getDouble(this.getColumnIndex("total"))
+                    total -= (total * (this.getDouble(this.getColumnIndex("discount"))/100))
+                    val totalString = currency.format(total)
                     soldDiscountView.text = discount
-                    soldTotalView.text = total
+                    soldTotalView.text = totalString
                     soldDateView.text = this.getString(this.getColumnIndex("created_at"))
 
                     val idClient = this.getInt(this.getColumnIndex("id_client"))

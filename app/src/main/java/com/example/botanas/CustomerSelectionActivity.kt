@@ -43,6 +43,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
     private lateinit var view: View
     private lateinit var clientSpinner: SearchableSpinner
     private var totalAmount: Double = 0.00
+    private var totalAmountDisc: Double = 0.00
     private val clientArray = ArrayList<Client>()
     private lateinit var saleDiscount: EditText
     private val currency = NumberFormat.getCurrencyInstance()
@@ -66,6 +67,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                     totalAmount += product.price.toDouble() * product.quantity.toDouble()
                     custProductListRecycler.adapter!!.notifyDataSetChanged()
                 }
+                totalAmountDisc = totalAmount
 
                 totalAmountTextView.text = currency.format(totalAmount)
             }
@@ -86,10 +88,11 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                 //    val newCost = product.trueCost.toDouble() - (product.trueCost.toDouble() * discount)
                   //  product.cost = "%.2f".format(newCost)
                     totalAmount += product.price.toDouble() * product.quantity.toDouble()
-                    totalAmount -= (totalAmount * discount)
                 }
                 val currency = NumberFormat.getCurrencyInstance()
-                totalAmountTextView.text = currency.format(totalAmount)
+                totalAmountDisc = totalAmount
+                totalAmountDisc -= (totalAmount * discount)
+                totalAmountTextView.text = currency.format(totalAmountDisc)
                 custProductListRecycler.adapter!!.notifyDataSetChanged()
             } else {
 
@@ -269,7 +272,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
             finishAffinity()
             val intent = Intent(appContext,SuccessfulSale::class.java)
             //intent.putExtra("saleSuccessful", true)
-            intent.putExtra("total", totalAmount)
+            intent.putExtra("total", totalAmountDisc)
             intent.putExtra("client", clientSpinner.selectedItem.toString())
             intent.putExtra("date", dateTime)
             startActivity(intent)
