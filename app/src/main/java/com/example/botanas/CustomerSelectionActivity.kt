@@ -136,6 +136,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
                         }
                     }
                 totalAmount += item.price.toDouble() * item.quantity.toDouble()
+                totalAmountDisc = totalAmount
             }
         }
         totalAmountTextView.text = currency.format(totalAmount)

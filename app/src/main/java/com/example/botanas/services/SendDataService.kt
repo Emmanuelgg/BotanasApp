@@ -9,6 +9,8 @@ import android.os.IBinder
 import android.util.Log
 import com.example.botanas.api.SalesApi
 import com.example.botanas.db.MySqlHelper
+import com.example.botanas.db.Permission
+import com.example.botanas.ui.login.Admin
 import org.jetbrains.anko.db.select
 import java.util.*
 
@@ -52,7 +54,8 @@ class SendDataService : Service() {
                 try {
                     if (notificationSent > 0) {
                         val network = Network(applicationContext)
-                        if (network.isConnected()) {
+                        val permission = Permission(applicationContext)
+                        if (network.isConnected() && permission.autoSaleSync()) {
                             mySqlHelper.use {
                                 select("requisition")
                                     .exec {

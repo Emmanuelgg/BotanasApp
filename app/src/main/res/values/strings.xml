@@ -107,4 +107,5 @@
     <string name="printing_success">Success print</string>
     <string name="bluetooth_address_example" translatable="false">B2:31:A2:32:3W</string>
     <string name="bluetooth_pairing_error">Bluetooth pairing error</string>
+    <string name="bluetooth_pairing_success">Bluetooth pairing success</string>
 </resources>

@@ -16,10 +16,12 @@ import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import com.example.botanas.services.BluePrinter
 import com.example.botanas.services.BluetoothService
 import com.google.android.material.snackbar.Snackbar
-
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.ItemClickListener {
@@ -30,6 +32,7 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
     private val devices: MutableSet<BluetoothDevice> = mutableSetOf()
     private val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private lateinit var view: View
+    private lateinit var searchingProgress: ProgressBar
 
     override fun onItemClick(item: BluetoothScannerAdapter.ViewHolder, position: Int, parentPosition: Int) {
         val device = devices.elementAt(position)
@@ -43,6 +46,7 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         view = findViewById(R.id.bluetooth_scanner_layout)
+        searchingProgress = findViewById(R.id.searching_progress)
 
         bluetoothScannerAdapter = BluetoothScannerAdapter(devices, this)
         bluetoothDevicesRecycler = findViewById(R.id.bluetoothDevicesRecycler)
@@ -80,6 +84,14 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
             mBluetoothAdapter.cancelDiscovery()
 
         mBluetoothAdapter.startDiscovery()
+        //searchingProgress.visibility = View.VISIBLE
+
+        Timer("SettingUp", true).schedule(15000) {
+            if (mBluetoothAdapter.isDiscovering)
+                mBluetoothAdapter.cancelDiscovery()
+        }
+
+
 
     }
 
@@ -89,9 +101,16 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
             if (BluetoothDevice.ACTION_FOUND == action) {
                 // A Bluetooth device was found
                 // Getting device information from the intent
-                devices.add(intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE))
+                val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                devices.add(device)
                 bluetoothDevicesRecycler.adapter!!.notifyDataSetChanged()
-            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED == action) {
+            }
+            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
+                Log.d("stop", "true")
+                mBluetoothAdapter.cancelDiscovery()
+                //searchingProgress.visibility = View.GONE
+            }
+            else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED == action) {
                 val state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR)
                 val prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR)
 
@@ -99,6 +118,7 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
                     context.unregisterReceiver(this)
                     if (mBluetoothAdapter.isDiscovering) {
                         mBluetoothAdapter.cancelDiscovery()
+                        //searchingProgress.visibility = View.GONE
                         context.unregisterReceiver(this)
                     }
                     val handler = Handler()
@@ -133,7 +153,6 @@ class BluetoothScannerActivity : AppCompatActivity(), BluetoothScannerAdapter.It
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

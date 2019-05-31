@@ -1,11 +1,9 @@
 package com.example.botanas
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -54,6 +52,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
         soldClientNameView = findViewById(R.id.sold_client_name)
         soldDateView = findViewById(R.id.sold_date)
         view = findViewById(R.id.sale_detail_layout)
+
 
         idRequisition = intent.getIntExtra("id_requisition", 0)
 
