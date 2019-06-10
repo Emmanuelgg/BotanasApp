@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" android:paddingLeft="4dp" android:paddingRight="4dp"
+          android:paddingBottom="2dp">
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:cardElevation="1dp" app:cardCornerRadius="8dp"
+            app:contentPadding="3dp">
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <EditText
+                    android:layout_width="0dp"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/shipload_product_quantity" android:hint="@string/s_quantity"
+                    android:importantForAutofill="no" tools:targetApi="o" android:gravity="center"
+                    android:fontFamily="@font/viga"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="false"
+                    android:textSize="14sp" android:background="@drawable/circle_edittext_red"
+                    android:textColor="@color/colorAccent" android:textColorHint="@color/colorAccent"
+                    android:textCursorDrawable="@drawable/custom_text_cursor" android:layout_weight=".2"
+                    android:layout_height="70dp" android:paddingLeft="4dp" android:paddingRight="4dp"
+            />
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" android:id="@+id/shipload_product_name" android:layout_weight=".80"
+                    android:text="@string/s_product_name" android:fontFamily="@font/viga" android:gravity="center"/>
+        </TableRow>
+    </androidx.cardview.widget.CardView>
+</TableRow>

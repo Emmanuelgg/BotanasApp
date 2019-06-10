@@ -36,7 +36,8 @@ import java.io.IOException
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     StorageFragment.OnFragmentInteractionListener,
     SellFragment.OnFragmentInteractionListener,
-    SalesFragment.OnFragmentInteractionListener
+    SalesFragment.OnFragmentInteractionListener,
+    DriverShiploadFragment.OnFragmentInteractionListener
 {
 
     override fun onFragmentInteraction(uri: Uri) {
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var storageFragment: StorageFragment
     private lateinit var sellFragment: SellFragment
     private lateinit var salesFragment: SalesFragment
+    private lateinit var driverShiploadFragment: DriverShiploadFragment
     private val TAG = "MyFirebaseToken"
     private val messagingService = MyFirebaseMessagingService()
     private lateinit var mySqlHelper: MySqlHelper
@@ -88,6 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         storageFragment =  StorageFragment.newInstance(this)
         sellFragment = SellFragment.newInstance()
         salesFragment = SalesFragment.newInstance(this)
+        driverShiploadFragment = DriverShiploadFragment.newInstance()
 
         val headerView = navView.getHeaderView(0)
         val userName: TextView = headerView.findViewById(R.id.user_name)
@@ -178,6 +181,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_sales -> {
                 changeFragment(salesFragment, "sales")
+            }
+            R.id.nav_driver_shipload -> {
+                changeFragment(driverShiploadFragment, "driver_shipload")
             }
             R.id.log_out -> {
                 logOut()
