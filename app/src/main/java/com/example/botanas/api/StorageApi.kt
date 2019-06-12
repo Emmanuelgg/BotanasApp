@@ -102,6 +102,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
         var jsonClient: String
         var jsonPrice: String
         var jsonProductPrice: String
+        var jsonStores: String
         val jsonDATA = JSONObject()
         jsonDATA.put("api_key", api_key)
 
@@ -129,6 +130,9 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                     jsonProductPrice = response.getJSONArray("product_price").toString()
                     updateProductPriceTable(jsonProductPrice)
 
+                    jsonStores = response.getJSONArray("store").toString()
+                    updateStoreTable(jsonStores)
+
                     progressBar.visibility = View.GONE
                     Snackbar.make(view, R.string.inventory_sync_successful, Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 } catch (e: Exception) {
@@ -137,6 +141,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                     jsonProductType = ""
                     jsonProductBase = ""
                     jsonClient = ""
+                    jsonStores = ""
                 }
 
             },
@@ -377,6 +382,33 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                             "price" to jsonObject.getString("price"),
                             "profit" to jsonObject.getString("profit"),
                             "quantity" to jsonObject.getString("quantity")
+                        )
+                        i++
+                    }
+                }
+            } catch (e: Exception){
+                Log.d("Exception: ", e.toString())
+                Snackbar.make(view, R.string.inventory_sync_error, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            }
+        }
+    }
+
+    private fun updateStoreTable(result: String?) {
+        if (result != "") {
+            try {
+                val jsonArray = JSONArray(result)
+                var i = 0
+                mySqlHelper.use {
+                    delete("store")
+                    while (i < jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        insert(
+                            "store",
+                            "id_store" to jsonObject.getInt("id_store"),
+                            "code" to jsonObject.getString("code"),
+                            "name" to jsonObject.getString("name"),
+                            "status" to jsonObject.getInt("status"),
+                            "color" to jsonObject.getString("color")
                         )
                         i++
                     }

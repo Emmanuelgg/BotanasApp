@@ -111,4 +111,5 @@
 
     <!--String driver shipload-->
     <string name="driver_shipload_title">Driver shipload</string>
+    <string name="driver_shipload_review">Shipload review</string>
 </resources>

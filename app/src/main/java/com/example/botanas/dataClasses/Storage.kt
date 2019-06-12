@@ -12,5 +12,6 @@ data class Storage(
     var cost: String = "0",
     var trueCost: String = "0",
     var weight: String = "",
-    var price: String = ""
+    var price: String = "",
+    var id_store: Int = 0
 ) : Serializable

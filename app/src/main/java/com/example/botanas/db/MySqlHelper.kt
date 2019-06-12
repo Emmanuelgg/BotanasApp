@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
-private const val DATABASE_VERSION = 11
+private const val DATABASE_VERSION = 13
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", null, DATABASE_VERSION) {
 
     companion object {
@@ -27,6 +27,15 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
             "auto_sales_sync" to INTEGER,
             "server_notifications" to INTEGER,
             "visits" to INTEGER
+        )
+
+        /* Table store */
+        db.createTable("store", true,
+            "id_store" to INTEGER + PRIMARY_KEY,
+            "code" to TEXT,
+            "name" to TEXT,
+            "status" to INTEGER,
+            "color" to TEXT
         )
 
         /* Table admin */
@@ -157,6 +166,7 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.dropTable("settings",true)
+        db.dropTable("store",true)
         db.dropTable("admin",true)
         db.dropTable("product",true)
         db.dropTable("price",true)

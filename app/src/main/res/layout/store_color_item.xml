@@ -3,7 +3,7 @@
           xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
           android:layout_width="match_parent"
           android:layout_height="wrap_content" android:paddingLeft="4dp" android:paddingRight="4dp"
-          android:paddingBottom="2dp" android:id="@+id/shipload_product_layout">
+          android:paddingBottom="2dp" android:id="@+id/store_color_layout">
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -12,24 +12,20 @@
         <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <EditText
+            <TextView
                     android:layout_width="0dp"
-                    android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/shipload_product_quantity" android:hint="@string/s_quantity"
+                    android:id="@+id/store_color_color"
                     android:importantForAutofill="no" tools:targetApi="o" android:gravity="center"
                     android:fontFamily="@font/viga"
                     android:selectAllOnFocus="false"
                     android:singleLine="false"
-                    android:textSize="14sp" android:background="@drawable/circle_edittext"
-                    android:textColor="@color/colorPrimary" android:textColorHint="@color/colorPrimary"
-                    android:textCursorDrawable="@color/colorPrimary" android:layout_weight=".2"
+                    android:textColor="@color/colorPrimaryDark" android:textColorHint="@color/colorPrimaryDark"
                     android:layout_height="70dp" android:paddingLeft="4dp" android:paddingRight="4dp"
-            />
+                    android:layout_weight=".2" android:background="@drawable/circle_textview"/>
             <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" android:id="@+id/shipload_product_name"
-                    android:layout_weight=".80"
+                    android:layout_height="match_parent" android:id="@+id/store_color_name" android:layout_weight=".80"
                     android:text="@string/s_product_name" android:fontFamily="@font/viga" android:gravity="center"/>
         </TableRow>
     </androidx.cardview.widget.CardView>
