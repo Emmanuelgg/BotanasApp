@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.DriverShiploadFragment
 import com.example.botanas.R
@@ -60,7 +61,7 @@ class ShiploadAdapter(private val samples: ArrayList<Storage>, listener: ItemOnP
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val saleProductName: TextView = mView.findViewById(R.id.shipload_product_name)
         val productQuantity: EditText = mView.findViewById(R.id.shipload_product_quantity)
-        val shipLoadProductLayout: TableRow = mView.findViewById(R.id.shipload_product_layout)
+        val shipLoadProductLayout: CardView = mView.findViewById(R.id.shipload_product_layout)
 
         init  {
             productQuantity.addTextChangedListener(

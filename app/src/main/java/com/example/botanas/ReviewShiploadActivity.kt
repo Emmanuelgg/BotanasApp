@@ -1,6 +1,7 @@
 package com.example.botanas
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,13 +15,17 @@ import com.example.botanas.adapter.CustomerSelectAdapter
 import com.example.botanas.dataClasses.Client
 import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
+import com.example.botanas.ui.login.Admin
+import com.example.botanas.utils.StorageColorDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import org.jetbrains.anko.db.SqlOrderDirection
-import org.jetbrains.anko.db.select
+import kotlinx.android.synthetic.main.fragment_driver_shipload.*
+import org.jetbrains.anko.db.*
+import java.lang.Exception
 import java.text.NumberFormat
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener {
 
@@ -38,12 +43,15 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
     private var totalAmount: Double = 0.00
     private val clientArray = ArrayList<Client>()
     private val currency = NumberFormat.getCurrencyInstance()
+    private lateinit var storageColorDialog: StorageColorDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_shipload)
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        appContext = baseContext
+        appContext = applicationContext
         view = findViewById(R.id.review_shipload_layout)
         mySqlHelper = MySqlHelper(this)
         clientSpinner = findViewById(R.id.review_shipload_client_spinner)
@@ -121,6 +129,12 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
         btnFinishSale.setOnClickListener {
             builder.show()
         }
+
+        storageColorDialog = StorageColorDialog(this)
+        val btnShowStoreColorReview: FloatingActionButton = findViewById(R.id.btn_show_store_color_review)
+        btnShowStoreColorReview.setOnClickListener {
+            storageColorDialog.showDialog()
+        }
     }
 
     private fun initAlertDialog(builder: AlertDialog.Builder) {
@@ -129,12 +143,62 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
         builder.setCancelable(false)
         builder.setPositiveButton(R.string.confirm
         ) { _, _ ->
-
+            driverShiploadSave()
         }
 
         builder.setNegativeButton(R.string.no
         ) { _, _ ->
             Snackbar.make(view, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
+    }
+
+    private fun driverShiploadSave() {
+        val clientID = clientArray[clientSpinner.selectedItemId.toInt()].id_client
+        val currentTime: Date = Calendar.getInstance().time
+        val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentTime)
+        var driverShiploadId: Long
+
+        try {
+            mySqlHelper.use{
+                transaction {
+                    driverShiploadId = insert(
+                        "driver_shipload",
+                        "id_driver" to Admin.idAdmin,
+                        "id_driver" to clientID,
+                        "status" to 3,
+                        "total" to totalAmount.toString(),
+                        "created_at" to dateTime,
+                        "updated_at" to dateTime
+                    )
+                    for (product in shiploadList) {
+                        insert(
+                            "requisition_description",
+                            "id_driver_shipload" to driverShiploadId,
+                            "id_product" to product.id_product,
+                            "id_store" to product.id_store,
+                            "barcode" to product.quantity,
+                            "description" to product.product_name,
+                            "price" to product.price,
+                            "quantity" to product.quantity,
+                            "quantity_unit_measurement" to product.quantity_unit_measurement,
+                            "total" to (product.quantity.toDouble()*product.price.toDouble()).toString(),
+                            "status" to 3,
+                            "unit_measurement_description" to ""
+                        )
+                    }
+                }
+            }
+            finishAffinity()
+            val intent = Intent(appContext, SuccessShiploadActivity::class.java)
+            //intent.putExtra("saleSuccessful", true)
+            intent.putExtra("total", totalAmount)
+            intent.putExtra("client", clientSpinner.selectedItem.toString())
+            intent.putExtra("date", dateTime)
+            startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Snackbar.make(view, R.string.no_changes, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
+
     }
 }

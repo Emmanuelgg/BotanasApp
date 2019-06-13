@@ -408,7 +408,8 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                             "code" to jsonObject.getString("code"),
                             "name" to jsonObject.getString("name"),
                             "status" to jsonObject.getInt("status"),
-                            "color" to jsonObject.getString("color")
+                            "color" to jsonObject.getString("color"),
+                            "dark_color" to jsonObject.getString("dark_color")
                         )
                         i++
                     }

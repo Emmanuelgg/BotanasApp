@@ -17,12 +17,14 @@
             android:roundIcon="@mipmap/ic_launcher_botanas_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ReviewShiploadActivity"
-                  android:configChanges="orientation|keyboardHidden"
-                  android:label="@string/driver_shipload_review"
-                  android:noHistory="true"
-                  android:screenOrientation="portrait"
-        >
+        <activity android:name=".SuccessShiploadActivity">
+        </activity>
+        <activity
+                android:name=".ReviewShiploadActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:label="@string/driver_shipload_review"
+                android:noHistory="true"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".BluetoothScannerActivity"

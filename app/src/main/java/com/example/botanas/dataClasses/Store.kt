@@ -8,5 +8,6 @@ data class Store(
     val code: String,
     val name: String ,
     val status: Int,
-    val color: String
+    val color: String,
+    val dark_color: String
 ) : Serializable

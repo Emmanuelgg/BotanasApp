@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.botanas.R
 import com.example.botanas.dataClasses.Store
@@ -24,17 +25,19 @@ class StoreColorAdapter(private val samples: ArrayList<Store>) : RecyclerView.Ad
         val currency = NumberFormat.getCurrencyInstance()
         val item = samples[position]
         val color = Color.parseColor(item.color)
+        val darkColor = Color.parseColor(item.dark_color)
+        holder.storeName.setTextColor(darkColor)
         val gd = holder.color.background.mutate() as GradientDrawable
         gd.setColor(color)
         holder.storeName.text = item.name
         //holder.color.setBackgroundColor(color)
-        holder.storeColorLayout.setBackgroundColor(color)
+        //holder.storeColorLayout.setBackgroundColor(color)
     }
 
     override fun getItemCount() = samples.size
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val storeColorLayout: TableRow = mView.findViewById(R.id.store_color_layout)
+        val storeColorLayout: CardView = mView.findViewById(R.id.store_color_layout)
         val color: TextView = mView.findViewById(R.id.store_color_color)
         val storeName: TextView = mView.findViewById(R.id.store_color_name)
     }

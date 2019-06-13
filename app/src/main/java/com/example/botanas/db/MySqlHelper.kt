@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import org.jetbrains.anko.db.*
 
-private const val DATABASE_VERSION = 13
+private const val DATABASE_VERSION = 15
 class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", null, DATABASE_VERSION) {
 
     companion object {
@@ -35,7 +35,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
             "code" to TEXT,
             "name" to TEXT,
             "status" to INTEGER,
-            "color" to TEXT
+            "color" to TEXT,
+            "dark_color" to TEXT
         )
 
         /* Table admin */
@@ -161,6 +162,33 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
 
         )
 
+        /* Table driver shipload */
+        db.createTable("driver_shipload", true,
+            "id_driver_shipload" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            "id_driver" to INTEGER,
+            "id_client" to INTEGER,
+            "status" to INTEGER,
+            "total" to TEXT,
+            "created_at" to TEXT,
+            "updated_at" to TEXT
+        )
+
+        /* Table driver inventory */
+        db.createTable("driver_inventory", true,
+            "id_driver_inventory" to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            "id_driver_shipload" to INTEGER,
+            "id_product" to INTEGER,
+            "id_store" to INTEGER,
+            "barcode" to TEXT,
+            "description" to TEXT,
+            "price" to TEXT,
+            "quantity" to INTEGER,
+            "quantity_unit_measurement" to INTEGER,
+            "total" to TEXT,
+            "status" to INTEGER,
+            "unit_measurement_description" to TEXT
+        )
+
 
     }
 
@@ -177,6 +205,8 @@ class MySqlHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "botanas_db", nul
         db.dropTable("client",true)
         db.dropTable("requisition",true)
         db.dropTable("requisition_description",true)
+        db.dropTable("driver_shipload",true)
+        db.dropTable("driver_inventory",true)
         onCreate(db)
     }
 

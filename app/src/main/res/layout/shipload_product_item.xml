@@ -3,12 +3,12 @@
           xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
           android:layout_width="match_parent"
           android:layout_height="wrap_content" android:paddingLeft="4dp" android:paddingRight="4dp"
-          android:paddingBottom="2dp" android:id="@+id/shipload_product_layout">
+          android:paddingBottom="2dp">
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content" app:cardElevation="1dp" app:cardCornerRadius="8dp"
-            app:contentPadding="3dp">
+            app:contentPadding="3dp" android:id="@+id/shipload_product_layout">
         <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

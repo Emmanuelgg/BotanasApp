@@ -1,6 +1,7 @@
 package com.example.botanas
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -24,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.db.select
 import java.lang.Exception
+import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -114,6 +116,7 @@ class DriverShiploadFragment : Fragment(), ProductTypeAdapter.ItemClickListener,
         initRecycleView()
         productListAdapter = ProductTypeAdapter(categoryList,this,null, this)
         shiploadAdapter = ShiploadAdapter(shiploadList,this, this)
+        shiploadList.clear()
 
 
     }
@@ -160,10 +163,9 @@ class DriverShiploadFragment : Fragment(), ProductTypeAdapter.ItemClickListener,
                     }
                 }
                 if (isSuccess){
-                    //val intent = Intent(context, ReviewShiploadActivity::class.java)
-                    //intent.putExtra("shipload_list", shiploadList as Serializable)
-                    //startActivity(intent)
-                    Log.d("array", shiploadList.toString())
+                    val intent = Intent(context, ReviewShiploadActivity::class.java)
+                    intent.putExtra("shipload_list", shiploadList as Serializable)
+                    startActivity(intent)
                 } else {
                     Snackbar.make(this.view!!, "Las cantidades de los productos deben ser mayores a 0", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
                 }
@@ -240,7 +242,6 @@ class DriverShiploadFragment : Fragment(), ProductTypeAdapter.ItemClickListener,
         fun changeColorByStore(item: ShiploadAdapter.ViewHolder, position: Int, click:Boolean = false) {
             try {
                 val actualItem = shiploadList[position]
-                Log.d("try to change color to", actualItem.product_name)
                 mySqlHelper.use {
                     if  (!click) {
                         select("store", "MAX(id_store) id_store")
@@ -259,9 +260,13 @@ class DriverShiploadFragment : Fragment(), ProductTypeAdapter.ItemClickListener,
                             this.moveToNext()
                             if  (this.count > 0) {
                                 val color = Color.parseColor(this.getString(this.getColumnIndex("color")))
-                                item.productQuantity.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+                                val darkColor = Color.parseColor(this.getString(this.getColumnIndex("dark_color")))
+                                //item.productQuantity.background.setColorFilter(darkColor, PorterDuff.Mode.MULTIPLY)
+                                //item.productQuantity.background.setColorFilter(color, PorterDuff.Mode.DST_ATOP)
                                 item.shipLoadProductLayout.setBackgroundColor(color)
-                                Log.d("change color to", actualItem.product_name)
+                                item.saleProductName.setTextColor(darkColor)
+                                //item.productQuantity.setTextColor(color)
+                                //item.productQuantity.setHintTextColor(color)
                             } else {
                                 actualItem.id_store++
                                 changeColorByStore(item, position)

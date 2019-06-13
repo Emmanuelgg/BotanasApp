@@ -10,12 +10,15 @@ import com.example.botanas.dataClasses.Store
 import com.example.botanas.db.MySqlHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.lang.Exception
+import android.view.Gravity
+
+
 
 class StorageColorDialog(context: Context){
 
     private var storeColorDialog: BottomSheetDialog
     private var storeColorAdapter: StoreColorAdapter
-    val storeColorList: ArrayList<Store> = ArrayList()
+    private val storeColorList: ArrayList<Store> = ArrayList()
     var appContext: Context = context
     private  var mySqlHelper: MySqlHelper = MySqlHelper(context)
     private  var storeColorRecycler: RecyclerView
@@ -48,7 +51,8 @@ class StorageColorDialog(context: Context){
                         cursor.getString(cursor.getColumnIndex("code")),
                         cursor.getString(cursor.getColumnIndex("name")),
                         cursor.getInt(cursor.getColumnIndex("status")),
-                        cursor.getString(cursor.getColumnIndex("color"))
+                        cursor.getString(cursor.getColumnIndex("color")),
+                        cursor.getString(cursor.getColumnIndex("dark_color"))
                     )
                 )
             }
@@ -59,7 +63,8 @@ class StorageColorDialog(context: Context){
                         "",
                         "No se encontraron plantas, favor de sincronizar.",
                         0,
-                        "#FF303F9F"
+                        "#EAF2F8",
+                    "#5499C7"
                     )
                 )
             }
