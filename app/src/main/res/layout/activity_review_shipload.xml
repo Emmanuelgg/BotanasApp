@@ -123,10 +123,10 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" app:srcCompat="@drawable/ic_group_expand_15"
+            android:clickable="true" app:srcCompat="@drawable/ic_factory"
             android:id="@+id/btn_show_store_color_review" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.95"
             android:layout_marginBottom="24dp" android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.05"/>
+            android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.05" app:maxImageSize="32dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

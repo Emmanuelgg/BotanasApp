@@ -1,0 +1,47 @@
+package com.example.botanas.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.botanas.R
+import com.example.botanas.dataClasses.DriverShipload
+import com.example.botanas.dataClasses.Requisition
+import java.text.NumberFormat
+import java.util.*
+
+
+class DriverShiploadAdapter(private val samples: ArrayList<DriverShipload>, listener: ItemOnPressListener) : RecyclerView.Adapter<DriverShiploadAdapter.ViewHolder>() {
+
+    private val onItemOnPressListener: ItemOnPressListener = listener
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.driver_shipload_item, parent, false))
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val currency = NumberFormat.getCurrencyInstance()
+        val item = samples[position]
+        val total = item.total.toDouble()
+        holder.driverShiploadClientName.text = item.client_name
+        holder.driverShiploadDate.text = item.updated_at
+        holder.driverShiploadAmount.text = currency.format(total)
+
+        holder.itemView.setOnClickListener {
+                View -> onItemOnPressListener.onItemClick(holder, position)
+        }
+    }
+
+    override fun getItemCount() = samples.size
+
+    inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
+        val driverShiploadClientName: TextView = mView.findViewById(R.id.driverShiploadClientName)
+        val driverShiploadDate: TextView = mView.findViewById(R.id.driverShiploadDate)
+        val driverShiploadAmount: TextView = mView.findViewById(R.id.driverShiploadAmount)
+    }
+
+    interface  ItemOnPressListener {
+        fun onItemClick(item: ViewHolder, position: Int)
+    }
+}

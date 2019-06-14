@@ -68,7 +68,9 @@
     <string name="bluetooth_scanner">Escanear</string>
     <string name="bluetooth_pairing_error">Error al realizar la conexión al dispositivo bluetooth</string>
     <string name="bluetooth_pairing_success">Impresora conectada correctamente</string>
-    <string name="driver_shipload_title">Cargarmento de chofer</string>
-    <string name="driver_shipload_review">Revisión de cargamento</string>
+    <string name="load_up_title">Cargarmento de chofer</string>
+    <string name="load_up_review">Revisión de cargamento</string>
     <string name="shipload_confirm_title">¿Desea confirmar el cargamento?</string>
+    <string name="shipload_title">Cargas de chofer</string>
+    <string name="shipload_detail">Detalle de carga</string>
 </resources>

@@ -15,9 +15,15 @@
                 android:fontFamily="@font/viga"
         />
         <item
-                android:id="@+id/nav_driver_shipload"
+                android:id="@+id/nav_load_up"
                 android:icon="@drawable/ic_truck"
-                android:title="@string/driver_shipload_title"
+                android:title="@string/load_up_title"
+                android:fontFamily="@font/viga"
+        />
+        <item
+                android:id="@+id/nav_driver_shipload"
+                android:icon="@drawable/ic_shipped_1"
+                android:title="@string/shipload_title"
                 android:fontFamily="@font/viga"
         />
         <item

@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.botanas.DriverShiploadFragment
+import com.example.botanas.LoadUpFragment
 import com.example.botanas.R
 import com.example.botanas.SellFragment
 import com.example.botanas.dataClasses.ProductType
@@ -18,12 +18,12 @@ import com.example.botanas.db.MySqlHelper
 import java.lang.Exception
 import java.text.NumberFormat
 
-class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: ItemClickListener, sellFragment: SellFragment? = null, driverShiploadFragment: DriverShiploadFragment? = null) : RecyclerView.Adapter<ProductTypeAdapter.ViewHolder>(), StorageAdapter.ItemClickListener {
+class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: ItemClickListener, sellFragment: SellFragment? = null, loadUpFragment: LoadUpFragment? = null) : RecyclerView.Adapter<ProductTypeAdapter.ViewHolder>(), StorageAdapter.ItemClickListener {
     private val onItemClickListener: ItemClickListener = listener
     private val viewPool = RecyclerView.RecycledViewPool()
     private lateinit var mySqlHelper: MySqlHelper
     private val saleFragment = sellFragment
-    private val driverShiploadFragment = driverShiploadFragment
+    private val driverShiploadFragment = loadUpFragment
     override fun onItemClick(item: StorageAdapter.ViewHolder, position: Int, parentPosition: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         Log.d("click", item.sProductName.text.toString())

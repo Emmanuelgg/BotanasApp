@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -20,7 +21,7 @@ import com.example.botanas.utils.StorageColorDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
-import kotlinx.android.synthetic.main.fragment_driver_shipload.*
+import kotlinx.android.synthetic.main.fragment_load_up.*
 import org.jetbrains.anko.db.*
 import java.lang.Exception
 import java.text.NumberFormat
@@ -30,7 +31,7 @@ import java.util.*
 class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener {
 
     override fun onItemClick(item: CustomerSelectAdapter.ViewHolder, position: Int, parentPosition: Int) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     private lateinit var shiploadList: ArrayList<Storage>
@@ -54,7 +55,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
         appContext = applicationContext
         view = findViewById(R.id.review_shipload_layout)
         mySqlHelper = MySqlHelper(this)
-        clientSpinner = findViewById(R.id.review_shipload_client_spinner)
+        clientSpinner = this.findViewById(R.id.review_shipload_client_spinner)
         val totalAmountTextView = findViewById<TextView>(R.id.review_shipload_total)
         val btnFinishSale = findViewById<FloatingActionButton>(R.id.btn_finish_review)
 
@@ -138,7 +139,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
     }
 
     private fun initAlertDialog(builder: AlertDialog.Builder) {
-        builder.setTitle(R.string.sale_confirm_title)
+        builder.setTitle(R.string.shipload_confirm_title)
         builder.setMessage(R.string.sale_confirm_body)
         builder.setCancelable(false)
         builder.setPositiveButton(R.string.confirm
@@ -154,6 +155,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
 
     private fun driverShiploadSave() {
         val clientID = clientArray[clientSpinner.selectedItemId.toInt()].id_client
+        Log.d("id_client", clientID.toString())
         val currentTime: Date = Calendar.getInstance().time
         val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentTime)
         var driverShiploadId: Long
@@ -164,7 +166,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
                     driverShiploadId = insert(
                         "driver_shipload",
                         "id_driver" to Admin.idAdmin,
-                        "id_driver" to clientID,
+                        "id_client" to clientID,
                         "status" to 3,
                         "total" to totalAmount.toString(),
                         "created_at" to dateTime,
@@ -172,7 +174,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
                     )
                     for (product in shiploadList) {
                         insert(
-                            "requisition_description",
+                            "driver_inventory",
                             "id_driver_shipload" to driverShiploadId,
                             "id_product" to product.id_product,
                             "id_store" to product.id_store,

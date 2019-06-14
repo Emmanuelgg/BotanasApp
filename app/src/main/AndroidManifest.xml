@@ -22,7 +22,7 @@
         <activity
                 android:name=".ReviewShiploadActivity"
                 android:configChanges="orientation|keyboardHidden"
-                android:label="@string/driver_shipload_review"
+                android:label="@string/load_up_review"
                 android:noHistory="true"
                 android:screenOrientation="portrait">
         </activity>

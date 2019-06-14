@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
     private lateinit var view: View
     private lateinit var bluePrinter: BluePrinter
     private var idRequisition: Int = 0
+    private var idDriverShipload: Int = 0
 
     override fun onItemClick(item: CustomerSelectAdapter.ViewHolder, position: Int, parentPosition: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -52,14 +54,31 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
         soldClientNameView = findViewById(R.id.sold_client_name)
         soldDateView = findViewById(R.id.sold_date)
         view = findViewById(R.id.sale_detail_layout)
+        val imageSaleDetail = findViewById<ImageView>(R.id.imageSaleDetail)
+        val soldDiscountTitle = findViewById<TextView>(R.id.sold_discount_title)
+        val btnPrint = findViewById<FloatingActionButton>(R.id.btn_print)
 
 
         idRequisition = intent.getIntExtra("id_requisition", 0)
+        idDriverShipload = intent.getIntExtra("id_driver_shipload", 0)
 
         appContext = baseContext
         mySqlHelper = MySqlHelper(this)
 
-        getSale(idRequisition)
+        if(idRequisition != 0) {
+            getSale(idRequisition)
+            title = getString(R.string.sale_detail)
+            btnPrint.show()
+            imageSaleDetail.setImageResource(R.drawable.ic_money)
+        } else if(idDriverShipload != 0) {
+            title = getString(R.string.shipload_detail)
+            soldDiscountTitle.text = ""
+            soldDiscountView.text = ""
+            btnPrint.hide()
+            imageSaleDetail.setImageResource(R.drawable.ic_shipped)
+            getDriverShipload(idDriverShipload)
+        }
+
 
         customerSelectionAdapter = CustomerSelectAdapter(soldProductList, this)
         soldProducts = findViewById(R.id.soldProductsRecycler)
@@ -72,7 +91,7 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
         val builder = AlertDialog.Builder(this)
         initAlertDialog(builder)
 
-        val btnPrint = findViewById<FloatingActionButton>(R.id.btn_print)
+
         btnPrint.setOnClickListener {
             builder.show()
         }
@@ -156,6 +175,58 @@ class SaleDetail : AppCompatActivity(), CustomerSelectAdapter.ItemClickListener 
                                         "0",
                                         this.getString(this.getColumnIndex("weight")),
                                         this.getString(this.getColumnIndex("price"))
+                                    )
+                                )
+                            }
+                        }
+                }
+        }
+    }
+
+    private fun getDriverShipload(idDriverShipload: Int){
+        val currency = NumberFormat.getCurrencyInstance()
+        if (idDriverShipload == 0)
+            return
+
+        mySqlHelper.use {
+            select("driver_shipload")
+                .whereArgs("id_driver_shipload == {id_driver_shipload}", "id_driver_shipload" to idDriverShipload)
+                .exec {
+                    this.moveToNext()
+                    var total = this.getDouble(this.getColumnIndex("total"))
+                    val totalString = currency.format(total)
+                    soldTotalView.text = totalString
+                    soldDateView.text = this.getString(this.getColumnIndex("created_at"))
+
+                    val idClient = this.getInt(this.getColumnIndex("id_client"))
+                    select("client")
+                        .whereArgs("id_client == {id_client}", "id_client" to idClient)
+                        .exec {
+                            val clientName = if (this.count > 0) {
+                                this.moveToNext()
+                                this.getString(this.getColumnIndex("name")) + " - " + this.getString(this.getColumnIndex("municipality"))
+                            } else {
+                                "Sin cliente"
+                            }
+                            soldClientNameView.text = clientName
+                        }
+
+                    select("driver_inventory")
+                        .whereArgs("id_driver_shipload == {id_driver_shipload}", "id_driver_shipload" to idDriverShipload)
+                        .exec {
+                            while (this.moveToNext()) {
+                                soldProductList.add(
+                                    Storage(
+                                        0,
+                                        this.getInt(this.getColumnIndex("id_product")),
+                                        this.getString(this.getColumnIndex("description")),
+                                        this.getInt(this.getColumnIndex("quantity")),
+                                        this.getInt(this.getColumnIndex("quantity_unit_measurement")),
+                                        "0",
+                                        "0",
+                                        "0",
+                                        this.getString(this.getColumnIndex("price")),
+                                        id_store = this.getInt(this.getColumnIndex("id_store"))
                                     )
                                 )
                             }

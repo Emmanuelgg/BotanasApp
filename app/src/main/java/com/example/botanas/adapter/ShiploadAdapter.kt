@@ -1,26 +1,18 @@
 package com.example.botanas.adapter
 
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TableLayout
-import android.widget.TableRow
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.botanas.DriverShiploadFragment
+import com.example.botanas.LoadUpFragment
 import com.example.botanas.R
 import com.example.botanas.dataClasses.Storage
-import org.jetbrains.anko.db.select
-import java.text.ParsePosition
 import java.util.ArrayList
-import kotlin.math.log
 
 
 class ShiploadAdapter(private val samples: ArrayList<Storage>, listener: ItemOnPressListener, clickListener: ItemOnClickListener) : RecyclerView.Adapter<ShiploadAdapter.ViewHolder>() {
@@ -51,7 +43,7 @@ class ShiploadAdapter(private val samples: ArrayList<Storage>, listener: ItemOnP
             onItemOnClickListener.onItemClick(holder, position)
         }
 
-        DriverShiploadFragment.changeColorByStore(holder, position)
+        LoadUpFragment.changeColorByStore(holder, position)
 
     }
 

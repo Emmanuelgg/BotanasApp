@@ -110,7 +110,9 @@
     <string name="bluetooth_pairing_success">Bluetooth pairing success</string>
 
     <!--String driver shipload-->
-    <string name="driver_shipload_title">Driver shipload</string>
-    <string name="driver_shipload_review">Shipload review</string>
+    <string name="load_up_title">Load up driver</string>
+    <string name="load_up_review">Shipload review</string>
     <string name="shipload_confirm_title">Do you want to confirm the shipload?</string>
+    <string name="shipload_title">Shiploads driver</string>
+    <string name="shipload_detail">Shipload detail</string>
 </resources>

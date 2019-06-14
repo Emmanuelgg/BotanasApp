@@ -28,8 +28,8 @@ import com.example.botanas.ui.login.Admin
 import com.example.botanas.ui.login.LoginActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
+import kotlinx.android.synthetic.main.driver_shipload_item.*
 import org.jetbrains.anko.db.delete
-import org.jetbrains.anko.db.select
 import java.io.IOException
 
 
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     StorageFragment.OnFragmentInteractionListener,
     SellFragment.OnFragmentInteractionListener,
     SalesFragment.OnFragmentInteractionListener,
+    LoadUpFragment.OnFragmentInteractionListener,
     DriverShiploadFragment.OnFragmentInteractionListener
 {
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var storageFragment: StorageFragment
     private lateinit var sellFragment: SellFragment
     private lateinit var salesFragment: SalesFragment
+    private lateinit var loadUpFragment: LoadUpFragment
     private lateinit var driverShiploadFragment: DriverShiploadFragment
     private val TAG = "MyFirebaseToken"
     private val messagingService = MyFirebaseMessagingService()
@@ -90,6 +92,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         storageFragment =  StorageFragment.newInstance(this)
         sellFragment = SellFragment.newInstance()
         salesFragment = SalesFragment.newInstance(this)
+        loadUpFragment = LoadUpFragment.newInstance()
         driverShiploadFragment = DriverShiploadFragment.newInstance()
 
         val headerView = navView.getHeaderView(0)
@@ -181,6 +184,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_sales -> {
                 changeFragment(salesFragment, "sales")
+            }
+            R.id.nav_load_up -> {
+                changeFragment(loadUpFragment, "load_up")
             }
             R.id.nav_driver_shipload -> {
                 changeFragment(driverShiploadFragment, "driver_shipload")
