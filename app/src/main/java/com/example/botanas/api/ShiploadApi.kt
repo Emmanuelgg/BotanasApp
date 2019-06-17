@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import com.android.volley.AuthFailureError
 import org.json.JSONObject
 import java.lang.Exception
 import com.android.volley.Request
@@ -21,10 +22,14 @@ import com.example.botanas.db.MySqlHelper
 import com.example.botanas.ui.login.Admin
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
 import org.json.JSONArray
+import com.android.volley.toolbox.RequestFuture
+
+
+
+
 
 
 class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
@@ -61,7 +66,9 @@ class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
         val jsonArrayDriverShipload = JSONArray()
         var hasRows = false
         mySqlHelper.use {
-            select("driver_shipload").exec {
+            select("driver_shipload")
+                .whereArgs("status != 4")
+                .exec {
                 if (this.count > 0) {
                     hasRows = true
                     while (this.moveToNext()) {
@@ -71,7 +78,7 @@ class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
                         jsonDriverShipload.put("driver_shipload", idDriverShipload)
                         jsonDriverShipload.put("id_driver", Admin.idAdmin)
                         jsonDriverShipload.put("id_client", this.getInt(this.getColumnIndex("id_client")))
-                        jsonDriverShipload.put("status", this.getInt(this.getColumnIndex("id_client")))
+                        jsonDriverShipload.put("status", this.getInt(this.getColumnIndex("status")))
                         jsonDriverShipload.put("total", total.toString())
                         jsonDriverShipload.put("created_at", this.getString(this.getColumnIndex("created_at")))
                         jsonDriverShipload.put("updated_at", this.getString(this.getColumnIndex("updated_at")))
@@ -165,6 +172,7 @@ class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
                     messagingService.doInBackgroundNotificationStop(appContext)
             }
         )
+
         val queue = Volley.newRequestQueue(appContext)
         queue.add(jsonArrayRequest)
         return isSuccess

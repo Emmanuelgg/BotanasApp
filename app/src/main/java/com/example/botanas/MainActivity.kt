@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         sellFragment = SellFragment.newInstance()
         salesFragment = SalesFragment.newInstance(this)
         loadUpFragment = LoadUpFragment.newInstance()
-        driverShiploadFragment = DriverShiploadFragment.newInstance()
+        driverShiploadFragment = DriverShiploadFragment.newInstance(this)
 
         val headerView = navView.getHeaderView(0)
         val userName: TextView = headerView.findViewById(R.id.user_name)

@@ -70,6 +70,7 @@ class DriverShiploadFragment : Fragment(), DriverShiploadAdapter.ItemOnPressList
         val toolbar = (activity as AppCompatActivity).supportActionBar!!
         toolbar.title = getString(R.string.shipload_title)
         toolbar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FF303F9F")))
+
         shiploadApi = ShiploadApi(appContext, mainActivity)
 
         val btnDriverShiploadSync = actualView.findViewById<FloatingActionButton>(R.id.btnDriverShiploadSync)
@@ -89,7 +90,8 @@ class DriverShiploadFragment : Fragment(), DriverShiploadAdapter.ItemOnPressList
 
         val currency = NumberFormat.getCurrencyInstance()
         var totalSales = 0.0
-        driverShiploadList.forEach { item -> totalSales += item.total.toDouble() }
+        if (driverShiploadList.isNotEmpty())
+            driverShiploadList.forEach { item -> totalSales += item.total.toDouble() }
         (actualView.findViewById<TextView>(R.id.textTotalShipload)).text = currency.format(totalSales)
 
         return actualView
@@ -102,22 +104,8 @@ class DriverShiploadFragment : Fragment(), DriverShiploadAdapter.ItemOnPressList
         builder.setPositiveButton(R.string.confirm
         ) { _, _ ->
             shiploadApi.run {
-                if (requestPostSyncShipload()){
-                    driverShiploadList.clear()
-                    driverShiploadList.add(
-                        DriverShipload(
-                            0,
-                            0,
-                            0,
-                            "No se han realizado cargamentos de chofer",
-                            0,
-                            "",
-                            "",
-                            ""
-                        )
-                    )
-                    driverShiploadRecyclerView.adapter!!.notifyDataSetChanged()
-                }
+                if (requestPostSyncShipload())
+                    initRecycleView()
             }
 
         }
@@ -172,7 +160,7 @@ class DriverShiploadFragment : Fragment(), DriverShiploadAdapter.ItemOnPressList
                                 0,
                                 "No se han realizado ventas",
                                 0,
-                                "",
+                                "0.00",
                                 "",
                                 ""
                             )
@@ -212,10 +200,10 @@ class DriverShiploadFragment : Fragment(), DriverShiploadAdapter.ItemOnPressList
     companion object {
 
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(activity: MainActivity) =
             DriverShiploadFragment().apply {
                 arguments = Bundle().apply {
-
+                    mainActivity = activity
                 }
             }
     }
