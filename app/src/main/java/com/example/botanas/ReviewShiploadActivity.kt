@@ -167,7 +167,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
                         "driver_shipload",
                         "id_driver" to Admin.idAdmin,
                         "id_client" to clientID,
-                        "status" to 3,
+                        "status" to 4,
                         "total" to totalAmount.toString(),
                         "created_at" to dateTime,
                         "updated_at" to dateTime
@@ -184,7 +184,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
                             "quantity" to product.quantity,
                             "quantity_unit_measurement" to product.quantity_unit_measurement,
                             "total" to (product.quantity.toDouble()*product.price.toDouble()).toString(),
-                            "status" to 3,
+                            "status" to 4,
                             "unit_measurement_description" to ""
                         )
                     }

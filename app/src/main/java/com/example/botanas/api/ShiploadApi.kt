@@ -136,7 +136,7 @@ class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
                     val serverResponse = Gson().fromJson(response, ServerResponse::class.java)
                     if (serverResponse.status != 0) {
                         mySqlHelper.use {
-                            update("driver_shipload", "status" to "4").exec()
+                            update("driver_shipload", "status" to "5").exec()
                         }
                         isSuccess = true
                     }

@@ -120,7 +120,7 @@ class DriverShiploadFragment : Fragment(), DriverShiploadAdapter.ItemOnPressList
         driverShiploadList.clear()
         mySqlHelper.use {
             select("driver_shipload")
-                .whereArgs("status != 4")
+                .whereArgs("status != 5")
                 .exec {
                     if  (this.count > 0)
                         while(this.moveToNext()) {
