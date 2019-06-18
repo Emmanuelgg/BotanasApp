@@ -67,7 +67,7 @@ class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
         var hasRows = false
         mySqlHelper.use {
             select("driver_shipload")
-                .whereArgs("status != 4")
+                .whereArgs("status != 5")
                 .exec {
                 if (this.count > 0) {
                     hasRows = true
@@ -133,6 +133,7 @@ class ShiploadApi(context: Context, mainActivity: MainActivity? = null) {
             Request.Method.POST, url,
             Response.Listener<String> { response ->
                 try {
+                    Log.d("res", response)
                     val serverResponse = Gson().fromJson(response, ServerResponse::class.java)
                     if (serverResponse.status != 0) {
                         mySqlHelper.use {

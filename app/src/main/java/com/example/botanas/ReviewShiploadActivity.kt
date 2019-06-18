@@ -184,7 +184,7 @@ class ReviewShiploadActivity : AppCompatActivity(), CustomerSelectAdapter.ItemCl
                             "quantity" to product.quantity,
                             "quantity_unit_measurement" to product.quantity_unit_measurement,
                             "total" to (product.quantity.toDouble()*product.price.toDouble()).toString(),
-                            "status" to 4,
+                            "status" to 1,
                             "unit_measurement_description" to ""
                         )
                     }
