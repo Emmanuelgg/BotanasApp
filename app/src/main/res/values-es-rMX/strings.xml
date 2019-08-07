@@ -73,4 +73,5 @@
     <string name="shipload_confirm_title">¿Desea confirmar el cargamento?</string>
     <string name="shipload_title">Cargas de chofer</string>
     <string name="shipload_detail">Detalle de carga</string>
+    <string name="search">Buscar</string>
 </resources>

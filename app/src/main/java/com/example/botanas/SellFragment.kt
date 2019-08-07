@@ -4,11 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,8 +53,9 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
     private lateinit var productListSaleAdapter: ProductListSale
     private lateinit var mySqlHelper: MySqlHelper
     private lateinit var appContext: Context
-    private lateinit var productListRecycler: RecyclerView
-    private lateinit var productListSaleRecycler: RecyclerView
+    private var productListRecycler: RecyclerView? = null
+    private var productListSaleRecycler: RecyclerView? = null
+    private var searchText: EditText? = null
 
     override fun onItemClick(item: ProductTypeAdapter.ViewHolder, position: Int) {
         // Toast.makeText(this.context, "Item numero: $position, Tipo de producto: ${item.s_header.text}", Toast.LENGTH_SHORT).show()
@@ -59,25 +64,29 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
 
     fun onProductClick(item: StorageAdapter.ViewHolder, position: Int, parentPosition: Int){
         //Toast.makeText(this.context, "Item numero: $position, Producto: ${item.s_product_name.text}", Toast.LENGTH_SHORT).show()
-        Log.d("parentPosition:", parentPosition.toString())
-        Log.d("position:", position.toString())
-        if (parentPosition != -1) {
-            val item = categoryList[parentPosition].products[position]
+        Log.d("product:", item.sProductName.text.toString())
+        var pItem: Storage? = null
+        for (productType in categoryList) {
+            pItem = productType.products.find { product -> product.product_name == item.sProductName.text.toString() }
+            if (pItem != null) break
+        }
+
+        if (parentPosition != -1 && pItem != null) {
             val exist = productListSale.find {
-                storage ->  storage.id_product == categoryList[parentPosition].products[position].id_product
+                storage ->  storage.id_product == pItem.id_product
             }
             Log.d("producto:", exist.toString())
             if (exist == null){
                 productListSale.add(
                     Storage(
-                        item.id_driver_general_inventory,
-                        item.id_product,
-                        item.product_name,
+                        pItem.id_driver_general_inventory,
+                        pItem.id_product,
+                        pItem.product_name,
                         0,
-                        item.quantity_unit_measurement
+                        pItem.quantity_unit_measurement
                     )
                 )
-                productListSaleRecycler.adapter!!.notifyDataSetChanged()
+                productListSaleRecycler!!.adapter!!.notifyDataSetChanged()
             } else {
                 Snackbar.make(this.view!!, R.string.product_exist, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
             }
@@ -116,7 +125,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
 
     override fun onItemPress(item: ProductListSale.ViewHolder, position: Int) {
         productListSale.remove(productListSale[position])
-        productListSaleRecycler.adapter!!.notifyDataSetChanged()
+        productListSaleRecycler!!.adapter!!.notifyDataSetChanged()
         Snackbar.make(this.view!!, R.string.product_deleted, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
     }
 
@@ -145,13 +154,13 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.menu_sell)
         productListRecycler = view.findViewById(R.id.productListRecycle) as RecyclerView
         productListRecycler.apply {
-            this.layoutManager = LinearLayoutManager(appContext)
+            this!!.layoutManager = LinearLayoutManager(appContext)
             this.adapter = productListAdapter
         }
 
         productListSaleRecycler = view.findViewById(R.id.produtListSaleRecycle) as RecyclerView
         productListSaleRecycler.apply {
-            this.layoutManager = LinearLayoutManager(appContext)
+            this!!.layoutManager = LinearLayoutManager(appContext)
             this.adapter = productListSaleAdapter
         }
 
@@ -190,7 +199,27 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
             btnShowAll.setImageResource(if (showAll) R.drawable.ic_eye else R.drawable.ic_visibility)
             initRecycleView(showAll)
         }
-            return view
+
+        searchText = view.findViewById(R.id.searchSaleProduct)
+        searchText!!.addTextChangedListener(
+            object : TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.toString() != "")
+                        productListAdapter.filter.filter(s)
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            }
+        )
+
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -267,7 +296,10 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
             cursor.close()
         }
         try {
-            productListRecycler.adapter!!.notifyDataSetChanged()
+            productListAdapter = ProductTypeAdapter(categoryList,this,this)
+            productListRecycler!!.adapter = productListAdapter
+            searchText!!.setText("")
+            productListRecycler!!.adapter!!.notifyDataSetChanged()
         } catch (e: Exception) {
 
         }

@@ -163,7 +163,11 @@ class BluePrinter(context: Context) {
                     }
             }
             discountPercentage /= 100
-            val discount = "%.2f".format(subTotal*discountPercentage+1).toByteArray()
+            val discount = if (discountPercentage != 0.00)
+                "%.2f".format(subTotal*discountPercentage+1).toByteArray()
+            else
+                "%.2f".format(0.00).toByteArray()
+
             val subTotalString = "%.2f".format(subTotal).toByteArray()
             total -= (total * discountPercentage)
             val totalString = currency.format(total).toByteArray()

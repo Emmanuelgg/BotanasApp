@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,12 +20,15 @@ import com.example.botanas.db.MySqlHelper
 import java.lang.Exception
 import java.text.NumberFormat
 
-class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: ItemClickListener, sellFragment: SellFragment? = null, loadUpFragment: LoadUpFragment? = null) : RecyclerView.Adapter<ProductTypeAdapter.ViewHolder>(), StorageAdapter.ItemClickListener {
+class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: ItemClickListener, sellFragment: SellFragment? = null, loadUpFragment: LoadUpFragment? = null) :
+    RecyclerView.Adapter<ProductTypeAdapter.ViewHolder>(), StorageAdapter.ItemClickListener, Filterable {
     private val onItemClickListener: ItemClickListener = listener
     private val viewPool = RecyclerView.RecycledViewPool()
     private lateinit var mySqlHelper: MySqlHelper
     private val saleFragment = sellFragment
     private val driverShiploadFragment = loadUpFragment
+    private var productTypeSearchList: List<ProductType>? = null
+
     override fun onItemClick(item: StorageAdapter.ViewHolder, position: Int, parentPosition: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         Log.d("click", item.sProductName.text.toString())
@@ -35,10 +40,12 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
             driverShiploadFragment.onProductClick(item,position,parentPosition)
     }
 
-
+    init {
+        this.productTypeSearchList = samples
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = samples[position]
+        val item = productTypeSearchList!![position]
         holder.s_header.text = item.description
         holder.itemView.setOnClickListener {
                 View -> onItemClickListener.onItemClick(holder, position)
@@ -60,7 +67,7 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
 
         mySqlHelper = MySqlHelper(holder.products_recycler.context)
         val query =  if (!item.all) {
-            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, dgi.quantity, dgi.unit_measurement, p.cost, pp.price " +
+            "SELECT dgi.id_driver_general_inventory, p.id_product, dgi.product_name, p.short_name as short_name, dgi.quantity, dgi.unit_measurement, p.cost, pp.price " +
                     "FROM driver_general_inventory AS dgi " +
                     "INNER JOIN product AS p ON dgi.id_product = p.id_product " +
                     "INNER JOIN product_price AS pp ON pp.id_product = p.id_product " +
@@ -68,7 +75,7 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
                     "AND dgi.quantity != 0 " +
                     "AND pp.id_price = 5"
         } else {
-            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.quantity_unit_measurement as unit_measurement, p.cost, pp.price " +
+            "SELECT 0 as id_driver_general_inventory, 0 as quantity, p.id_product, p.name as product_name, p.short_name as short_name, p.quantity_unit_measurement as unit_measurement, p.cost, pp.price " +
                     "FROM product AS p " +
                     "INNER JOIN product_price AS pp ON pp.id_product = p.id_product " +
                     "WHERE p.id_product_type = ${item.id_product_type} " +
@@ -82,11 +89,13 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
                 if (cursor.count > 0)
                     for (i in 0 until cursor.count) {
                         cursor.moveToNext()
+                        var productName = cursor.getString(cursor.getColumnIndex("short_name"))
+                        productName = if (productName == "null") cursor.getString(cursor.getColumnIndex("product_name")) else productName
                         item.products.add(
                             Storage(
                                 cursor.getInt(cursor.getColumnIndex("id_driver_general_inventory")),
                                 cursor.getInt(cursor.getColumnIndex("id_product")),
-                                cursor.getString(cursor.getColumnIndex("product_name")),
+                                productName,
                                 cursor.getInt(cursor.getColumnIndex("quantity")),
                                 cursor.getInt(cursor.getColumnIndex("unit_measurement")),
                                 cursor.getString(cursor.getColumnIndex("cost")),
@@ -101,19 +110,49 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
             e.printStackTrace()
         }
 
+        val pAdapter = StorageAdapter(item.products, this@ProductTypeAdapter, color, textColor, position, item.description)
         holder.products_recycler.apply {
             this.layoutManager = LinearLayoutManager(holder.products_recycler.context)
-            this.adapter = StorageAdapter(item.products, this@ProductTypeAdapter, color, textColor, position, item.description)
+            this.adapter = pAdapter
             setRecycledViewPool(viewPool)
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.storage_header, parent, false))
     }
 
-    override fun getItemCount() = samples.size
+    override fun getItemCount() = productTypeSearchList!!.size
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val charString = charSequence.toString()
+                if (charString.isEmpty()) {
+                    productTypeSearchList = samples
+                } else {
+                    val filteredList = ArrayList<ProductType>()
+                    for (row in samples) {
+                        var contain = false
+                        for (item in row.products) {
+                            if (row.description!!.toLowerCase().contains(charString.toLowerCase()) || item.product_name!!.toLowerCase().contains(charString.toLowerCase())) {
+                                contain = true
+                            }
+                        }
+                        if (contain) filteredList.add(row)
+                    }
+                    productTypeSearchList = filteredList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = productTypeSearchList
+                return filterResults
+            }
+            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+                productTypeSearchList = filterResults.values as ArrayList<ProductType>
+                notifyDataSetChanged()
+            }
+        }
+    }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val s_header: TextView = mView.findViewById(R.id.s_header)

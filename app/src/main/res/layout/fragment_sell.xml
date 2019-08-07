@@ -6,88 +6,125 @@
                                                    android:layout_height="match_parent"
                                                    tools:context=".SellFragment" android:id="@+id/frameLayout"
                                                    tools:layout_editor_absoluteY="81dp">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:src="@drawable/ic_visibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true" android:id="@+id/showAll"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.050000012" app:layout_constraintHorizontal_bias="0.95"
-            android:layout_marginTop="8dp" android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" android:focusable="true"/>
+        android:id="@+id/showAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_visibility"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
     <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="325dp"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/tableLayout4">
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="325dp"
+        android:background="@color/colorBackgroundLightBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <TextView
-                    android:text="@string/sf_product_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView6"
-                    android:gravity="center"
-                    android:fontFamily="@font/viga" android:background="@color/colorTableHeader"
-                    android:textColor="#FFFFFF"
-                    android:paddingLeft="4dp" android:paddingTop="8dp" android:paddingRight="4dp"
-                    android:paddingBottom="8dp"
-                    android:layout_weight="1"/>
-        </TableRow>
-        <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_weight="0">
-            <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/productListRecycle" android:layout_weight="1"/>
-        </TableRow>
-    </TableLayout>
-    <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout4" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.0" app:layout_constraintHorizontal_bias="0.0"
-            android:id="@+id/tableLayout" android:background="@color/colorBackgroundLightBlue">
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                android:background="@color/colorTableHeader"
+                android:fontFamily="@font/viga"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:paddingTop="8dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:text="@string/sf_quantity"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/searchSaleProduct"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".8"
+                android:background="@drawable/white_blue_edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/search"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textSize="14sp" />
+        </TableRow>
 
         <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <TextView
-                    android:text="@string/sf_quantity"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView9"
-                    android:background="@color/colorTableHeader" android:textColor="#FFFFFF" android:textSize="14sp"
-                    android:fontFamily="@font/viga" android:gravity="center" android:paddingLeft="4dp"
-                    android:paddingTop="8dp" android:paddingRight="4dp" android:paddingBottom="8dp"
-                    android:layout_weight=".2"/>
-            <TextView
-                    android:text="@string/sf_product_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView10"
-                    android:background="@color/colorTableHeader" android:textColor="#FFFFFF" android:textSize="14sp"
-                    android:fontFamily="@font/viga" android:gravity="center" android:paddingLeft="4dp"
-                    android:paddingTop="8dp" android:paddingRight="4dp" android:paddingBottom="8dp"
-                    android:layout_weight=".8"/>
-        </TableRow>
-        <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_weight="0">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0">
+
             <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/produtListSaleRecycle" android:layout_weight="1"
-                    android:background="@color/colorBackgroundLightBlue"/>
+                android:id="@+id/produtListSaleRecycle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorBackgroundLightBlue" />
         </TableRow>
     </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorTableHeader"
+                android:fontFamily="@font/viga"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:paddingTop="8dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:text="@string/sf_product_name"
+                android:textColor="#FFFFFF" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/productListRecycle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </TableRow>
+    </TableLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:src="@drawable/ic_arrow_point_to_right"
             android:layout_width="wrap_content"

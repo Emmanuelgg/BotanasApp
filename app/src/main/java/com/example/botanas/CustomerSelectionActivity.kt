@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 import android.content.Intent
 import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
 import com.example.botanas.dataClasses.Client
 import com.example.botanas.ui.login.Admin
@@ -117,28 +118,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
 
         productListSale = intent.getSerializableExtra("product_list") as ArrayList<Storage>
         totalAmount = 0.00
-        for (item in productListSale) {
-            mySqlHelper.use {
-                select("product", "cost", "weight")
-                    .whereArgs("id_product == {id_product}", "id_product"  to item.id_product)
-                    .exec {
-                        while (this.moveToNext()){
-                            item.cost = this.getString(this.getColumnIndex("cost"))
-                            item.trueCost = this.getString(this.getColumnIndex("cost"))
-                            item.weight = this.getString(this.getColumnIndex("weight"))
-                        }
-                    }
-                select("product_price", "price")
-                    .whereArgs("(id_product == {id_product}) and (id_price == {id_price})", "id_product"  to item.id_product, "id_price" to 5)
-                    .exec {
-                        while (this.moveToNext()){
-                            item.price = this.getString(this.getColumnIndex("price"))
-                        }
-                    }
-                totalAmount += item.price.toDouble() * item.quantity.toDouble()
-                totalAmountDisc = totalAmount
-            }
-        }
+
         totalAmountTextView.text = currency.format(totalAmount)
 
         customerSelectionAdapter = CustomerSelectAdapter(productListSale, this)
@@ -176,12 +156,39 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
 
         saleDiscount.addTextChangedListener(discountListener)
 
+        clientSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val idClient = clientArray[position].id_client
+                var idPrice = 0
+                mySqlHelper.use {
+                    select("client", "id_price")
+                        .whereArgs("id_client = {id_client}", "id_client" to idClient)
+                        .exec {
+                            this.moveToNext()
+                            idPrice = this.getInt(this.getColumnIndex("id_price"))
+                        }
+                }
+                getProductPrice(idPrice)
+            }
+        }
+
         val builder = AlertDialog.Builder(this)
         initAlertDialog(builder)
 
         btnFinishSale.setOnClickListener {
             builder.show()
         }
+
+        getProductPrice(5)
 
     }
 
@@ -215,13 +222,54 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
         return true
     }
 
+    private fun getProductPrice(idPrice: Int) {
+        val totalAmountTextView = findViewById<TextView>(R.id.total_amunt)
+        totalAmount = 0.00
+        for (item in productListSale) {
+            mySqlHelper.use {
+                select("product", "cost", "weight")
+                    .whereArgs("id_product == {id_product}", "id_product"  to item.id_product)
+                    .exec {
+                        while (this.moveToNext()){
+                            item.cost = this.getString(this.getColumnIndex("cost"))
+                            item.trueCost = this.getString(this.getColumnIndex("cost"))
+                            item.weight = this.getString(this.getColumnIndex("weight"))
+                        }
+                    }
+                select("product_price", "price")
+                    .whereArgs("(id_product == {id_product}) and (id_price == {id_price})", "id_product"  to item.id_product, "id_price" to idPrice)
+                    .exec {
+                        while (this.moveToNext()){
+                            item.price = this.getString(this.getColumnIndex("price"))
+                        }
+                    }
+                totalAmount += item.price.toDouble() * item.quantity.toDouble()
+                totalAmountDisc = totalAmount
+            }
+        }
+        val saleDiscount = findViewById<TextView>(R.id.sale_discount)
+        val result = saleDiscount.text.toString()
+        var discount = 0.00
+        if (result != "" && result != "." && result != ",") {
+            discount = (saleDiscount.text.toString().toDouble() / 100)
+            totalAmountDisc = totalAmount
+            totalAmountDisc -= (totalAmount * discount)
+        }
+        totalAmountTextView.text = if (discount != 0.00)
+            currency.format(totalAmountDisc)
+        else
+            currency.format(totalAmount)
+
+        custProductListRecycler.adapter!!.notifyDataSetChanged()
+    }
+
     @SuppressLint("SimpleDateFormat")
     private fun clientSaleSave() {
         val clientID = clientArray[clientSpinner.selectedItemId.toInt()].id_client
         val currentTime: Date = Calendar.getInstance().time
         val date = SimpleDateFormat("yyyy-MM-dd").format(currentTime)
         val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentTime)
-        var requisitionID: Long
+        var requisitionID: Long = 0
         var discount = saleDiscount.text.toString()
         if (discount == "" || discount == "." || discount == ",")
             discount = "0"
@@ -276,6 +324,7 @@ class CustomerSelectionActivity : AppCompatActivity(), CustomerSelectAdapter.Ite
             intent.putExtra("total", totalAmountDisc)
             intent.putExtra("client", clientSpinner.selectedItem.toString())
             intent.putExtra("date", dateTime)
+            intent.putExtra("idRequisition", requisitionID)
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()

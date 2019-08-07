@@ -5,11 +5,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,8 +48,8 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
 
     override fun onItemPress(item: ShiploadAdapter.ViewHolder, position: Int) {
         shiploadList.remove(shiploadList[position])
-        driverShiploadRecycler.adapter!!.notifyDataSetChanged()
-        driverShiploadRecycler.adapter!!.notifyItemChanged(position)
+        driverShiploadRecycler!!.adapter!!.notifyDataSetChanged()
+        driverShiploadRecycler!!.adapter!!.notifyItemChanged(position)
         Snackbar.make(this.view!!, R.string.product_deleted, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
     }
 
@@ -68,17 +71,23 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
     private lateinit var shiploadAdapter: ShiploadAdapter
 
     private lateinit var appContext: Context
-    private lateinit var onlyProductListRecycler: RecyclerView
-    private lateinit var showStoreColorList: FloatingActionButton
+    private var onlyProductListRecycler: RecyclerView? = null
+    private var showStoreColorList: FloatingActionButton? = null
     private lateinit var storageColorDialog: StorageColorDialog
+    private var searchText: EditText? = null
 
     // TODO: Rename and change types of parameters
     private var listener: OnFragmentInteractionListener? = null
 
     fun onProductClick(item: StorageAdapter.ViewHolder, position: Int, parentPosition: Int){
         //Toast.makeText(this.context, "Item numero: $position, Producto: ${item.s_product_name.text}", Toast.LENGTH_SHORT).show()
-        if (parentPosition != -1) {
-            val item = categoryList[parentPosition].products[position]
+        var pItem: Storage? = null
+        for (productType in categoryList) {
+            pItem = productType.products.find { product -> product.product_name == item.sProductName.text.toString() }
+            if (pItem != null) break
+        }
+
+        if (parentPosition != -1 && pItem != null) {
             val exist = shiploadList.find {
                     storage ->  storage.id_product == categoryList[parentPosition].products[position].id_product
             }
@@ -88,23 +97,19 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
 
                 shiploadList.add(
                     Storage(
-                        item.id_driver_general_inventory,
-                        item.id_product,
-                        item.product_name,
+                        pItem.id_driver_general_inventory,
+                        pItem.id_product,
+                        pItem.product_name,
                         0,
-                        item.quantity_unit_measurement,
+                        pItem.quantity_unit_measurement,
                         id_store = idStore
                     )
                 )
 
-                driverShiploadRecycler.adapter!!.notifyDataSetChanged()
+                driverShiploadRecycler!!.adapter!!.notifyDataSetChanged()
             } else {
                 Snackbar.make(this.view!!, R.string.product_exist, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
             }
-
-            //categoryList[parentPosition].products.remove(categoryList[parentPosition].products[position])
-            //onlyProductListRecycler.adapter!!.notifyDataSetChanged()
-            //Snackbar.make(this.view!!, R.string.product_added, Snackbar.LENGTH_SHORT).setAction("Action", null).show()
         }
     }
 
@@ -130,20 +135,20 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
         toolbar.title = getString(R.string.load_up_title)
         onlyProductListRecycler = view.findViewById(R.id.onlyProductListRecycler) as RecyclerView
         onlyProductListRecycler.apply {
-            this.layoutManager = LinearLayoutManager(appContext)
+            this!!.layoutManager = LinearLayoutManager(appContext)
             this.adapter = productListAdapter
         }
 
         driverShiploadRecycler = view.findViewById(R.id.driverShiploadRecycler) as RecyclerView
         driverShiploadRecycler.apply {
-            this.layoutManager = LinearLayoutManager(appContext)
+            this!!.layoutManager = LinearLayoutManager(appContext)
             this.adapter = shiploadAdapter
         }
 
-        driverShiploadRecycler.adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+        driverShiploadRecycler!!.adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
             override fun onChanged() {
                 super.onChanged()
-                val count = driverShiploadRecycler.layoutManager!!.itemCount
+                val count = driverShiploadRecycler!!.layoutManager!!.itemCount
                 for (i in 0..count) {
                     //val refresh = driverShiploadRecycler.layoutManager!!.findViewByPosition(i)
                     //changeColorByStore(refresh)
@@ -176,9 +181,28 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
         }
         storageColorDialog = StorageColorDialog(appContext)
         showStoreColorList = view.findViewById(R.id.showStoreColorList)
-        showStoreColorList.setOnClickListener {
+        showStoreColorList!!.setOnClickListener {
             storageColorDialog.showDialog()
         }
+
+        searchText = view.findViewById(R.id.searchShiploadProduct)
+        searchText!!.addTextChangedListener(
+            object : TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.toString() != "")
+                        productListAdapter.filter.filter(s)
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            }
+        )
 
         return view
     }
@@ -236,7 +260,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
                 }
             }
         private lateinit var mySqlHelper: MySqlHelper
-        private lateinit var driverShiploadRecycler: RecyclerView
+        private var driverShiploadRecycler: RecyclerView? = null
         private val shiploadList: ArrayList<Storage> = ArrayList()
         fun changeColorByStore(item: ShiploadAdapter.ViewHolder, position: Int, click:Boolean = false) {
             try {
@@ -315,7 +339,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
             cursor.close()
         }
         try {
-            onlyProductListRecycler.adapter!!.notifyDataSetChanged()
+            onlyProductListRecycler!!.adapter!!.notifyDataSetChanged()
         } catch (e: Exception) {
 
         }

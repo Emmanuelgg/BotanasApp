@@ -184,7 +184,7 @@ class StorageApi(context: Context, mainActivity: MainActivity) {
                                 "cost_export" to jsonObject.getString("cost_export"),
                                 "weight" to jsonObject.getString("weight"),
                                 "quantity_unit_measurement" to jsonObject.getInt("quantity_unit_measurement"),
-                                "shot_name" to jsonObject.getString("shot_name")
+                                "short_name" to jsonObject.getString("short_name")
                             )
                             i++
                         }
