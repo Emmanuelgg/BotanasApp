@@ -19,6 +19,8 @@ import com.example.botanas.dataClasses.Storage
 import com.example.botanas.db.MySqlHelper
 import java.lang.Exception
 import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: ItemClickListener, sellFragment: SellFragment? = null, loadUpFragment: LoadUpFragment? = null) :
     RecyclerView.Adapter<ProductTypeAdapter.ViewHolder>(), StorageAdapter.ItemClickListener, Filterable {
@@ -127,15 +129,16 @@ class ProductTypeAdapter(private val samples: ArrayList<ProductType>, listener: 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
-                val charString = charSequence.toString()
+                val charString = charSequence.toString().toLowerCase(Locale.forLanguageTag("la"))
                 if (charString.isEmpty()) {
                     productTypeSearchList = samples
                 } else {
                     val filteredList = ArrayList<ProductType>()
+                    var contain: Boolean
                     for (row in samples) {
-                        var contain = false
+                        contain = false
                         for (item in row.products) {
-                            if (row.description!!.toLowerCase().contains(charString.toLowerCase()) || item.product_name!!.toLowerCase().contains(charString.toLowerCase())) {
+                            if (row.description.toLowerCase().contains(charString) || item.product_name.toLowerCase().contains(charString)) {
                                 contain = true
                             }
                         }

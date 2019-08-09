@@ -137,7 +137,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
         super.onCreate(savedInstanceState)
         appContext = this.context!!
         mySqlHelper = MySqlHelper(appContext)
-        initRecycleView()
+        //initRecycleView()
         productListAdapter = ProductTypeAdapter(categoryList,this,this)
         productListSaleAdapter = ProductListSale(productListSale,this)
 
@@ -204,8 +204,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
         searchText!!.addTextChangedListener(
             object : TextWatcher {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.toString() != "")
-                        productListAdapter.filter.filter(s)
+
                 }
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -213,7 +212,7 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-
+                    productListAdapter.filter.filter(s)
                 }
 
             }
@@ -226,6 +225,16 @@ class SellFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ProductLi
     /*fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }*/
+
+    override fun onStop() {
+        super.onStop()
+        searchText!!.setText("")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initRecycleView()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

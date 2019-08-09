@@ -40,6 +40,7 @@ import java.io.Serializable
  * Use the [LoadUpFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, ShiploadAdapter.ItemOnPressListener, ShiploadAdapter.ItemOnClickListener {
     //override fun onItemClick(item: StoreColorAdapter.ViewHolder, position: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -89,7 +90,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
 
         if (parentPosition != -1 && pItem != null) {
             val exist = shiploadList.find {
-                    storage ->  storage.id_product == categoryList[parentPosition].products[position].id_product
+                    storage ->  storage.id_product == pItem.id_product
             }
             if (exist == null){
 
@@ -117,7 +118,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
         super.onCreate(savedInstanceState)
         appContext = this.context!!
         mySqlHelper = MySqlHelper(appContext)
-        initRecycleView()
+        //initRecycleView()
         productListAdapter = ProductTypeAdapter(categoryList,this,null, this)
         shiploadAdapter = ShiploadAdapter(shiploadList,this, this)
         shiploadList.clear()
@@ -145,7 +146,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
             this.adapter = shiploadAdapter
         }
 
-        driverShiploadRecycler!!.adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+        /*driverShiploadRecycler!!.adapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
             override fun onChanged() {
                 super.onChanged()
                 val count = driverShiploadRecycler!!.layoutManager!!.itemCount
@@ -154,7 +155,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
                     //changeColorByStore(refresh)
                 }
             }
-        })
+        })*/
 
         val btnReviewShipload = view.findViewById<FloatingActionButton>(R.id.btnReviewShipload)
         btnReviewShipload.setOnClickListener {
@@ -179,9 +180,13 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
 
 
         }
-        storageColorDialog = StorageColorDialog(appContext)
+        var clickInShowStoreColorList = false
         showStoreColorList = view.findViewById(R.id.showStoreColorList)
         showStoreColorList!!.setOnClickListener {
+            if  (!clickInShowStoreColorList) {
+                storageColorDialog = StorageColorDialog(appContext)
+                clickInShowStoreColorList = true
+            }
             storageColorDialog.showDialog()
         }
 
@@ -189,8 +194,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
         searchText!!.addTextChangedListener(
             object : TextWatcher {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.toString() != "")
-                        productListAdapter.filter.filter(s)
+
                 }
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -198,7 +202,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-
+                    productListAdapter.filter.filter(s)
                 }
 
             }
@@ -208,8 +212,18 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
+    /*fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
+    }*/
+
+    override fun onStop() {
+        super.onStop()
+        searchText!!.setText("")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initRecycleView()
     }
 
     override fun onAttach(context: Context) {
@@ -217,7 +231,7 @@ class LoadUpFragment : Fragment(), ProductTypeAdapter.ItemClickListener, Shiploa
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
